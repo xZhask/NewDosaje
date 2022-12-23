@@ -1,3 +1,7 @@
+:root {
+    --primary: #24b2eb;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -83,4 +87,66 @@ a {
 
 .avatar img {
     height: 50px;
+}
+
+.content {
+    height: calc(100vh - 90px);
+    padding: 2em;
+}
+
+.section_view {
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(36, 178, 235, 0.4);
+    border-radius: 1.5em;
+    padding: 2em;
+}
+
+.header_section_view {
+    color: var(--primary);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
+
+.header_section_view button {
+    background-color: var(--primary);
+    color: #fff;
+    border: solid 1px var(--primary);
+    padding: 0 2em;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.t_listado {
+    border-collapse: collapse;
+    font-size: .9em;
+    width: 100%;
+}
+
+.t_listado td,
+.t_listado th {
+    border: 1px solid var(--primary);
+    padding: 5px;
+}
+
+.t_listado td {
+    font-size: .9em;
+    vertical-align: top;
+}
+
+.t_listado p {
+    color: #686565;
+}
+
+.t_listado td p span {
+    font-weight: bold;
+    color: #000;
+}
+
+.t_listado th {
+    background-color: var(--primary);
+    color: #fff;
 }
