@@ -1,12 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,600;0,700;0,800;1,400&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap');
+
 :root {
-    --primary: #24b2eb;
+    --primary: #46aef7;
+    --primary-hover: #30c7ec;
+    --sombreado: #e7eef1;
+    --dark-light: #535c68;
+    /*
+    #16d9e3
+    #30c7ec
+    #46aef7
+    */
 }
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    /*font-family: 'Raleway', sans-serif;
+    font-family: 'Noto Nastaliq Urdu', serif;*/
+    font-family: 'Ubuntu', sans-serif;
+
 }
 
 /* .wrapper {
@@ -79,6 +96,9 @@ a {
     display: flex;
     align-items: center;
     gap: 15px;
+    position: relative;
+    background-color: var(--sombreado);
+    padding: 0 10px;
 }
 
 .info_perfil {
@@ -98,14 +118,13 @@ a {
     width: 100%;
     height: 100%;
     background-color: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(36, 178, 235, 0.4);
     border-radius: 1.5em;
     padding: 2em;
 }
 
 .header_section_view {
-    color: var(--primary);
+
     display: flex;
     justify-content: space-between;
     margin-bottom: 2em;
@@ -118,6 +137,12 @@ a {
     padding: 0 2em;
     border-radius: 3px;
     cursor: pointer;
+    transition: all ease .4s;
+}
+
+.header_section_view button:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
 }
 
 .t_listado {
@@ -129,7 +154,7 @@ a {
 .t_listado td,
 .t_listado th {
     border: 1px solid var(--primary);
-    padding: 5px;
+    padding: 7px;
 }
 
 .t_listado td {
@@ -137,16 +162,46 @@ a {
     vertical-align: top;
 }
 
-.t_listado p {
-    color: #686565;
+.t_listado td p {
+    margin-bottom: 3px;
+    color: var(--dark-light);
 }
 
 .t_listado td p span {
     font-weight: bold;
-    color: #000;
 }
 
 .t_listado th {
     background-color: var(--primary);
     color: #fff;
+}
+
+.cont_perfil span {
+    color: var(--primary);
+}
+
+/* --- */
+.options_perfil {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 100%;
+    border: 1px solid rgb(228, 226, 226);
+    background-color: #fff;
+}
+
+.options_perfil li {
+    padding: .8em 1em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.options_perfil li:hover {
+    background-color: var(--sombreado);
+}
+
+.options_perfil img {
+    max-height: 28px;
 }
