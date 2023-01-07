@@ -9,6 +9,7 @@
     --primary-hover: #30c7ec;
     --sombreado: #e7eef1;
     --dark-light: #535c68;
+    --gray: #ced6e0;
     /*
     #16d9e3
     #30c7ec
@@ -130,7 +131,8 @@ a {
     margin-bottom: 2em;
 }
 
-.header_section_view button {
+.header_section_view button,
+form button {
     background-color: var(--primary);
     color: #fff;
     border: solid 1px var(--primary);
@@ -140,7 +142,8 @@ a {
     transition: all ease .4s;
 }
 
-.header_section_view button:hover {
+.header_section_view button:hover,
+form button:hover {
     background-color: var(--primary-hover);
     border-color: var(--primary-hover);
 }
@@ -218,4 +221,156 @@ a {
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: var(--primary);
+}
+
+/* --- MODAL ---*/
+.bg-modal,
+.close-modal-area {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+.bg-modal {
+    display: none;
+    overflow: auto;
+    background-color: rgba(30, 39, 46, .7);
+}
+
+/* The modal box */
+.modal-dialog {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/* The modal's content */
+.modal-dialog .modal-content {
+    margin: auto;
+    background-color: #fff;
+    position: relative;
+    padding: 15px 30px;
+    outline: 0;
+    border-radius: 10px;
+    text-align: justify;
+    width: 50%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-animation-name: animation-modal;
+    /* Add animation */
+    -webkit-animation-duration: 0.5s;
+    /* Chrome, Safari, Opera */
+    animation-name: animation-modal;
+    /* Chrome, Safari, Opera */
+    animation-duration: 0.5s;
+    max-width: 450px;
+}
+
+/* The button used to close the modal */
+.close_btn {
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    transition: all ease .5s;
+    width: 1em;
+    height: 1em;
+    padding: .7em;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary);
+    position: absolute;
+    right: -15px;
+    top: -12px;
+}
+
+.close_btn:hover,
+.close_btn:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+/* Add animation (Chrome, Safari, Opera) */
+@-webkit-keyframes animation-modal {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+/* Add animation (Standard syntax) */
+@keyframes animation-modal {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+
+    to {
+        top: 0px;
+        opacity: 1;
+    }
+}
+
+/* Opciones toggle*/
+.options_perfil {
+    display: none;
+}
+
+.cont_perfil:hover .options_perfil {
+    display: block;
+}
+
+.tittle_modal {
+    color: var(--primary);
+    padding-left: 5px;
+}
+
+.modal_head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--gray);
+}
+
+.modal_form form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 1em 0;
+}
+
+.cont_inputs_form,
+.cont_inputs_form input {
+    width: 100%;
+}
+
+.cont_inputs_form input {
+    padding: 1em;
+    outline: none;
+    border: 1px solid var(--gray);
+}
+
+.cont_inputs_form input:focus {
+    border: 1px solid var(--primary-hover);
+}
+
+form button {
+    padding: 1em;
+
+}
+
+.frm-lg {
+    width: 70% !important;
+    max-width: 900px !important;
 }

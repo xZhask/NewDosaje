@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="resources/css/style.css">
+    <!--<link rel="icon" type="image/png" href="favicon.png" />-->
     <title>Dosaje</title>
 </head>
 
@@ -41,11 +42,11 @@
                 </div>
                 <div class="options_perfil">
                     <ul>
-                        <li>
+                        <li id="btnCambioPass">
                             <img src="resources/img/reset_pass.svg" alt="">
                             <p>Cambiar Contraseña</p>
                         </li>
-                        <li>
+                        <li id="btnUpdateInfo">
                             <img src="resources/img/edit_profile.svg" alt="">
                             <p>Actualizar información</p>
                         </li>
@@ -173,7 +174,15 @@
                 </div>
             </div>
         </div>
+        <div id="bg-modal" class="bg-modal">
+            <div class="modal-dialog">
+                <a class="close-modal-area closeModal"></a>
+                <div id="modal-content" class="modal-content">
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="resources/js/jquery-3.6.0.min.js"></script>
     <script src="resources/js/main.js"></script>
 </body>
 
