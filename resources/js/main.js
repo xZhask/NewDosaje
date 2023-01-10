@@ -12,5 +12,9 @@ const abrirModal = (url) => {
 $('a.closeModal').on('click', () => { modal.style.display = 'none'; modalContent.classList.remove('frm-lg'); })
 
 //Botones para abrir modal
-btnNuevoRegistro.addEventListener('click', () => { modalContent.classList.add('frm-lg'); abrirModal('App/views/modals/frmRegistro.html') });
-btnCambioPass.addEventListener('click', () => abrirModal('App/views/modals/frmCambioPass.html'));
+btnNuevoRegistro.addEventListener('click', () => { modalContent.classList.add('frm-lg'); abrirModal('modals/frmRegistro.html') });
+btnCambioPass.addEventListener('click', () => abrirModal('modals/frmCambioPass.html'));
+
+const btnMiau = document.querySelector('#BtnMiau');
+console.log(btnMiau);
+if (btnMiau) btnMiau.addEventListener('click', () => { alert('miau'); });
