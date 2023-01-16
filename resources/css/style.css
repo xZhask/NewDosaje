@@ -86,7 +86,8 @@ a {
     font-size: .8em;
 }
 
-.list_menu a:hover {
+.list_menu a:hover,
+.list_menu a.active {
     background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.25) 200%);
     background-blend-mode: multiply;
     color: #FFFFFF;
@@ -346,7 +347,7 @@ form button:hover {
     flex-direction: column;
     gap: 5px;
     padding: 1em 0;
-    display: none;
+    display: flex;
 }
 
 .cont_inputs_form {
@@ -356,7 +357,8 @@ form button:hover {
 }
 
 .cont_inputs_form,
-.cont_inputs_form input {
+.cont_inputs_form input,
+.group_input {
     width: 100%;
 }
 

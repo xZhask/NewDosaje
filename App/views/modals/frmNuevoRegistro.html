@@ -1,0 +1,80 @@
+<form id="frmHojaRegistro">
+    <div class="col-2">
+        <div class="w50">
+            <h2 class="tittle_form">Nuevo Registro</h2>
+            <div class="cont_inputs_form">
+                <input type="text" name="Comisaria" id="Comisaria" placeholder="Comisaría Solicitante">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="nroOficio" id="nroOficio" placeholder="N° Oficio">
+                <input type="text" name="fechaOficio" id="fechaOficio" placeholder="fecha oficio">
+                <input type="text" name="horaOFicio" id="horaOFicio" placeholder="Hora Oficio">
+            </div>
+            <h4 class="subtittle_form">Usuario</h4>
+            <div class="cont_inputs_form">
+                <input type="text" name="tipoDoc" id="tipoDoc" placeholder="tipo de Documento">
+                <div class="group_input">
+                    <input type="text" name="nroDoc" id="nroDoc" placeholder="N° Doc">
+                    <button type="button" id="btn_search_user"><img src="resources/img/icon-search.svg" alt=""></button>
+                </div>
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="nombre" id="nombre" placeholder="Apellidos y nombres">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="edad" id="edad" placeholder="edad">
+                <input type="text" name="sexo" id="sexo" placeholder="Sexo">
+                <input type="text" name="licConducir" id="licConducir" placeholder="Licencia">
+            </div>
+            <h4 class="subtittle_form">Infracción</h4>
+            <div class="cont_inputs_form">
+                <input type="text" name="vehiculo" id="vehiculo" placeholder="Vehículo">
+                <input type="text" name="clase" id="clase" placeholder="Clase">
+                <input type="text" name="placa" id="placa" placeholder="Placa">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="motivo" id="motivo" placeholder="Motivo">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="fechaInfraccion" id="fechaInfraccion" placeholder="Fecha de Infracción">
+                <input type="text" name="horaInfraccion" id="horaInfraccion" placeholder="Hora de infracción">
+            </div>
+            <div class="cont_inputs_form">
+                <div class="group_input">
+                    <input type="text" name="nroDocConductor" id="nroDocConductor" placeholder="N° conductor">
+                    <button type="button"><img src="resources/img/icon-search.svg" alt=""></button>
+                </div>
+                <input type="text" name="gradoConductor" id="gradoConductor" placeholder="Grado de conductor">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="nombreConductor" id="nombreConductor" placeholder="Nombre conductor">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="observacion" id="observacion" placeholder="Observación">
+            </div>
+        </div>
+        <div class="line"></div>
+        <div class="w50">
+            <h2 class="tittle_form">Extracción</h2>
+            <div class="cont_inputs_form">
+                <input type="text" name="extractor" id="extractor" placeholder="Extractor">
+                <input type="text" name="tipoMuestra" id="tipoMuestra" placeholder="Tipo de muestra" class="w-mediun">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="horaExtraccion" id="horaExtraccion" placeholder="Hora Extracción">
+                <input type="text" name="fechaExtraccion" id="fechaExtraccion" placeholder="Fecha Extracción">
+                <input type="text" name="hrsTranscrurridas" id="hrsTranscrurridas" placeholder="Hrs. Transcrurridas">
+            </div>
+            <h2 class="tittle_form mg-top-10">Peritaje</h2>
+            <div class="cont_inputs_form">
+                <input type="text" name="perito" id="perito" placeholder="Perito">
+                <input type="text" name="cuantitativo" id="cuantitativo" placeholder="Res. Cuantitativo"
+                    class="w-mediun">
+            </div>
+            <div class="cont_inputs_form">
+                <input type="text" name="cualitativo" id="cualitativo" placeholder="Res. Cualitativo">
+            </div>
+        </div>
+    </div>
+    <button type="submit">Registrar Incidencia</button>
+</form>

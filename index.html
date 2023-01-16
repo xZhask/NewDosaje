@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="resources/js/jquery-ui-1.13.2/jquery-ui.min.css">
     <link rel="stylesheet" href="resources/css/style.css">
+
     <!--<link rel="icon" type="image/png" href="favicon.png" />-->
     <title>Dosaje</title>
 </head>
@@ -15,17 +17,17 @@
         <header class="header">
             <nav>
                 <ul class="list_menu">
-                    <li><a href="">
+                    <li><a href="/muestra.html" class="lnk-menu" id="lnk-muestra">
                             <img src="resources/img/test.svg" alt="">
                             <p>Muestra</p>
                         </a>
                     </li>
-                    <li><a href="">
+                    <li><a href="/reportes.html" class="lnk-menu" id="lnk-reportes">
                             <img src="resources/img/chart.svg" alt="">
                             <p>Reportes</p>
                         </a>
                     </li>
-                    <li><a href="">
+                    <li><a href="/usuarios.html" class="lnk-menu" id="lnk-usuarios">
                             <img src="resources/img/users.svg" alt="">
                             <p>Usuarios</p>
                         </a>
@@ -55,123 +57,8 @@
             </div>
         </header>
         <div class="content">
-            <div class="section_view">
-                <div class="header_section_view">
-                    <h1>Título view</h1>
-                    <button id="btn-nuevo">Nuevo</button>
-                </div>
-                <div class="body_section_view">
-                    <table class="t_listado">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Usuario</th>
-                                <th>Vehículo</th>
-                                <th>Oficio</th>
-                                <th>Infracción</th>
-                                <th>Extracción</th>
-                                <th>Observación</th>
-                                <th>Resultado</th>
-                                <th>Digitación</th>
-                                <th>Certificado</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <p><span>Nombre:</span> César Josué Silva Aguilar</p>
-                                    <p><span>DNI:</span> 48193845</p>
-                                    <p><span>Edad:</span> 28</p>
-                                    <p><span>Sexo:</span> M</p>
-                                    <p><span>Lic. conducir:</span> -</p>
-                                </td>
-                                <td>
-                                    <p><span>Vehículo:</span> Bicicleta</p>
-                                    <p><span>Clase:</span> A2</p>
-                                    <p><span>Placa:</span> T125A</p>
-                                </td>
-                                <td>
-                                    <p><span>Comandancia:</span> Comisaría X</p>
-                                    <p><span>N° Oficio:</span> 1234</p>
-                                    <p><span>Fecha oficio:</span> 23/12/22</p>
-                                    <p><span>Hora oficio:</span> 10:00</p>
-                                </td>
-                                <td>
-                                    <p><span>Motivo:</span> Desvío</p>
-                                    <p><span>Conducido por:</span> Nombre oficial conductor</p>
-                                    <p><span>Fecha infr.:</span> 23/12/22</p>
-                                    <p><span>Hora infr.:</span> 09:00</p>
-                                </td>
-                                <td>
-                                    <p><span>Muestra:</span> Sangre</p>
-                                    <p><span>Hora Ext.:</span> 11:00</p>
-                                    <p><span>Fecha. Ext.:</span>23/12/22</p>
-                                    <p><span>Hrs. Transcurridas.:</span> 1 hrs.</p>
-                                    <p><span>Extractor:</span> Nombre de Extractor</p>
-                                </td>
-                                <td>Observación</td>
-                                <td>
-                                    <p><span>Cualitativo:</span> 1.5l</p>
-                                    <p><span>Cuantitativo:</span>1.5L</p>
-                                    <p><span>Perito:</span> Nombre de Perito</p>
-                                </td>
-                                <td>
-                                    <p><span>Hoja de Registro:</span> 123456</p>
-                                    <p><span>Digitador:</span> Nombre de digitador</p>
-                                    <p><span>fecha y hora:</span> 23/12/22 11:45am</p>
-                                </td>
-                                <td>123456</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <p><span>Nombre:</span> César Josué Silva Aguilar</p>
-                                    <p><span>DNI:</span> 48193845</p>
-                                    <p><span>Edad:</span> 28</p>
-                                    <p><span>Sexo:</span> M</p>
-                                    <p><span>Lic. conducir:</span> -</p>
-                                </td>
-                                <td>
-                                    <p><span>Vehículo:</span> Bicicleta</p>
-                                    <p><span>Clase:</span> A2</p>
-                                    <p><span>Placa:</span> T125A</p>
-                                </td>
-                                <td>
-                                    <p><span>Comandancia:</span> Comisaría X</p>
-                                    <p><span>N° Oficio:</span> 1234</p>
-                                    <p><span>Fecha oficio:</span> 23/12/22</p>
-                                    <p><span>Hora oficio:</span> 10:00</p>
-                                </td>
-                                <td>
-                                    <p><span>Motivo:</span> Desvío</p>
-                                    <p><span>Conducido por:</span> Nombre oficial conductor</p>
-                                    <p><span>Fecha infr.:</span> 23/12/22</p>
-                                    <p><span>Hora infr.:</span> 09:00</p>
-                                </td>
-                                <td>
-                                    <p><span>Muestra:</span> Sangre</p>
-                                    <p><span>Hora Ext.:</span> 11:00</p>
-                                    <p><span>Fecha. Ext.:</span>23/12/22</p>
-                                    <p><span>Hrs. Transcurridas.:</span> 1 hrs.</p>
-                                    <p><span>Extractor:</span> Nombre de Extractor</p>
-                                </td>
-                                <td>Observación</td>
-                                <td>
-                                    <p><span>Cualitativo:</span> 1.5l</p>
-                                    <p><span>Cuantitativo:</span>1.5L</p>
-                                    <p><span>Perito:</span> Nombre de Perito</p>
-                                </td>
-                                <td>
-                                    <p><span>Hoja de Registro:</span> 123456</p>
-                                    <p><span>Digitador:</span> Nombre de digitador</p>
-                                    <p><span>fecha y hora:</span> 23/12/22 11:45am</p>
-                                </td>
-                                <td>123456</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="section_view" id="section_view">
+
             </div>
         </div>
         <div id="bg-modal" class="bg-modal">
@@ -181,115 +68,14 @@
                     <div class="modal_head">
                         <a href="" class="close_btn closeModal">x</a>
                     </div>
-                    <!--FORM CAMBIO DE PASS-->
                     <div class="modal_form" id="modal_form">
-                        <form action="" id="frmCambioPass">
-                            <h2 class="tittle_form">Cambio de contraseña</h2>
-                            <div class="cont_inputs_form">
-                                <input type="text" name="passActual" id="passActual"
-                                    placeholder="Ingrese Contraseña Actual">
-                            </div>
-                            <div class="cont_inputs_form">
-                                <input type="text" name="passNueva" id="passNueva"
-                                    placeholder="Ingrese Contraseña Nueva">
-                            </div>
-                            <button type="submit">Cambiar Contraseña</button>
-                        </form>
-                        <!--FORM NUEVO REGISTRO-->
-                        <form id="frmHojaRegistro">
-                            <div class="col-2">
-                                <div class="w50">
-                                    <h2 class="tittle_form">Nuevo Registro</h2>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="Comisaria" id="Comisaria"
-                                            placeholder="Comisaría Solicitante">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="nroOficio" id="nroOficio" placeholder="N° Oficio">
-                                        <input type="text" name="fechaOficio" id="fechaOficio"
-                                            placeholder="fecha oficio">
-                                        <input type="text" name="horaOFicio" id="horaOFicio" placeholder="Hora Oficio">
-                                    </div>
-                                    <h4 class="subtittle_form">Usuario</h4>
-                                    <div class="cont_inputs_form">
-                                        <div class="group_input">
-                                            <input type="text" name="nroDoc" id="nroDoc" placeholder="N° Doc">
-                                            <button type="button"><img src="resources/img/icon-search.svg"
-                                                    alt=""></button>
-                                        </div>
-                                        <input type="text" name="nombre" id="nombre" placeholder="Apellidos y nombres">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="edad" id="edad" placeholder="edad">
-                                        <input type="text" name="sexo" id="sexo" placeholder="Sexo">
-                                        <input type="text" name="licConducir" id="licConducir" placeholder="Licencia">
-                                    </div>
-                                    <h4 class="subtittle_form">Infracción</h4>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="vehiculo" id="vehiculo" placeholder="Vehículo">
-                                        <input type="text" name="clase" id="clase" placeholder="Clase">
-                                        <input type="text" name="placa" id="placa" placeholder="Placa">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="motivo" id="motivo" placeholder="Motivo">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="fechaInfraccion" id="fechaInfraccion"
-                                            placeholder="Fecha de Infracción">
-                                        <input type="text" name="horaInfraccion" id="horaInfraccion"
-                                            placeholder="Hora de infracción">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <div class="group_input">
-                                            <input type="text" name="nroDocConductor" id="nroDocConductor"
-                                                placeholder="N° conductor">
-                                            <button type="button"><img src="resources/img/icon-search.svg"
-                                                    alt=""></button>
-                                        </div>
-                                        <input type="text" name="nombreConductor" id="nombreConductor"
-                                            placeholder="Nombre conductor">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="observacion" id="observacion"
-                                            placeholder="Observación">
-                                    </div>
-                                </div>
-                                <div class="line"></div>
-                                <div class="w50">
-                                    <h2 class="tittle_form">Extracción</h2>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="extractor" id="extractor" placeholder="Extractor">
-                                        <input type="text" name="tipoMuestra" id="tipoMuestra"
-                                            placeholder="Tipo de muestra" class="w-mediun">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="horaExtraccion" id="horaExtraccion"
-                                            placeholder="Hora Extracción">
-                                        <input type="text" name="fechaExtraccion" id="fechaExtraccion"
-                                            placeholder="Fecha Extracción">
-                                        <input type="text" name="hrsTranscrurridas" id="hrsTranscrurridas"
-                                            placeholder="Hrs. Transcrurridas">
-                                    </div>
-                                    <h2 class="tittle_form mg-top-10">Peritaje</h2>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="perito" id="perito" placeholder="Perito">
-                                        <input type="text" name="cuantitativo" id="cuantitativo"
-                                            placeholder="Res. Cuantitativo" class="w-mediun">
-                                    </div>
-                                    <div class="cont_inputs_form">
-                                        <input type="text" name="cualitativo" id="cualitativo"
-                                            placeholder="Res. Cualitativo">
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit">Registrar Incidencia</button>
-                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="resources/js/jquery-3.6.0.min.js"></script>
+    <script src="resources/js/jquery-ui-1.13.2/jquery-ui.min.js"></script>
     <script src="resources/js/main.js"></script>
 </body>
 
