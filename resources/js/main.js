@@ -1,3 +1,33 @@
+/* const nombreComisarias = [];
+
+window.addEventListener("load", async () => {
+    const datos = new FormData();
+    datos.append("accion", "LISTAR_COMISARIAS");
+    let listadoComisarias = await postData(datos, 'controllerComisaria.php')
+    //console.log(listadoComisarias)
+    nombreComisarias = listadoComisarias.map((comisaria) => comisaria.comisaria);
+    //console.log(nombreComisarias)
+    //cargarAutocompletadoComisarias(nombreComisarias, listadoComisarias);
+
+}); */
+cargarComisarias = async () => {
+    const datos = new FormData();
+    datos.append("accion", "LISTAR_COMISARIAS");
+    let listadoComisarias = await postData(datos, 'controllerComisaria.php')
+    return listadoComisarias
+}
+/* function cargarAutocompletadoComisarias(comisarias, dataComisarias) {
+    $("#comisaria").autocomplete({
+        source: comisarias,
+         select: (e, item) => {
+            let unidad = item.item.value;
+            let position = list.indexOf(unidad);
+            nivelIpress = unidades[position].nivel;
+            cargarTarifario(nivelIpress)
+        }, 
+    });
+} */
+
 /*----------------------- MODALS ------------------------------- */
 const btnCambioPass = document.querySelector('#btnCambioPass');
 const modal = document.querySelector('#bg-modal');
@@ -19,11 +49,24 @@ $('a.closeModal').on('click', (e) => {
 //Botones para abrir modal
 btnCambioPass.addEventListener('click', () => abrirModal('frmCambioPass.html'));
 
-$(document).on("click", "#btn-nuevo", () => {
+$(document).on("click", "#btn-nuevo", async () => {
     modalContent.classList.add('frm-lg')
     abrirModal('frmNuevoRegistro.html')
+    let comisarias = await cargarComisarias();
+    let nombreComisarias = comisarias.map((comisaria) => comisaria.comisaria)
+    autocompletadoComisarias(nombreComisarias, comisarias)
 });
-
+function autocompletadoComisarias(nombres, listadoOriginal) {
+    $("#comisaria").autocomplete({
+        source: nombres,
+        select: (e, item) => {
+            let comisaria = item.item.value;
+            let position = nombres.indexOf(comisaria);
+            let idComisaria = listadoOriginal[position].id_comandancia;
+            $('#idComisaria').val(idComisaria)
+        },
+    })
+}
 /*----------------------- SECTIONS ------------------------------- */
 const lnkMuestra = document.querySelector('#lnk-muestra')
 const lnkReportes = document.querySelector('#lnk-reportes')
@@ -43,7 +86,7 @@ lnkUsuarios.addEventListener('click', e => loadView(e, lnkUsuarios))
 
 /*----------------------- FORMS ------------------------------- */
 async function postData(data, url) {
-    const response = await fetch(url, {
+    const response = await fetch(`App/controller/${url}`, {
         method: "POST",
         body: data,
     }).then((res) => res.json());
@@ -53,7 +96,7 @@ async function buscarPersona(dni) {
     let datos = new FormData();
     datos.append("accion", "CONSULTA_DNI");
     datos.append("dni", dni);
-    let persona = await (postData(datos, 'App/controller/controllerPersona.php'));
+    let persona = await (postData(datos, 'controllerPersona.php'));
     return persona
 }
 

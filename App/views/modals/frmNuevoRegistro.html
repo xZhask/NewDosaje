@@ -3,7 +3,8 @@
         <div class="w50">
             <h2 class="tittle_form">Nuevo Registro</h2>
             <div class="cont_inputs_form">
-                <input type="text" name="Comisaria" id="Comisaria" placeholder="Comisaría Solicitante">
+                <input type="hidden" name="idComisaria" id="idComisaria">
+                <input type="text" name="comisaria" id="comisaria" placeholder="Comisaría Solicitante">
             </div>
             <div class="cont_inputs_form">
                 <input type="text" name="nroOficio" id="nroOficio" placeholder="N° Oficio">
@@ -78,3 +79,15 @@
     </div>
     <button type="submit">Registrar Incidencia</button>
 </form>
+<script>
+    /*     let miau = ['miau', 'remiau']
+        $("#comisaria").autocomplete({
+            source: miau,
+             select: (e, item) => {
+               let unidad = item.item.value;
+               let position = list.indexOf(unidad);
+               nivelIpress = unidades[position].nivel;
+               cargarTarifario(nivelIpress)
+           },  
+        }); */
+</script>

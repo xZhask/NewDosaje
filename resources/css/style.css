@@ -377,8 +377,8 @@ form button {
 }
 
 .frm-lg {
-    width: 70% !important;
-    max-width: 920px !important;
+    width: 100% !important;
+    max-width: 1100px !important;
 }
 
 .w50 {
