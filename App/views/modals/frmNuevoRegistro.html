@@ -1,4 +1,4 @@
-<form id="frmHojaRegistro">
+<form id="frmHojaRegistro" autocomplete="off">
     <div class="col-2">
         <div class="w50">
             <h2 class="tittle_form">Nuevo Registro</h2>
@@ -13,7 +13,13 @@
             </div>
             <h4 class="subtittle_form">Usuario</h4>
             <div class="cont_inputs_form">
-                <input type="text" name="tipoDoc" id="tipoDoc" placeholder="tipo de Documento">
+                <!--<input type="text" name="tipoDoc" id="tipoDoc" placeholder="tipo de Documento">-->
+                <select name="tipoDoc" id="tipoDoc">
+                    <option value="0">Tipo de documento1</option>
+                    <option value="1">Tipo de documento2</option>
+                    <option value="2">Tipo de documento3</option>
+                    <option value="3">Tipo de documento4</option>
+                </select>
                 <div class="group_input">
                     <input type="text" name="nroDoc" id="nroDoc" placeholder="N° Doc">
                     <button type="button" id="btn_search_user"><img src="resources/img/icon-search.svg" alt=""></button>
@@ -59,7 +65,7 @@
             <h2 class="tittle_form">Extracción</h2>
             <div class="cont_inputs_form">
                 <input type="text" name="extractor" id="extractor" placeholder="Extractor">
-                <input type="text" name="tipoMuestra" id="tipoMuestra" placeholder="Tipo de muestra" class="w-mediun">
+                <input type="text" name="tipoMuestra" id="tipoMuestra" placeholder="Tipo de muestra" class="w-medium">
             </div>
             <div class="cont_inputs_form">
                 <input type="text" name="horaExtraccion" id="horaExtraccion" placeholder="Hora Extracción">
@@ -70,7 +76,7 @@
             <div class="cont_inputs_form">
                 <input type="text" name="perito" id="perito" placeholder="Perito">
                 <input type="text" name="cuantitativo" id="cuantitativo" placeholder="Res. Cuantitativo"
-                    class="w-mediun">
+                    class="w-medium">
             </div>
             <div class="cont_inputs_form">
                 <input type="text" name="cualitativo" id="cualitativo" placeholder="Res. Cualitativo">
@@ -80,14 +86,14 @@
     <button type="submit">Registrar Incidencia</button>
 </form>
 <script>
-    /*     let miau = ['miau', 'remiau']
-        $("#comisaria").autocomplete({
-            source: miau,
-             select: (e, item) => {
-               let unidad = item.item.value;
-               let position = list.indexOf(unidad);
-               nivelIpress = unidades[position].nivel;
-               cargarTarifario(nivelIpress)
-           },  
-        }); */
+    let miau = ['miau', 'remiau']
+    $("#perito").autocomplete({
+        source: miau,
+        select: (e, item) => {
+            let unidad = item.item.value;
+            let position = list.indexOf(unidad);
+            nivelIpress = unidades[position].nivel;
+            cargarTarifario(nivelIpress)
+        },
+    });
 </script>

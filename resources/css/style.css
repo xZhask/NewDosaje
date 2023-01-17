@@ -358,17 +358,20 @@ form button:hover {
 
 .cont_inputs_form,
 .cont_inputs_form input,
+.cont_inputs_form select,
 .group_input {
     width: 100%;
 }
 
-.cont_inputs_form input {
+.cont_inputs_form input,
+.cont_inputs_form select {
     padding: 1em;
     outline: none;
     border: 1px solid var(--gray);
 }
 
-.cont_inputs_form input:focus {
+.cont_inputs_form input:focus,
+.cont_inputs_form select:focus {
     border: 1px solid var(--primary-hover);
 }
 
@@ -431,6 +434,12 @@ form button {
     border-left: 1px dotted rgba(0, 0, 0, .2);
 }
 
-.w-mediun {
+.w-medium {
     width: 47% !important;
+}
+
+select option {
+    min-height: 10px;
+    padding: 0 10px;
+    font-weight: 400;
 }

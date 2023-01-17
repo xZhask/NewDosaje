@@ -10,6 +10,7 @@ window.addEventListener("load", async () => {
     //cargarAutocompletadoComisarias(nombreComisarias, listadoComisarias);
 
 }); */
+alert('miau')
 cargarComisarias = async () => {
     const datos = new FormData();
     datos.append("accion", "LISTAR_COMISARIAS");
