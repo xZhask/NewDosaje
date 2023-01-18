@@ -1,11 +1,11 @@
 <?php
-//require_once '../models/ClsPersona.php';
+require_once '../model/clsPersona.php';
 $accion = $_POST['accion'];
 controlador($accion);
 
 function controlador($accion)
 {
-    //$objPersona = new ClsPersona();
+    $objPersona = new ClsPersona();
 
     switch ($accion) {
         case 'CONSULTA_DNI':
@@ -38,11 +38,11 @@ function controlador($accion)
                 echo $response;
             }
             break;
-            /* 
+
         case 'BUSCAR_PERSONA':
-            $infoPersona = $objPersona->BuscarPersona($_POST['nrodoc']);
+            $infoPersona = $objPersona->BuscarUsuario($_POST['nrodoc']);
             $infoPersona = $infoPersona->fetchAll(PDO::FETCH_OBJ);
             echo json_encode($infoPersona);
-            break; */
+            break;
     }
 }
