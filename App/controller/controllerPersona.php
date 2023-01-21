@@ -44,5 +44,10 @@ function controlador($accion)
             $infoPersona = $infoPersona->fetchAll(PDO::FETCH_OBJ);
             echo json_encode($infoPersona);
             break;
+        case 'CARGAR_PROFESIONALES':
+            $listaProfesionales = $objPersona->listarProfesionales($_POST['tipoProfesional']);
+            $listaProfesionales = $listaProfesionales->fetchAll(PDO::FETCH_OBJ);
+            echo json_encode($listaProfesionales);
+            break;
     }
 }

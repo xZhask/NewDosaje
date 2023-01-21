@@ -60,8 +60,9 @@
         <div class="w50">
             <h2 class="tittle_form">Extracción</h2>
             <div class="cont_inputs_form">
-                <input type="text" name="extractor" id="extractor" placeholder="Extractor">
                 <input type="text" name="tipoMuestra" id="tipoMuestra" placeholder="Tipo de muestra" class="w-medium">
+                <input type="hidden" name="idExtractor" id="idExtractor">
+                <input type="text" name="extractor" id="extractor" placeholder="Extractor">
             </div>
             <div class="cont_inputs_form">
                 <input type="text" name="horaExtraccion" id="horaExtraccion" placeholder="Hora Extracción">
@@ -70,6 +71,7 @@
             </div>
             <h2 class="tittle_form mg-top-10">Peritaje</h2>
             <div class="cont_inputs_form">
+                <input type="hidden" name="idPerito" id="idPerito">
                 <input type="text" name="perito" id="perito" placeholder="Perito">
                 <input type="text" name="cuantitativo" id="cuantitativo" placeholder="Res. Cuantitativo"
                     class="w-medium">

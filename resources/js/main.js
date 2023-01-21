@@ -13,6 +13,20 @@ const cargarTipoDoc = async () => {
     let tipoDoc = await (postData(datos, 'controllerDocumento.php'));
     return tipoDoc
 }
+const cargarExtractores = async () => {
+    const datos = new FormData();
+    datos.append("accion", "CARGAR_PROFESIONALES");
+    datos.append("tipoProfesional", "E");
+    let listaExtractores = await postData(datos, 'controllerPersona.php')
+    return listaExtractores
+}
+const cargarPeritos = async () => {
+    const datos = new FormData();
+    datos.append("accion", "CARGAR_PROFESIONALES");
+    datos.append("tipoProfesional", "P");
+    let listaPeritos = await postData(datos, 'controllerPersona.php')
+    return listaPeritos
+}
 //Render Opciones
 const crearOptionsTipoDoc = tiposDocumento => tiposDocumento.map((tipodocumento) => `<option value="${tipodocumento.id_tipodoc}">${tipodocumento.tipo_doc}</option>`).join('')
 
@@ -41,8 +55,15 @@ $(document).on("click", "#btn-nuevo", async () => {
     modalContent.classList.add('frm-lg')
     abrirModal('frmNuevoRegistro.html')
     let comisarias = await cargarComisarias();
+    let extractores = await cargarExtractores();
+    let peritos = await cargarPeritos();
     let nombreComisarias = comisarias.map((comisaria) => comisaria.comisaria)
+    let nombreExtractores = extractores.map((extractor) => extractor.nombre)
+    let nombrePeritos = peritos.map((perito) => perito.nombre)
+
     autocompletadoComisarias(nombreComisarias, comisarias)
+    autocompletadoExtractores(nombreExtractores, extractores)
+    autocompletadoPeritos(nombrePeritos, peritos)
     let tiposDocumento = await cargarTipoDoc()
     $('#tipoDoc').html(crearOptionsTipoDoc(tiposDocumento))
 });
@@ -59,7 +80,30 @@ function autocompletadoComisarias(nombres, listadoOriginal) {
         },
     })
 }
+function autocompletadoExtractores(nombres, listadoOriginal) {
+    $("#extractor").autocomplete({
+        source: nombres,
+        select: (e, item) => {
+            let extractor = item.item.value;
+            let position = nombres.indexOf(extractor);
+            let idExtractor = listadoOriginal[position].id_persona;
+            $('#idExtractor').val(idExtractor)
+            //console.log(idExtractor)
+        },
+    })
+}
+function autocompletadoPeritos(nombres, listadoOriginal) {
+    $("#perito").autocomplete({
+        source: nombres,
+        select: (e, item) => {
+            let perito = item.item.value;
+            let position = nombres.indexOf(perito);
+            let idPerito = listadoOriginal[position].id_persona;
+            $('#idPerito').val(idPerito)
 
+        },
+    })
+}
 /*----------------------- SECTIONS ------------------------------- */
 const lnkMuestra = document.querySelector('#lnk-muestra')
 const lnkReportes = document.querySelector('#lnk-reportes')
@@ -217,6 +261,7 @@ const numeroLetras = (numero) => {
     let texto = `${unidades[entero]} ${textoGramos} ${textoDecimal} CENTÍGRAMOS DE ALCOHOL POR LITRO DE SANGRE`
     return texto
 }
+/*
 console.log(numeroLetras('5.07'))
 console.log(numeroLetras('1.11'))
 console.log(numeroLetras('2.30'))
@@ -224,4 +269,4 @@ console.log(numeroLetras('4.40'))
 console.log(numeroLetras('7.27'))
 console.log(numeroLetras('5.52'))
 console.log(numeroLetras('0.83'))
-console.log(numeroLetras('0.15'))
+console.log(numeroLetras('0.15'))*/

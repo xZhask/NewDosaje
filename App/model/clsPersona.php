@@ -14,4 +14,15 @@ class clsPersona
         $pre->execute($parametros);
         return $pre;
     }
+    function listarProfesionales($tipoP)
+    {
+        $sql = 'SELECT p.id_persona,p.nombre FROM persona p INNER JOIN usuario u ON p.id_persona=u.id_persona WHERE u.profesion=:profesion';
+        global $cnx;
+        $parametros = [
+            ':profesion' => $tipoP,
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
 }
