@@ -359,7 +359,8 @@ form button:hover {
 .cont_inputs_form,
 .cont_inputs_form input,
 .cont_inputs_form select,
-.group_input {
+.group_input,
+.group-colum {
     width: 100%;
 }
 
@@ -472,4 +473,23 @@ select option {
         -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+.group-colum {
+    display: flex;
+    flex-direction: column;
+}
+
+.txt_group {
+    font-size: .8em;
+    color: var(--dark-light);
+    margin-bottom: -5px;
+    z-index: 2;
+    margin-left: 5px;
+    background-color: #fff;
+    width: 100px;
+}
+
+input[type=time] {
+    max-height: 45.66px;
 }

@@ -305,7 +305,19 @@ $(document).on("keypress", "#nroDocConductor", (e) => {
 $(document).on("keypress", "#edad", (e) => {
   return isNumber(e);
 });
+$(document).on("keypress", "#nroOficio", (e) => {
+  return isNumber(e);
+});
 
 $(document).on("keypress", "#cuantitativo", (e) => {
-  console.log(e.keyCode);
+  if (e.keyCode < 46 || e.keyCode > 57 || e.keyCode == 47) return false;
+  let cadena = $('#cuantitativo').val()
+  if (e.keyCode == 46)
+    if (cadena.indexOf('.') >= 0) return false;
+});
+
+$(document).on("keyup", "#cuantitativo", (e) => {
+  let cadena = $('#cuantitativo').val()
+  let cualitativo = cadena > 0 ? 'POSITIVO' : 'NEGATIVO'
+  $('#cualitativo').val(cualitativo)
 });
