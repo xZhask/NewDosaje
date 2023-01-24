@@ -14,13 +14,14 @@
       <h4 class="subtittle_form">Usuario</h4>
       <div class="cont_inputs_form">
         <!--<input type="text" name="tipoDoc" id="tipoDoc" placeholder="tipo de Documento">-->
-        <select name="tipoDoc" id="tipoDoc"></select>
+        <select name="tipoDoc" id="tipoDoc" class="w-medium"></select>
         <div class="group_input">
           <input type="text" name="nroDoc" id="nroDoc" placeholder="N° Doc" />
           <button type="button" id="btn_search_user">
             <img src="resources/img/icon-search.svg" />
           </button>
         </div>
+        <input type="text" name="nacionalidad" id="nacionalidad" placeholder="Nacionalidad" class="w-medium" />
       </div>
       <div class="cont_inputs_form">
         <input type="text" name="nombre" id="nombre" placeholder="Apellidos y nombres" />
@@ -65,21 +66,12 @@
       <div class="cont_inputs_form">
         <input type="text" name="nombreConductor" id="nombreConductor" placeholder="Nombre conductor" />
       </div>
-      <div class="cont_inputs_form">
-        <input type="text" name="observacion" id="observacion" placeholder="Observación" />
-      </div>
+
     </div>
     <div class="line"></div>
     <div class="w50">
       <h2 class="tittle_form">Extracción</h2>
       <div class="cont_inputs_form">
-        <!-- <input
-          type="text"
-          name="tipoMuestra"
-          id="tipoMuestra"
-          placeholder="Tipo de muestra"
-          class="w-medium"
-        /> -->
         <select name="tipoMuestra" id="tipoMuestra" class="w-medium">
           <option value="0">Tipo Muestra</option>
           <option value="S">Sangre</option>
@@ -91,14 +83,16 @@
       </div>
       <div class="cont_inputs_form">
         <div class="group-colum">
-          <label class="txt_group" for="horaExtraccion">Hora Extracción</label>
-          <input type="date" name="horaExtraccion" id="horaExtraccion" />
+          <label class="txt_group" for="fechaExtraccion">Fecha Extracción</label>
+          <input type="date" name="fechaExtraccion" id="fechaExtraccion" />
         </div>
         <div class="group-colum">
-          <label class="txt_group" for="fechaExtraccion">Fecha Extracción</label>
-          <input type="time" name="fechaExtraccion" id="fechaExtraccion" />
-          <!--<input type="text" name="hrsTranscrurridas" id="hrsTranscrurridas" placeholder="Hrs. Transcrurridas" />-->
+          <label class="txt_group" for="horaExtraccion">Hora Extracción</label>
+          <input type="time" name="horaExtraccion" id="horaExtraccion" />
         </div>
+      </div>
+      <div class="cont_inputs_form">
+        <input type="text" name="observacion" id="observacion" placeholder="Observación" />
       </div>
       <h2 class="tittle_form mg-top-10">Peritaje</h2>
       <div class="cont_inputs_form">
@@ -114,14 +108,5 @@
   <button type="submit">Registrar Incidencia</button>
 </form>
 <script>
-  let miau = ["miau", "remiau"];
-  $("#perito").autocomplete({
-    source: miau,
-    select: (e, item) => {
-      let unidad = item.item.value;
-      let position = list.indexOf(unidad);
-      nivelIpress = unidades[position].nivel;
-      cargarTarifario(nivelIpress);
-    },
-  });
+
 </script>

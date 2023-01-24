@@ -45,7 +45,15 @@ const modalForm = document.querySelector("#modal_form");
 //Abrir Modal
 const abrirModal = (form) => {
   modal.style.display = "table";
-  $("#modal_form").load(`App/views/modals/${form}`);
+  //$("#modal_form").load(`App/views/modals/${form}`);
+  $.ajax({
+    url: `App/views/modals/${form}`,
+    cache: false,
+    //    dataType: "html",
+    success: function (data) {
+      $("#modal_form").html(data);
+    }
+  });
 };
 //Cerrar Modal
 $("a.closeModal").on("click", (e) => {
@@ -56,7 +64,21 @@ $("a.closeModal").on("click", (e) => {
 
 //Botones para abrir modal
 btnCambioPass.addEventListener("click", () => abrirModal("frmCambioPass.html"));
-
+//
+const cargarFechaActual = () => {
+  let fecha = new Date();
+  let hoy = fecha.toLocaleDateString()
+  let ahora = fecha.toLocaleTimeString()
+  let cadenaFecha = hoy.split('/')
+  let cadenaHora = ahora.split(':')
+  if (cadenaFecha[1] < 10) cadenaFecha[1] = `0${cadenaFecha[1]}`
+  let data = {
+    'fecha': `${cadenaFecha[2]}-${cadenaFecha[1]}-${cadenaFecha[0]}`,
+    'hora': `${cadenaHora[0]}:${cadenaHora[1]}`
+  }
+  return data
+}
+//
 $(document).on("click", "#btn-nuevo", async () => {
   modalContent.classList.add("frm-lg");
   abrirModal("frmNuevoRegistro.html");
@@ -72,8 +94,11 @@ $(document).on("click", "#btn-nuevo", async () => {
   autocompletadoPeritos(nombrePeritos, peritos);
   let tiposDocumento = await cargarTipoDoc();
   $("#tipoDoc").html(crearOptionsTipoDoc(tiposDocumento));
+  let fechaActual = cargarFechaActual()
+  $('#fechaRecepcion').val(fechaActual['fecha'])
+  $('#horaRecepcion').val(fechaActual['hora'])
+  fechaRecepcion.max = fechaActual['fecha']
 });
-
 //Cargar autocompletados
 function autocompletadoComisarias(nombres, listadoOriginal) {
   $("#comisaria").autocomplete({
@@ -152,7 +177,7 @@ async function buscarPersonaBd(nroDoc) {
 $(document).on("click", "#btn_search_user", async () => {
   /* Limpiar usuario antes de enviar nuevo número */
   $("#nombre").val("");
-  $("#sexo").val("");
+  $("#sexo").val(0);
   $("#edad").val("");
   $("#licencia").val("");
   /*----*/
@@ -190,6 +215,7 @@ $(document).on("click", "#btn_search_conductor", async () => {
   if (persona !== undefined) $("#nombreConductor").val(persona.nombre_completo);
   $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
 });
+
 
 //buscarUsuario()
 /* $(document).on("submit", "#frmCambioPass", (e) => {
