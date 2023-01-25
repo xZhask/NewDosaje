@@ -71,23 +71,32 @@
     <div class="line"></div>
     <div class="w50">
       <h2 class="tittle_form">Extracción</h2>
+
       <div class="cont_inputs_form">
-        <select name="tipoMuestra" id="tipoMuestra" class="w-medium">
-          <option value="0">Tipo Muestra</option>
+        <select name="tipoProcedimiento" id="tipoProcedimiento">
+          <option value="E">Extracción</option>
+          <option value="C">Constatación</option>
+          <option value="I">Incurso</option>
+          <option value="S">Menor de edad</option>
+        </select>
+        <select name="tipoMuestra" id="tipoMuestra"">
+          <option value=" 0">Tipo Muestra</option>
           <option value="S">Sangre</option>
           <option value="O">Orina</option>
           <option value="N">Sin Muestra</option>
         </select>
+      </div>
+      <div class="cont_inputs_form">
         <input type="hidden" name="idExtractor" id="idExtractor" />
         <input type="text" name="extractor" id="extractor" placeholder="Extractor" />
       </div>
       <div class="cont_inputs_form">
         <div class="group-colum">
-          <label class="txt_group" for="fechaExtraccion">Fecha Extracción</label>
+          <label class="txt_group" id="lbl_fechaExtraccion" for="fechaExtraccion">Fecha Extracción</label>
           <input type="date" name="fechaExtraccion" id="fechaExtraccion" />
         </div>
         <div class="group-colum">
-          <label class="txt_group" for="horaExtraccion">Hora Extracción</label>
+          <label class="txt_group" id="lbl_horaExtraccion" for="horaExtraccion">Hora Extracción</label>
           <input type="time" name="horaExtraccion" id="horaExtraccion" />
         </div>
       </div>
@@ -100,13 +109,10 @@
         <input type="text" name="perito" id="perito" placeholder="Perito" />
       </div>
       <div class="cont_inputs_form">
-        <input type="text" name="cuantitativo" id="cuantitativo" placeholder="Res. Cuantitativo" />
+        <input type="text" name="cuantitativo" id="cuantitativo" placeholder="Res. Cuantitativo (g/l)" />
         <input type="text" name="cualitativo" id="cualitativo" placeholder="Res. Cualitativo" />
       </div>
     </div>
   </div>
   <button type="submit">Registrar Incidencia</button>
 </form>
-<script>
-
-</script>

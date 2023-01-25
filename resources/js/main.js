@@ -347,3 +347,17 @@ $(document).on("keyup", "#cuantitativo", (e) => {
   let cualitativo = cadena > 0 ? 'POSITIVO' : 'NEGATIVO'
   $('#cualitativo').val(cualitativo)
 });
+/* TipoProc */
+$(document).on("change", "#tipoProcedimiento", () => {
+  let tipoProc = $('#tipoProcedimiento').val()
+  let resCuantitativo = (tipoProc == 'C') ? 'T/S/M' : (tipoProc == 'I') ? 'N' : (tipoProc == 'S') ? 'N' : ''
+  let resCualitativo = (tipoProc !== 'E') ? tipoProc : ''
+  let textoLabelFecha = (tipoProc !== 'E') ? 'Fecha Constatación' : 'Fecha Extracción'
+  let textoLabelHora = (tipoProc !== 'E') ? 'Hora Constatación' : 'Hora Extracción'
+
+  $('#cuantitativo').val(resCuantitativo)
+  $('#cualitativo').val(resCualitativo)
+  $('#lbl_fechaExtraccion').html(textoLabelFecha)
+  $('#lbl_horaExtraccion').html(textoLabelHora)
+
+});
