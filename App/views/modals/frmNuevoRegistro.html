@@ -13,7 +13,6 @@
       </div>
       <h4 class="subtittle_form">Usuario</h4>
       <div class="cont_inputs_form">
-        <!--<input type="text" name="tipoDoc" id="tipoDoc" placeholder="tipo de Documento">-->
         <select name="tipoDoc" id="tipoDoc" class="w-medium"></select>
         <div class="group_input">
           <input type="text" name="nroDoc" id="nroDoc" placeholder="N° Doc" />
@@ -83,7 +82,6 @@
           <option value=" 0">Tipo Muestra</option>
           <option value="S">Sangre</option>
           <option value="O">Orina</option>
-          <option value="N">Sin Muestra</option>
         </select>
       </div>
       <div class="cont_inputs_form">
@@ -101,16 +99,18 @@
         </div>
       </div>
       <div class="cont_inputs_form">
-        <input type="text" name="observacion" id="observacion" placeholder="Observación" />
+        <textarea name="observacion" id="observacion" rows="3" placeholder="Observación"></textarea>
       </div>
       <h2 class="tittle_form mg-top-10">Peritaje</h2>
       <div class="cont_inputs_form">
         <input type="hidden" name="idPerito" id="idPerito" />
-        <input type="text" name="perito" id="perito" placeholder="Perito" />
+        <input type="text" name="perito" id="perito" class="control_peritaje" placeholder="Perito" />
       </div>
       <div class="cont_inputs_form">
-        <input type="text" name="cuantitativo" id="cuantitativo" placeholder="Res. Cuantitativo (g/l)" />
-        <input type="text" name="cualitativo" id="cualitativo" placeholder="Res. Cualitativo" />
+        <input type="text" name="cuantitativo" id="cuantitativo" class="control_peritaje"
+          placeholder="Res. Cuantitativo (g/l)" />
+        <input type="text" name="cualitativo" id="cualitativo" class="control_peritaje"
+          placeholder="Res. Cualitativo" />
       </div>
     </div>
   </div>

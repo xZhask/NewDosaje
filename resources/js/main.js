@@ -1,5 +1,3 @@
-//const nombreComisarias = [];
-
 //window.addEventListener("load", async () => {...});
 const cargarComisarias = async () => {
   const datos = new FormData();
@@ -45,11 +43,10 @@ const modalForm = document.querySelector("#modal_form");
 //Abrir Modal
 const abrirModal = (form) => {
   modal.style.display = "table";
-  //$("#modal_form").load(`App/views/modals/${form}`);
   $.ajax({
     url: `App/views/modals/${form}`,
     cache: false,
-    //    dataType: "html",
+    dataType: "html",
     success: function (data) {
       $("#modal_form").html(data);
     }
@@ -98,6 +95,8 @@ $(document).on("click", "#btn-nuevo", async () => {
   $('#fechaRecepcion').val(fechaActual['fecha'])
   $('#horaRecepcion').val(fechaActual['hora'])
   fechaRecepcion.max = fechaActual['fecha']
+  fechaInfraccion.max = fechaActual['fecha']
+  fechaExtraccion.max = fechaActual['fecha']
 });
 //Cargar autocompletados
 function autocompletadoComisarias(nombres, listadoOriginal) {
@@ -164,6 +163,7 @@ async function buscarPersonaReniec(dni) {
   datos.append("accion", "CONSULTA_DNI");
   datos.append("dni", dni);
   let persona = await postData(datos, "controllerPersona.php");
+  if (persona.success !== false) persona.data.nacionalidad = 'Peruana'
   return persona.data;
 }
 async function buscarPersonaBd(nroDoc) {
@@ -186,6 +186,7 @@ $(document).on("click", "#btn_search_user", async () => {
   );
   let nroDoc = $("#nroDoc").val();
   let tipoDoc = $("#tipoDoc").find("option:selected").text();
+
   let persona = await buscarPersonaBd(nroDoc);
   if (persona === undefined) {
     if (tipoDoc === "DNI") persona = await buscarPersonaReniec(nroDoc);
@@ -194,7 +195,12 @@ $(document).on("click", "#btn_search_user", async () => {
     $("#edad").val(persona.edad);
     $("#licencia").val(persona.licencia);
   }
-  if (persona !== undefined) $("#nombre").val(persona.nombre_completo);
+  if (persona !== undefined) {
+    $("#nombre").val(persona.nombre_completo);
+    $("#nacionalidad").val(persona.nacionalidad);
+  }
+
+  console.log(persona)
   $("#btn_search_user").html('<img src="resources/img/icon-search.svg">');
 });
 /* */
@@ -253,79 +259,18 @@ function abrir_seccion(lnk) {
 */
 /* ----------- VALIDACIONES -------------------------- */
 
-const unidades = {
-  0: "CERO",
-  E1: "UN",
-  1: "UNO",
-  2: "DOS",
-  3: "TRES",
-  4: "CUATRO",
-  5: "CINCO",
-  6: "SEIS",
-  7: "SIETE",
-  8: "OCHO",
-  9: "NUEVE",
-};
-const decenas = {
-  10: "DIEZ",
-  11: "ONCE",
-  12: "DOCE",
-  13: "TRECE",
-  14: "CATORCE",
-  15: "QUINCE",
-  20: "VEINTE",
-  30: "TREINTA",
-  40: "CUARENTA",
-  50: "CINCUENTA",
-  60: "SESENTA",
-  70: "SETENTA",
-  80: "OCHENTA",
-  90: "NOVENTA",
-};
-
-const numeroLetras = (numero) => {
-  let cadena = numero.split(".");
-  let entero = cadena[0];
-  let decimal = cadena[1];
-  /* parte decimal */
-  let textoGramos = entero == 1 ? "GRAMO" : "GRAMOS";
-  if (entero == 1) entero = "E1";
-  /* parte decimal */
-  let textoDecimal;
-  if (decimal % 10 === 0 || (decimal < 16 && decimal > 10))
-    textoDecimal = decenas[decimal];
-  else if (decimal < 10)
-    textoDecimal = `${unidades[decimal[0]]} ${unidades[decimal[1]]}`;
-  else if (decimal < 20 && decimal > 15)
-    textoDecimal = "DIECI" + unidades[decimal[1]];
-  else if (decimal < 30 && decimal > 20)
-    textoDecimal = "VENITI" + unidades[decimal[1]];
-  else if (decimal >= 30)
-    textoDecimal = decenas[`${decimal[0]}0`] + " Y " + unidades[decimal[1]];
-
-  let texto = `${unidades[entero]} ${textoGramos} ${textoDecimal} CENTÍGRAMOS DE ALCOHOL POR LITRO DE SANGRE`;
-  return texto;
-};
-//
-
-//if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;
-/*
-console.log(numeroLetras('5.07'))
-console.log(numeroLetras('1.11'))
-console.log(numeroLetras('2.30'))
-console.log(numeroLetras('4.40'))
-console.log(numeroLetras('7.27'))
-console.log(numeroLetras('5.52'))
-console.log(numeroLetras('0.83'))
-console.log(numeroLetras('0.15'))*/
 /* */
 const isNumber = (e) => {
   if (e.keyCode < 48 || e.keyCode > 57) return false;
 };
 $(document).on("keypress", "#nroDoc", (e) => {
+  let cadena = $('#nroDoc').val()
+  if (cadena.length === 8) return false;
   return isNumber(e);
 });
 $(document).on("keypress", "#nroDocConductor", (e) => {
+  let cadena = $('#nroDoc').val()
+  if (cadena.length === 8) return false;
   return isNumber(e);
 });
 $(document).on("keypress", "#edad", (e) => {
@@ -342,10 +287,13 @@ $(document).on("keypress", "#cuantitativo", (e) => {
     if (cadena.indexOf('.') >= 0) return false;
 });
 
-$(document).on("keyup", "#cuantitativo", (e) => {
-  let cadena = $('#cuantitativo').val()
-  let cualitativo = cadena > 0 ? 'POSITIVO' : 'NEGATIVO'
-  $('#cualitativo').val(cualitativo)
+$(document).on("keyup", "#cuantitativo", () => {
+  let tipoProc = $('#tipoProcedimiento').val()
+  if (tipoProc == 'E') {
+    let cadena = $('#cuantitativo').val()
+    let cualitativo = cadena > 0 ? 'POSITIVO' : 'NEGATIVO'
+    $('#cualitativo').val(cualitativo)
+  }
 });
 /* TipoProc */
 $(document).on("change", "#tipoProcedimiento", () => {
@@ -355,9 +303,29 @@ $(document).on("change", "#tipoProcedimiento", () => {
   let textoLabelFecha = (tipoProc !== 'E') ? 'Fecha Constatación' : 'Fecha Extracción'
   let textoLabelHora = (tipoProc !== 'E') ? 'Hora Constatación' : 'Hora Extracción'
 
+  let htmlTipoMuestra = (tipoProc == 'E') ? `<option value=" 0">Tipo Muestra</option><option value="S">Sangre</option><option value="O">Orina</option>` : `<option value="N">Sin Muestra</option>`;
+
+  if (tipoProc !== 'E') {
+    $('.control_peritaje').prop('readonly', 'true')
+    $('.control_peritaje').addClass('input_block')
+  } else {
+    $('.control_peritaje').prop('readonly', false)
+    $('.control_peritaje').removeClass('input_block')
+  }
+
   $('#cuantitativo').val(resCuantitativo)
   $('#cualitativo').val(resCualitativo)
   $('#lbl_fechaExtraccion').html(textoLabelFecha)
   $('#lbl_horaExtraccion').html(textoLabelHora)
+  $('#tipoMuestra').html(htmlTipoMuestra)
+});
 
+
+$(document).on("submit", "#frmHojaRegistro", async (e) => {
+  e.preventDefault()
+  let form = document.querySelector('#frmHojaRegistro')
+  let datos = new FormData(form)
+  datos.append("accion", "REG_INCIDENCIA");
+  let respuesta = await postData(datos, "controllerIncidencia.php");
+  console.log(respuesta)
 });

@@ -359,20 +359,27 @@ form button:hover {
 .cont_inputs_form,
 .cont_inputs_form input,
 .cont_inputs_form select,
+.cont_inputs_form textarea,
 .group_input,
 .group-colum {
     width: 100%;
 }
 
 .cont_inputs_form input,
-.cont_inputs_form select {
+.cont_inputs_form select,
+.cont_inputs_form textarea {
     padding: 1em;
     outline: none;
     border: 1px solid var(--gray);
 }
 
+.cont_inputs_form textarea {
+    resize: none;
+}
+
 .cont_inputs_form input:focus,
-.cont_inputs_form select:focus {
+.cont_inputs_form select:focus,
+.cont_inputs_form textarea:focus {
     border: 1px solid var(--primary-hover);
 }
 
@@ -414,6 +421,10 @@ form button {
 .group_input button {
     padding: 0 .8em;
     border-radius: unset;
+    -webkit-border-radius: unset;
+    -moz-border-radius: unset;
+    -ms-border-radius: unset;
+    -o-border-radius: unset;
 }
 
 .group_input img {
@@ -447,8 +458,8 @@ select option {
 
 /* LOADING */
 .loading {
-    -webkit-animation: load1 1s infinite ease-in-out;
     animation: load1 1s infinite ease-in-out;
+    -webkit-animation: load1 1s infinite ease-in-out;
 }
 
 @-webkit-keyframes load1 {
@@ -492,4 +503,8 @@ select option {
 
 input[type=time] {
     max-height: 45.66px;
+}
+
+.input_block {
+    background-color: var(--gray);
 }
