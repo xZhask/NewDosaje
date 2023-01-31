@@ -166,9 +166,10 @@ async function buscarPersonaReniec(dni) {
   if (persona.success !== false) persona.data.nacionalidad = 'Peruana'
   return persona.data;
 }
-async function buscarPersonaBd(nroDoc) {
+async function buscarPersonaBd(tipoDoc, nroDoc) {
   let datos = new FormData();
   datos.append("accion", "BUSCAR_PERSONA");
+  datos.append("tipoDoc", tipoDoc);
   datos.append("nrodoc", nroDoc);
   let persona = await postData(datos, "controllerPersona.php");
   return persona[0];
@@ -185,11 +186,11 @@ $(document).on("click", "#btn_search_user", async () => {
     '<img src="resources/img/icon-loading.svg" class="loading">'
   );
   let nroDoc = $("#nroDoc").val();
-  let tipoDoc = $("#tipoDoc").find("option:selected").text();
+  let tipoDoc = $("#tipoDoc").find("option:selected");
 
-  let persona = await buscarPersonaBd(nroDoc);
+  let persona = await buscarPersonaBd(tipoDoc.val(), nroDoc);
   if (persona === undefined) {
-    if (tipoDoc === "DNI") persona = await buscarPersonaReniec(nroDoc);
+    if (tipoDoc.text() === "DNI") persona = await buscarPersonaReniec(nroDoc);
   } else {
     $("#sexo").val(persona.sexo);
     $("#edad").val(persona.edad);
@@ -199,8 +200,6 @@ $(document).on("click", "#btn_search_user", async () => {
     $("#nombre").val(persona.nombre_completo);
     $("#nacionalidad").val(persona.nacionalidad);
   }
-
-  console.log(persona)
   $("#btn_search_user").html('<img src="resources/img/icon-search.svg">');
 });
 /* */
@@ -214,12 +213,13 @@ $(document).on("click", "#btn_search_conductor", async () => {
   );
   let nroDoc = $("#nroDocConductor").val();
 
-  let persona = await buscarPersonaBd(nroDoc);
+  let persona = await buscarPersonaBd(7, nroDoc); // 7 = DNI EN BD
   if (persona === undefined) persona = await buscarPersonaReniec(nroDoc);
   else $("#gradoConductor").val(persona.grado);
 
   if (persona !== undefined) $("#nombreConductor").val(persona.nombre_completo);
   $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
+
 });
 
 

@@ -3,11 +3,12 @@ require_once 'conexion.php';
 
 class clsPersona
 {
-    function BuscarUsuario($nrodoc)
+    function BuscarUsuario($tipoDoc, $nrodoc)
     {
-        $sql = 'SELECT id_persona, nombre as nombre_completo,edad,lic_conducir,sexo,nacionalidad FROM persona WHERE nro_doc=:nrodoc';
+        $sql = 'SELECT id_persona, nombre as nombre_completo,edad,grado,lic_conducir,sexo,nacionalidad FROM persona WHERE nro_doc=:nrodoc AND id_tipodoc=:id_tipodoc';
         global $cnx;
         $parametros = [
+            ':id_tipodoc' => $tipoDoc,
             ':nrodoc' => $nrodoc,
         ];
         $pre = $cnx->prepare($sql);
@@ -24,5 +25,60 @@ class clsPersona
         $pre = $cnx->prepare($sql);
         $pre->execute($parametros);
         return $pre;
+    }
+    function RegistrarInfractor($DatosPersona)
+    {
+        $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, edad, lic_conducir, sexo, grado, nacionalidad) VALUES(:id_tipodoc, :nro_doc, :nombre, :edad, :lic_conducir, :sexo, :grado, :nacionalidad)';
+
+        $parametros = [
+            ':id_tipodoc' => $DatosPersona['id_tipodoc'],
+            ':nro_doc' => $DatosPersona['nro_doc'],
+            ':nombre' => $DatosPersona['nombre'],
+            ':edad' => $DatosPersona['edad'],
+            ':lic_conducir' => $DatosPersona['lic_conducir'],
+            ':sexo' => $DatosPersona['sexo'],
+            ':grado' => $DatosPersona['grado'],
+            ':nacionalidad' => $DatosPersona['nacionalidad'],
+        ];
+        global $cnx;
+        $pre = $cnx->prepare($sql);
+        if ($pre->execute($parametros)) {
+            return $cnx->lastInsertId();
+        } else {
+            return '0';
+        }
+    }
+    function ActualizarDatosPersona($DatosPersona)
+    {
+        $sql = 'UPDATE persona SET edad=:edad,lic_conducir=:lic_conducir WHERE id_persona=:id_persona';
+
+        $parametros = [
+            ':edad' => $DatosPersona['edad'],
+            ':lic_conducir' => $DatosPersona['lic_conducir'],
+            ':id_persona' => $DatosPersona['id_persona'],
+        ];
+        global $cnx;
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        if ($pre->execute($parametros)) return 1;
+        else  return '0';
+    }
+    function RegistrarConductor($DatosPersona)
+    {
+        $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, grado) VALUES(:id_tipodoc, :nro_doc, :nombre, :grado)';
+
+        $parametros = [
+            ':id_tipodoc' => $DatosPersona['id_tipodoc'],
+            ':nro_doc' => $DatosPersona['nro_doc'],
+            ':nombre' => $DatosPersona['nombre'],
+            ':grado' => $DatosPersona['grado'],
+        ];
+        global $cnx;
+        $pre = $cnx->prepare($sql);
+        if ($pre->execute($parametros)) {
+            return $cnx->lastInsertId();
+        } else {
+            return '0';
+        }
     }
 }

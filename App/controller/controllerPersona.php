@@ -40,7 +40,7 @@ function controlador($accion)
             break;
 
         case 'BUSCAR_PERSONA':
-            $infoPersona = $objPersona->BuscarUsuario($_POST['nrodoc']);
+            $infoPersona = $objPersona->BuscarUsuario($_POST['tipoDoc'], $_POST['nrodoc']);
             $infoPersona = $infoPersona->fetchAll(PDO::FETCH_OBJ);
             echo json_encode($infoPersona);
             break;

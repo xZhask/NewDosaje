@@ -21,11 +21,12 @@ $objPersona = new ClsPersona();
 $nroDocInfractor = '28267676'; // Usuario infractor
 //$nroDocInfractor = '48193845'; // Usuario infractor
 
-$infractor = $objPersona->BuscarUsuario($nroDocInfractor);
-if ($infractor->rowCount() > 0) {
-    $infractor = $infractor->fetch(PDO::FETCH_OBJ);
-    echo 'Encontrado id: ' . json_encode($infractor->id_persona);
-} else
-    echo 'No encontrado pipipi';
+$data = [
+    'edad' => '0',
+    'lic_conducir' => '-',
+    'id_persona' => 1
+];
+$infractor = $objPersona->ActualizarDatosPersona($data);
+print_r($infractor);
 
 //echo json_encode($infractor);
