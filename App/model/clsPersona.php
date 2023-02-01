@@ -28,7 +28,7 @@ class clsPersona
     }
     function RegistrarInfractor($DatosPersona)
     {
-        $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, edad, lic_conducir, sexo, grado, nacionalidad) VALUES(:id_tipodoc, :nro_doc, :nombre, :edad, :lic_conducir, :sexo, :grado, :nacionalidad)';
+        $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, edad, lic_conducir, sexo, nacionalidad) VALUES(:id_tipodoc, :nro_doc, :nombre, :edad, :lic_conducir, :sexo, :nacionalidad)';
 
         $parametros = [
             ':id_tipodoc' => $DatosPersona['id_tipodoc'],
@@ -37,16 +37,12 @@ class clsPersona
             ':edad' => $DatosPersona['edad'],
             ':lic_conducir' => $DatosPersona['lic_conducir'],
             ':sexo' => $DatosPersona['sexo'],
-            ':grado' => $DatosPersona['grado'],
             ':nacionalidad' => $DatosPersona['nacionalidad'],
         ];
         global $cnx;
         $pre = $cnx->prepare($sql);
-        if ($pre->execute($parametros)) {
-            return $cnx->lastInsertId();
-        } else {
-            return '0';
-        }
+        $pre->execute($parametros);
+        if ($pre->rowCount() > 0) return $cnx->lastInsertId();
     }
     function ActualizarDatosPersona($DatosPersona)
     {
@@ -60,25 +56,22 @@ class clsPersona
         global $cnx;
         $pre = $cnx->prepare($sql);
         $pre->execute($parametros);
-        if ($pre->execute($parametros)) return 1;
-        else  return '0';
+        return $pre->rowCount();
     }
     function RegistrarConductor($DatosPersona)
     {
-        $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, grado) VALUES(:id_tipodoc, :nro_doc, :nombre, :grado)';
+        $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, grado, nacionalidad) VALUES(:id_tipodoc, :nro_doc, :nombre, :grado, :nacionalidad)';
 
         $parametros = [
             ':id_tipodoc' => $DatosPersona['id_tipodoc'],
             ':nro_doc' => $DatosPersona['nro_doc'],
             ':nombre' => $DatosPersona['nombre'],
             ':grado' => $DatosPersona['grado'],
+            ':nacionalidad' => $DatosPersona['nacionalidad'],
         ];
         global $cnx;
         $pre = $cnx->prepare($sql);
-        if ($pre->execute($parametros)) {
-            return $cnx->lastInsertId();
-        } else {
-            return '0';
-        }
+        $pre->execute($parametros);
+        if ($pre->rowCount() > 0) return $cnx->lastInsertId();
     }
 }

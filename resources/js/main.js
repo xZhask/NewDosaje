@@ -69,6 +69,7 @@ const cargarFechaActual = () => {
   let cadenaFecha = hoy.split('/')
   let cadenaHora = ahora.split(':')
   if (cadenaFecha[1] < 10) cadenaFecha[1] = `0${cadenaFecha[1]}`
+  if (cadenaFecha[0] < 10) cadenaFecha[0] = `0${cadenaFecha[0]}`
   let data = {
     'fecha': `${cadenaFecha[2]}-${cadenaFecha[1]}-${cadenaFecha[0]}`,
     'hora': `${cadenaHora[0]}:${cadenaHora[1]}`
@@ -194,7 +195,7 @@ $(document).on("click", "#btn_search_user", async () => {
   } else {
     $("#sexo").val(persona.sexo);
     $("#edad").val(persona.edad);
-    $("#licencia").val(persona.licencia);
+    $("#licencia").val(persona.lic_conducir);
   }
   if (persona !== undefined) {
     $("#nombre").val(persona.nombre_completo);
@@ -269,7 +270,7 @@ $(document).on("keypress", "#nroDoc", (e) => {
   return isNumber(e);
 });
 $(document).on("keypress", "#nroDocConductor", (e) => {
-  let cadena = $('#nroDoc').val()
+  let cadena = $('#nroDocConductor').val()
   if (cadena.length === 8) return false;
   return isNumber(e);
 });
@@ -308,6 +309,8 @@ $(document).on("change", "#tipoProcedimiento", () => {
   if (tipoProc !== 'E') {
     $('.control_peritaje').prop('readonly', 'true')
     $('.control_peritaje').addClass('input_block')
+    $('#idPerito').val('')
+    $('#perito').val('')
   } else {
     $('.control_peritaje').prop('readonly', false)
     $('.control_peritaje').removeClass('input_block')

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 21-01-2023 a las 17:14:58
+-- Tiempo de generación: 01-02-2023 a las 20:28:49
 -- Versión del servidor: 8.0.31
 -- Versión de PHP: 7.4.33
 
@@ -93,6 +93,32 @@ INSERT INTO `comandancia` (`id_comandancia`, `comisaria`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `infraccion`
+--
+
+CREATE TABLE `infraccion` (
+  `id_infraccion` int NOT NULL,
+  `hoja_registro` varchar(5) COLLATE utf8mb4_general_ci NOT NULL,
+  `Motivo` text COLLATE utf8mb4_general_ci,
+  `fecha_infr` date NOT NULL,
+  `hora_infr` time NOT NULL,
+  `vehiculo` varchar(7) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `clase` varchar(7) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `placa` varchar(7) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `n_oficio` int NOT NULL,
+  `id_comandancia` int NOT NULL,
+  `hora_registro` time NOT NULL,
+  `fecha_registro` date NOT NULL,
+  `infractor` int NOT NULL,
+  `digitador` int NOT NULL,
+  `personal_conductor` int DEFAULT NULL,
+  `lugar_incidencia` text COLLATE utf8mb4_general_ci,
+  `n_certificado` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `perfil`
 --
 
@@ -123,17 +149,20 @@ CREATE TABLE `persona` (
   `edad` int DEFAULT NULL,
   `lic_conducir` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `sexo` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `fecha_nac` date DEFAULT NULL,
-  `grado` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `grado` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nacionalidad` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `persona`
 --
 
-INSERT INTO `persona` (`id_persona`, `id_tipodoc`, `nro_doc`, `nombre`, `edad`, `lic_conducir`, `sexo`, `fecha_nac`, `grado`) VALUES
-(1, 7, '28267676', 'MARILU TELLO MENDOZA', 45, NULL, 'F', NULL, 'CMDTE SPNP'),
-(2, 7, '06827376', 'BARBARAN URBANO, NESTOR', NULL, NULL, 'M', NULL, 'SS PNP');
+INSERT INTO `persona` (`id_persona`, `id_tipodoc`, `nro_doc`, `nombre`, `edad`, `lic_conducir`, `sexo`, `grado`, `nacionalidad`) VALUES
+(1, 7, '28267676', 'MARILU TELLO MENDOZA', 25, '-', 'F', 'CMDTE', 'Peruana'),
+(2, 7, '06827376', 'BARBARAN URBANO, NESTOR', 25, '-', 'M', 'SS PNP', 'Peruana'),
+(3, 7, '48193845', 'SILVA AGUILAR, CESAR JOSUE', 25, '-', 'M', NULL, 'Peruana'),
+(4, 7, '77332033', 'BAUTISTA SANCHEZ, KERLY ZULEYDY', NULL, NULL, NULL, 'CAP', NULL),
+(5, 7, '', '', NULL, NULL, NULL, '', 'Peruana');
 
 -- --------------------------------------------------------
 
@@ -190,6 +219,16 @@ ALTER TABLE `comandancia`
   ADD PRIMARY KEY (`id_comandancia`);
 
 --
+-- Indices de la tabla `infraccion`
+--
+ALTER TABLE `infraccion`
+  ADD PRIMARY KEY (`id_infraccion`),
+  ADD KEY `id_comandancia` (`id_comandancia`),
+  ADD KEY `digitador` (`digitador`),
+  ADD KEY `personal_conductor` (`personal_conductor`),
+  ADD KEY `infractor` (`infractor`);
+
+--
 -- Indices de la tabla `perfil`
 --
 ALTER TABLE `perfil`
@@ -226,6 +265,12 @@ ALTER TABLE `comandancia`
   MODIFY `id_comandancia` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
+-- AUTO_INCREMENT de la tabla `infraccion`
+--
+ALTER TABLE `infraccion`
+  MODIFY `id_infraccion` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `perfil`
 --
 ALTER TABLE `perfil`
@@ -235,7 +280,7 @@ ALTER TABLE `perfil`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id_persona` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_persona` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tipo_documento`
@@ -246,6 +291,15 @@ ALTER TABLE `tipo_documento`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `infraccion`
+--
+ALTER TABLE `infraccion`
+  ADD CONSTRAINT `infraccion_ibfk_1` FOREIGN KEY (`id_comandancia`) REFERENCES `comandancia` (`id_comandancia`),
+  ADD CONSTRAINT `infraccion_ibfk_2` FOREIGN KEY (`digitador`) REFERENCES `persona` (`id_persona`),
+  ADD CONSTRAINT `infraccion_ibfk_3` FOREIGN KEY (`personal_conductor`) REFERENCES `persona` (`id_persona`),
+  ADD CONSTRAINT `infraccion_ibfk_4` FOREIGN KEY (`infractor`) REFERENCES `persona` (`id_persona`);
 
 --
 -- Filtros para la tabla `persona`

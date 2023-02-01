@@ -9,7 +9,7 @@ $pass = 'mysql'; //root
 //$dbname = 'odindeveloper_dbcpms';
 try {
     $cadena = "$manejador:host=$servidor;dbname=$dbname";
-    $cnx = new PDO($cadena, $usuario, $pass);
+    $cnx = new PDO($cadena, $usuario, $pass, array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
     date_default_timezone_set('America/Lima');
 } catch (PDOException $ex) {
     die('Error de acceso' . $ex->getMessage());
