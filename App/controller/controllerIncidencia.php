@@ -42,14 +42,16 @@ function controlador($accion)
                 $conductor = $conductor->fetch(PDO::FETCH_OBJ);
                 $idConductor = $conductor->id_persona;
             } else {
-                $data = [
-                    'id_tipodoc' => $tipoDocConductor,
-                    'nro_doc' => $nroDocConductor,
-                    'nombre' => $_POST['nombreConductor'],
-                    'grado' => $_POST['gradoConductor'],
-                    'nacionalidad' => 'Peruana',
-                ];
-                $idConductor = $objPersona->RegistrarConductor($data);
+                if (!isset($tipoDocConductor)) {
+                    $data = [
+                        'id_tipodoc' => $tipoDocConductor,
+                        'nro_doc' => $nroDocConductor,
+                        'nombre' => $_POST['nombreConductor'],
+                        'grado' => $_POST['gradoConductor'],
+                        'nacionalidad' => 'Peruana',
+                    ];
+                    $idConductor = $objPersona->RegistrarConductor($data);
+                }
             }
 
             $dataIncidencia = [

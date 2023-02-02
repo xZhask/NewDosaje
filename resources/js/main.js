@@ -181,7 +181,7 @@ $(document).on("click", "#btn_search_user", async () => {
   $("#nombre").val("");
   $("#sexo").val(0);
   $("#edad").val("");
-  $("#licencia").val("");
+  $("#licConducir").val("");
   /*----*/
   $("#btn_search_user").html(
     '<img src="resources/img/icon-loading.svg" class="loading">'
@@ -195,7 +195,7 @@ $(document).on("click", "#btn_search_user", async () => {
   } else {
     $("#sexo").val(persona.sexo);
     $("#edad").val(persona.edad);
-    $("#licencia").val(persona.lic_conducir);
+    $("#licConducir").val(persona.lic_conducir);
   }
   if (persona !== undefined) {
     $("#nombre").val(persona.nombre_completo);
