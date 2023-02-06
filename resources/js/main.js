@@ -49,7 +49,7 @@ const abrirModal = (form) => {
     dataType: "html",
     success: function (data) {
       $("#modal_form").html(data);
-    }
+    },
   });
 };
 //Cerrar Modal
@@ -64,18 +64,18 @@ btnCambioPass.addEventListener("click", () => abrirModal("frmCambioPass.html"));
 //
 const cargarFechaActual = () => {
   let fecha = new Date();
-  let hoy = fecha.toLocaleDateString()
-  let ahora = fecha.toLocaleTimeString()
-  let cadenaFecha = hoy.split('/')
-  let cadenaHora = ahora.split(':')
-  if (cadenaFecha[1] < 10) cadenaFecha[1] = `0${cadenaFecha[1]}`
-  if (cadenaFecha[0] < 10) cadenaFecha[0] = `0${cadenaFecha[0]}`
+  let hoy = fecha.toLocaleDateString();
+  let ahora = fecha.toLocaleTimeString();
+  let cadenaFecha = hoy.split("/");
+  let cadenaHora = ahora.split(":");
+  if (cadenaFecha[1] < 10) cadenaFecha[1] = `0${cadenaFecha[1]}`;
+  if (cadenaFecha[0] < 10) cadenaFecha[0] = `0${cadenaFecha[0]}`;
   let data = {
-    'fecha': `${cadenaFecha[2]}-${cadenaFecha[1]}-${cadenaFecha[0]}`,
-    'hora': `${cadenaHora[0]}:${cadenaHora[1]}`
-  }
-  return data
-}
+    fecha: `${cadenaFecha[2]}-${cadenaFecha[1]}-${cadenaFecha[0]}`,
+    hora: `${cadenaHora[0]}:${cadenaHora[1]}`,
+  };
+  return data;
+};
 //
 $(document).on("click", "#btn-nuevo", async () => {
   modalContent.classList.add("frm-lg");
@@ -92,12 +92,12 @@ $(document).on("click", "#btn-nuevo", async () => {
   autocompletadoPeritos(nombrePeritos, peritos);
   let tiposDocumento = await cargarTipoDoc();
   $("#tipoDoc").html(crearOptionsTipoDoc(tiposDocumento));
-  let fechaActual = cargarFechaActual()
-  $('#fechaRecepcion').val(fechaActual['fecha'])
-  $('#horaRecepcion').val(fechaActual['hora'])
-  fechaRecepcion.max = fechaActual['fecha']
-  fechaInfraccion.max = fechaActual['fecha']
-  fechaExtraccion.max = fechaActual['fecha']
+  let fechaActual = cargarFechaActual();
+  $("#fechaRecepcion").val(fechaActual["fecha"]);
+  $("#horaRecepcion").val(fechaActual["hora"]);
+  fechaRecepcion.max = fechaActual["fecha"];
+  fechaInfraccion.max = fechaActual["fecha"];
+  fechaExtraccion.max = fechaActual["fecha"];
 });
 //Cargar autocompletados
 function autocompletadoComisarias(nombres, listadoOriginal) {
@@ -144,7 +144,14 @@ const loadView = async (e, lnk) => {
   e.preventDefault();
   $(".list_menu .active").removeClass("active");
   lnk.classList.add("active");
-  $("#section_view").load(`App/views/sections/${lnk.pathname}`);
+  $.ajax({
+    url: `App/views/sections/${lnk.pathname}`,
+    cache: false,
+    dataType: "html",
+    success: function (data) {
+      $("#section_view").html(data);
+    },
+  });
 };
 
 lnkMuestra.addEventListener("click", (e) => loadView(e, lnkMuestra));
@@ -164,7 +171,7 @@ async function buscarPersonaReniec(dni) {
   datos.append("accion", "CONSULTA_DNI");
   datos.append("dni", dni);
   let persona = await postData(datos, "controllerPersona.php");
-  if (persona.success !== false) persona.data.nacionalidad = 'Peruana'
+  if (persona.success !== false) persona.data.nacionalidad = "Peruana";
   return persona.data;
 }
 async function buscarPersonaBd(tipoDoc, nroDoc) {
@@ -220,9 +227,7 @@ $(document).on("click", "#btn_search_conductor", async () => {
 
   if (persona !== undefined) $("#nombreConductor").val(persona.nombre_completo);
   $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
-
 });
-
 
 //buscarUsuario()
 /* $(document).on("submit", "#frmCambioPass", (e) => {
@@ -265,12 +270,12 @@ const isNumber = (e) => {
   if (e.keyCode < 48 || e.keyCode > 57) return false;
 };
 $(document).on("keypress", "#nroDoc", (e) => {
-  let cadena = $('#nroDoc').val()
+  let cadena = $("#nroDoc").val();
   if (cadena.length === 8) return false;
   return isNumber(e);
 });
 $(document).on("keypress", "#nroDocConductor", (e) => {
-  let cadena = $('#nroDocConductor').val()
+  let cadena = $("#nroDocConductor").val();
   if (cadena.length === 8) return false;
   return isNumber(e);
 });
@@ -283,52 +288,75 @@ $(document).on("keypress", "#nroOficio", (e) => {
 
 $(document).on("keypress", "#cuantitativo", (e) => {
   if (e.keyCode < 46 || e.keyCode > 57 || e.keyCode == 47) return false;
-  let cadena = $('#cuantitativo').val()
-  if (e.keyCode == 46)
-    if (cadena.indexOf('.') >= 0) return false;
+  let cadena = $("#cuantitativo").val();
+  if (e.keyCode == 46) if (cadena.indexOf(".") >= 0) return false;
 });
 
 $(document).on("keyup", "#cuantitativo", () => {
-  let tipoProc = $('#tipoProcedimiento').val()
-  if (tipoProc == 'E') {
-    let cadena = $('#cuantitativo').val()
-    let cualitativo = cadena > 0 ? 'POSITIVO' : 'NEGATIVO'
-    $('#cualitativo').val(cualitativo)
+  let tipoProc = $("#tipoProcedimiento").val();
+  if (tipoProc == "E") {
+    let cadena = $("#cuantitativo").val();
+    let cualitativo = cadena > 0 ? "POSITIVO" : "NEGATIVO";
+    $("#cualitativo").val(cualitativo);
   }
 });
 /* TipoProc */
 $(document).on("change", "#tipoProcedimiento", () => {
-  let tipoProc = $('#tipoProcedimiento').val()
-  let resCuantitativo = (tipoProc == 'C') ? 'T/S/M' : (tipoProc == 'I') ? 'N' : (tipoProc == 'S') ? 'N' : ''
-  let resCualitativo = (tipoProc !== 'E') ? tipoProc : ''
-  let textoLabelFecha = (tipoProc !== 'E') ? 'Fecha Constatación' : 'Fecha Extracción'
-  let textoLabelHora = (tipoProc !== 'E') ? 'Hora Constatación' : 'Hora Extracción'
+  let tipoProc = $("#tipoProcedimiento").val();
+  let resCuantitativo =
+    tipoProc == "C"
+      ? "T/S/M"
+      : tipoProc == "I"
+      ? "N"
+      : tipoProc == "S"
+      ? "N"
+      : "";
+  let resCualitativo = tipoProc !== "E" ? tipoProc : "";
+  let textoLabelFecha =
+    tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
+  let textoLabelHora =
+    tipoProc !== "E" ? "Hora Constatación" : "Hora Extracción";
 
-  let htmlTipoMuestra = (tipoProc == 'E') ? `<option value=" 0">Tipo Muestra</option><option value="S">Sangre</option><option value="O">Orina</option>` : `<option value="N">Sin Muestra</option>`;
+  let htmlTipoMuestra =
+    tipoProc == "E"
+      ? `<option value=" 0">Tipo Muestra</option><option value="S">Sangre</option><option value="O">Orina</option>`
+      : `<option value="N">Sin Muestra</option>`;
 
-  if (tipoProc !== 'E') {
-    $('.control_peritaje').prop('readonly', 'true')
-    $('.control_peritaje').addClass('input_block')
-    $('#idPerito').val('')
-    $('#perito').val('')
+  if (tipoProc !== "E") {
+    $(".control_peritaje").prop("readonly", "true");
+    $(".control_peritaje").addClass("input_block");
+    $("#idPerito").val("");
+    $("#perito").val("");
   } else {
-    $('.control_peritaje').prop('readonly', false)
-    $('.control_peritaje').removeClass('input_block')
+    $(".control_peritaje").prop("readonly", false);
+    $(".control_peritaje").removeClass("input_block");
   }
 
-  $('#cuantitativo').val(resCuantitativo)
-  $('#cualitativo').val(resCualitativo)
-  $('#lbl_fechaExtraccion').html(textoLabelFecha)
-  $('#lbl_horaExtraccion').html(textoLabelHora)
-  $('#tipoMuestra').html(htmlTipoMuestra)
+  $("#cuantitativo").val(resCuantitativo);
+  $("#cualitativo").val(resCualitativo);
+  $("#lbl_fechaExtraccion").html(textoLabelFecha);
+  $("#lbl_horaExtraccion").html(textoLabelHora);
+  $("#tipoMuestra").html(htmlTipoMuestra);
 });
-
 
 $(document).on("submit", "#frmHojaRegistro", async (e) => {
-  e.preventDefault()
-  let form = document.querySelector('#frmHojaRegistro')
-  let datos = new FormData(form)
+  e.preventDefault();
+  let form = document.querySelector("#frmHojaRegistro");
+  let datos = new FormData(form);
   datos.append("accion", "REG_INCIDENCIA");
   let respuesta = await postData(datos, "controllerIncidencia.php");
-  console.log(respuesta)
+  console.log(respuesta);
 });
+/* LOGIN */
+async function ListarPersonal() {
+  let datos = new FormData();
+  datos.append("accion", "LISTAR_PERSONAL");
+  let personal = await postData(datos, "controllerPersona.php");
+
+  let listPersonal = personal.map((persona) => {
+    let profesion = persona.profesion == "E" ? "EXTRACTOR" : "PERITO";
+    return `<tr><td>${persona.id_persona}</td><td>${persona.nombre}</td><td>${persona.nro_doc}</td><td>${persona.grado}</td><td>${profesion}</td><td>${persona.perfil}</td><td><i class='fa-solid fa-user-pen'></i></td><td><i class='fa-solid fa-toggle-on'></i></i></td></tr>`;
+  });
+  let cadenaPersonal = JSON.stringify(listPersonal);
+  $("#tb_personal").html(cadenaPersonal);
+}

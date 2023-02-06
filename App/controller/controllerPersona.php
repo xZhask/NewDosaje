@@ -49,5 +49,70 @@ function controlador($accion)
             $listaProfesionales = $listaProfesionales->fetchAll(PDO::FETCH_OBJ);
             echo json_encode($listaProfesionales);
             break;
+        case 'LISTAR_PERSONAL':
+            $listaPersonal = $objPersona->listarPrersonal();
+            $listaPersonal = $listaPersonal->fetchAll(PDO::FETCH_OBJ);
+            echo json_encode($listaPersonal);
+            break;
+        case 'LOGIN':
+            $pass = $_POST['pass'];
+            $nroDoc = $_POST['user'];
+            $datosLogin = $objPersona->ValidarLogin($nroDoc);
+            if ($datosLogin->rowCount() > 0) {
+                $datosLogin = $datosLogin->fetch(PDO::FETCH_OBJ);
+                $userPass = $datosLogin->pass;
+                if (password_verify($pass, $userPass)) {
+                    session_start();
+                    $_SESSION['active'] = true;
+                    $_SESSION['nombre'] = $datosLogin->nombre;
+                    $_SESSION['iduser'] =  $datosLogin->id_persona;
+                    $_SESSION['perfil'] =  $datosLogin->id_perfil;
+                    $_SESSION['profesion'] =  $datosLogin->profesion;
+                    echo 'OK';
+                } else {
+                    echo 'FAIL';
+                }
+            }
+            //echo json_encode($datosLogin);
+            break;
     }
 }
+/*
+case 'CAMBIAR_PASS':
+            $pass = $_POST['pass1'];
+            $pass = password_hash($pass, PASSWORD_DEFAULT, ['cost' => 7]);
+            $usuario = [
+                'dni' => $_POST['IdUsuario'],
+                'pass' => $pass
+            ];
+            $objPersonal->CambiarPass($usuario);
+            echo 'SE ACTUALIZÓ LA INFORMACIÓN';
+            break;
+
+case 'VALIDAR_LOGIN':
+            $pass = $_POST['pass'];
+            $usuario = ['user' => $_POST['user']];
+            $user_existe = $objPersonal->validarUsuario($usuario);
+            if ($user_existe->rowCount() > 0) {
+                $user_existe = $user_existe->fetch(PDO::FETCH_NAMED);
+                $userPass = $user_existe['pass'];
+                if (password_verify($pass, $userPass)) {
+                    session_start();
+                    $_SESSION['active'] = true;
+                    $_SESSION['nombre'] = $user_existe['nombre'];
+                    $_SESSION['apellidos'] = $user_existe['apellidos'];
+                    $_SESSION['iduser'] = $user_existe['dni'];
+                    $_SESSION['cargo'] = $user_existe['idcargo'];
+                    echo 'INICIO';
+                } else echo 'CONTRASEÑA_INCORRECTA';
+            } else {
+                echo 'FAIL';
+            }
+            break;
+        case 'LOGOUT':
+            session_start();
+            $_SESSION['active'] = false;
+            session_destroy();
+            echo '1';
+            break;
+*/

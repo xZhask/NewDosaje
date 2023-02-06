@@ -55,23 +55,35 @@ function controlador($accion)
             }
 
             $dataIncidencia = [
-                'idInfractor' => $idInfractor,
-                'idConductor' => $idConductor,
-                'comisaria' => $_POST['idComisaria'],
-                'nroOficio' =>  $_POST['nroOficio'],
-                'fechaRecepcion' => $_POST['fechaRecepcion'],
-                'horaRecepcion' =>  $_POST['horaRecepcion'],
-                'vehiculo' =>  $_POST['vehiculo'],
-                'clase' =>  $_POST['clase'],
-                'placa' =>  $_POST['placa'],
-                'motivo' =>  $_POST['motivo'],
-                'fechaInfraccion' =>  $_POST['fechaInfraccion'],
-                'horaInfraccion' =>  $_POST['horaInfraccion'],
+                ':hoja_registro' => $_POST['hoja_registro'], //
+                ':Motivo' => $_POST['motivo'],
+                ':fecha_infr' => $_POST['fechaInfraccion'],
+                ':hora_infr' => $_POST['horaInfraccion'],
+                ':vehiculo' => $_POST['vehiculo'],
+                ':clase' => $_POST['clase'],
+                ':placa' => $_POST['placa'],
+                ':n_oficio' => $_POST['nroOficio'],
+                ':id_comandancia' => $_POST['idComisaria'],
+                ':hora_registro' => $_POST['horaRecepcion'],
+                ':fecha_registro' => $_POST['fechaRecepcion'],
+                ':infractor' => $idInfractor,
+                ':digitador' => '1',
+                ':personal_conductor' => $idConductor,
+                ':lugar_incidencia' => '',
+                ':n_certificad' => ''
+            ];
+
+            $id_infraccion = null;
+            $dataExtraccion = [
+                'id_infraccion' =>  $id_infraccion,
                 'tipoMuestra' =>  $_POST['tipoMuestra'],
                 'idExtractor' =>  $_POST['idExtractor'],
                 'fechaExtraccion' =>  $_POST['fechaExtraccion'],
                 'horaExtraccion' =>  $_POST['horaExtraccion'],
-                'observacion' =>  $_POST['observacion'],
+            ];
+            $dataPeritaje = [
+                'id_infraccion' =>  $id_infraccion,
+                'tipoMuestra' =>  $_POST['tipoMuestra'],
                 'idPerito' =>  $_POST['idPerito'],
                 'cuantitativo' =>  $_POST['cuantitativo'],
                 'cualitativo' =>  $_POST['cualitativo'],

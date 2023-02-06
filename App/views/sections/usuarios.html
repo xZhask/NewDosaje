@@ -1,7 +1,24 @@
 <div class="header_section_view">
-    <h1>Usuarios</h1>
-    <!--<button id="btn-nuevo">Nuevo</button>-->
+  <h1>Usuarios</h1>
+  <button id="btn-nuevo-personal">Nuevo</button>
 </div>
 <div class="body_section_view">
-
+  <table class="t_listado">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>nombre</th>
+        <th>nro doc</th>
+        <th>grado</th>
+        <th>profesión</th>
+        <th>perfil</th>
+        <th>Editar</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody id="tb_personal"></tbody>
+  </table>
 </div>
+<script>
+  ListarPersonal();
+</script>

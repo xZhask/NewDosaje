@@ -26,6 +26,12 @@ class clsPersona
         $pre->execute($parametros);
         return $pre;
     }
+    function listarPrersonal()
+    {
+        $sql = 'SELECT p.id_persona, p.nro_doc,p.nombre,p.grado,u.profesion,pf.perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON u.id_perfil=pf.id_perfil';
+        global $cnx;
+        return $cnx->query($sql);
+    }
     function RegistrarInfractor($DatosPersona)
     {
         $sql = 'INSERT INTO persona(id_tipodoc, nro_doc, nombre, edad, lic_conducir, sexo, nacionalidad) VALUES(:id_tipodoc, :nro_doc, :nombre, :edad, :lic_conducir, :sexo, :nacionalidad)';
@@ -74,4 +80,19 @@ class clsPersona
         $pre->execute($parametros);
         if ($pre->rowCount() > 0) return $cnx->lastInsertId();
     }
+    function ValidarLogin($nroDoc)
+    {
+        $sql = 'SELECT u.id_persona,u.id_perfil,u.profesion,u.pass,p.nombre FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona WHERE p.nro_doc=:nro_doc';
+        global $cnx;
+        $parametros = [
+            ':nro_doc' => $nroDoc,
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
 }
+
+/*
+
+*/
