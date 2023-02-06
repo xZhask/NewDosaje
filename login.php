@@ -43,7 +43,8 @@ if (!empty($_SESSION['active']) == true) {
         <button type="submit">Ingresar</button>
       </form>
     </div>
-
+    <? //echo password_hash('123', PASSWORD_DEFAULT, ['cost' => 7]); 
+    ?>
   </div>
   <script language="javascript" src="resources/js/login.js" type="module"></script>
 </body>

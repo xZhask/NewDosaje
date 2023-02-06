@@ -18,33 +18,38 @@ require_once 'App/model/clsPersona.php';
 
 $objPersona = new ClsPersona();
 
-$nroDocInfractor = '48193845'; // Usuario infractor
-$tipoDoc = 7;
-//$nroDocInfractor = '48193845'; // Usuario infractor
-
-$infractor = $objPersona->BuscarUsuario($tipoDoc, $nroDocInfractor);
-if ($infractor->rowCount() > 0) {
-    $infractor = $infractor->fetch(PDO::FETCH_OBJ);
-    $idInfractor = $infractor->id_persona;
-    $data = [
-        'edad' => 25,
-        'lic_conducir' => '-',
-        'id_persona' => $idInfractor
-    ];
-    $objPersona->ActualizarDatosPersona($data);
+$nroDocPersonal = '06948422'; // Usuario Conductor
+$tipoDocPersonal = 7; // COD DNI EN LA BD
+/* CONDUCTOR */
+$Persona = $objPersona->BuscarUsuario($tipoDocPersonal, $nroDocPersonal);
+if ($Persona->rowCount() > 0) {
+    $respuesta = 'fail';
 } else {
-    $data = [
-        'id_tipodoc' => 7,
-        'nro_doc' => '48193845',
-        'nombre' => 'CÉSAR JOSUÉ SILVA AGUILAR',
-        'edad' => 28,
-        'sexo' => 'M',
-        'lic_conducir' => '-',
-        'nacionalidad' => 'Peruano',
-    ];
-    $idInfractor = $objPersona->RegistrarInfractor($data);
+    if (!empty($nroDocPersonal)) {
+        $data = [
+            'id_tipodoc' => $tipoDocPersonal,
+            'nro_doc' => $nroDocPersonal,
+            'nombre' => 'MIAU',
+            'grado' => 'SS PNP',
+            'nacionalidad' => 'Peruana',
+        ];
+        $idPersona = $objPersona->RegistrarConductor($data);
+        $pass = '123';
+        $pass = password_hash($pass, PASSWORD_DEFAULT, ['cost' => 7]);
+
+        $datosUser = [
+            'id_persona' => $idPersona,
+            'pass' => $pass,
+            'profesion' => 'E',
+            'id_perfil' => '2',
+        ];
+        $idPersonal = $objPersona->RegistrarUsuario($datosUser);
+        $respuesta = $datosUser;
+    } else
+        $respuesta = 'fail';
 }
-echo $idInfractor;
+$response = ['response' => $respuesta];
+echo json_encode($response);
 //$dataUsuario = ['id_infractor' => $idinfractor];
 //echo json_encode($dataUsuario);
 /*

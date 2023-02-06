@@ -36,6 +36,7 @@ const crearOptionsTipoDoc = (tiposDocumento) =>
 
 /*----------------------- MODALS ------------------------------- */
 const btnCambioPass = document.querySelector("#btnCambioPass");
+const btnOff = document.querySelector("#btnOff");
 const modal = document.querySelector("#bg-modal");
 const modalContent = document.querySelector("#modal-content");
 const modalForm = document.querySelector("#modal_form");
@@ -58,7 +59,13 @@ $("a.closeModal").on("click", (e) => {
   modal.style.display = "none";
   modalContent.classList.remove("frm-lg");
 });
-
+/* BOTÓN CERRAR SESIÓN*/
+btnOff.addEventListener("click", async () => {
+  let datos = new FormData();
+  datos.append("accion", "LOGOUT");
+  let respuesta = await postData(datos, "controllerPersona.php");
+  if (respuesta.respuesta == 'logout') window.location.assign("login.php");
+});
 //Botones para abrir modal
 btnCambioPass.addEventListener("click", () => abrirModal("frmCambioPass.html"));
 //
@@ -98,6 +105,10 @@ $(document).on("click", "#btn-nuevo", async () => {
   fechaRecepcion.max = fechaActual["fecha"];
   fechaInfraccion.max = fechaActual["fecha"];
   fechaExtraccion.max = fechaActual["fecha"];
+});
+//Form Personal
+$(document).on("click", "#btn-nuevo-personal", async () => {
+  abrirModal("frmPersonal.html")
 });
 //Cargar autocompletados
 function autocompletadoComisarias(nombres, listadoOriginal) {
@@ -228,7 +239,21 @@ $(document).on("click", "#btn_search_conductor", async () => {
   if (persona !== undefined) $("#nombreConductor").val(persona.nombre_completo);
   $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
 });
-
+$(document).on("click", "#btn_search_personal", async () => {
+  /* Limpiar usuario antes de enviar nuevo número */
+  $("#nombrePersonal").val("");
+  $("#btn_search_conductor").html(
+    '<img src="resources/img/icon-loading.svg" class="loading">'
+  );
+  let nroDoc = $("#nroDocPersonal").val();
+  let persona = await buscarPersonaBd(7, nroDoc); // 7 = DNI EN BD
+  if (persona === undefined) {
+    persona = await buscarPersonaReniec(nroDoc);
+    $("#nombrePersonal").val(persona.nombre_completo);
+  }
+  else alert('USUARIO YA EXISTE');
+  $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
+});
 //buscarUsuario()
 /* $(document).on("submit", "#frmCambioPass", (e) => {
     e.preventDefault()
@@ -307,10 +332,10 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-      ? "N"
-      : tipoProc == "S"
-      ? "N"
-      : "";
+        ? "N"
+        : tipoProc == "S"
+          ? "N"
+          : "";
   let resCualitativo = tipoProc !== "E" ? tipoProc : "";
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
@@ -360,3 +385,12 @@ async function ListarPersonal() {
   let cadenaPersonal = JSON.stringify(listPersonal);
   $("#tb_personal").html(cadenaPersonal);
 }
+/* FORM PERSONAL */
+$(document).on("submit", "#frmPersonal", async (e) => {
+  e.preventDefault();
+  let form = document.querySelector("#frmPersonal");
+  let datos = new FormData(form);
+  datos.append("accion", "REGISTRAR_PERSONAL");
+  let respuesta = await postData(datos, "controllerPersona.php");
+  console.log(respuesta);
+});

@@ -3,6 +3,7 @@ session_start();
 if (empty($_SESSION['active'])) {
     header('location: login.php');
 }
+$perfil = $_SESSION['idperfil'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -36,17 +37,19 @@ if (empty($_SESSION['active'])) {
                             <p>Reportes</p>
                         </a>
                     </li>
-                    <li><a href="/usuarios.html" class="lnk-menu" id="lnk-usuarios">
-                            <img src="resources/img/users.svg" alt="">
-                            <p>Usuarios</p>
-                        </a>
-                    </li>
+                    <? if ($perfil === '1') { ?>
+                        <li><a href="/usuarios.html" class="lnk-menu" id="lnk-usuarios">
+                                <img src="resources/img/users.svg" alt="">
+                                <p>Usuarios</p>
+                            </a>
+                        </li>
+                    <? } ?>
                 </ul>
             </nav>
             <div class="cont_perfil">
                 <div class="info_perfil">
-                    <p>César Josué Silva Aguilar</p>
-                    <span class="cargo">Administrador</span>
+                    <p><? echo $_SESSION['nombre']; ?></p>
+                    <span class="cargo"><? echo $_SESSION['perfil']; ?></span>
                 </div>
                 <div class="avatar">
                     <img src="resources/img/UserConf.svg" alt="">
@@ -60,6 +63,10 @@ if (empty($_SESSION['active'])) {
                         <li id="btnUpdateInfo">
                             <img src="resources/img/edit_profile.svg" alt="">
                             <p>Actualizar información</p>
+                        </li>
+                        <li id="btnOff">
+                            <img src="resources/img/btn_off.svg" alt="">
+                            <p>Cerrar sesión</p>
                         </li>
                     </ul>
                 </div>

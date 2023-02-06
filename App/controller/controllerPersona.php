@@ -66,7 +66,8 @@ function controlador($accion)
                     $_SESSION['active'] = true;
                     $_SESSION['nombre'] = $datosLogin->nombre;
                     $_SESSION['iduser'] =  $datosLogin->id_persona;
-                    $_SESSION['perfil'] =  $datosLogin->id_perfil;
+                    $_SESSION['idperfil'] =  $datosLogin->id_perfil;
+                    $_SESSION['perfil'] =  $datosLogin->perfil;
                     $_SESSION['profesion'] =  $datosLogin->profesion;
                     echo 'OK';
                 } else {
@@ -74,6 +75,51 @@ function controlador($accion)
                 }
             }
             //echo json_encode($datosLogin);
+            break;
+        case 'LOGOUT':
+            session_start();
+            if (!empty($_SESSION['active']) == true) {
+                $_SESSION['active'] = false;
+                session_destroy();
+                $response = ['respuesta' => 'logout'];
+                echo json_encode($response);
+            }
+            break;
+        case 'REGISTRAR_PERSONAL':
+            $nroDocPersonal = $_POST['nroDocPersonal']; // Usuario Conductor
+            $tipoDocPersonal = 7; // COD DNI EN LA BD
+
+            $Persona = $objPersona->BuscarUsuario($tipoDocPersonal, $nroDocPersonal);
+            if ($Persona->rowCount() > 0) {
+                $respuesta = 'fail';
+            } else {
+                if (!empty($nroDocPersonal)) {
+                    $data = [
+                        'id_tipodoc' => $tipoDocPersonal,
+                        'nro_doc' => $nroDocPersonal,
+                        'nombre' => $_POST['nombrePersonal'],
+                        'grado' => $_POST['gradoPersonal'],
+                        'nacionalidad' => 'Peruana',
+                    ];
+                    $idPersona = $objPersona->RegistrarConductor($data);
+
+                    $pass = $_POST['passPersonal'];
+                    $pass = password_hash($pass, PASSWORD_DEFAULT, ['cost' => 7]);
+
+                    $datosUser = [
+                        'id_persona' => $idPersona,
+                        'pass' => $pass,
+                        'profesion' => $_POST['profesionPersonal'],
+                        'id_perfil' => $_POST['perfilPersonal'],
+                    ];
+                    $objPersona->RegistrarUsuario($datosUser);
+                    $respuesta = 'Ok';
+                } else {
+                    $respuesta = 'fail';
+                }
+                $response = ['response' => $respuesta];
+            }
+            echo json_encode($data);
             break;
     }
 }

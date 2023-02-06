@@ -82,7 +82,7 @@ class clsPersona
     }
     function ValidarLogin($nroDoc)
     {
-        $sql = 'SELECT u.id_persona,u.id_perfil,u.profesion,u.pass,p.nombre FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona WHERE p.nro_doc=:nro_doc';
+        $sql = 'SELECT u.id_persona,u.id_perfil,u.profesion,u.pass,p.nombre,pf.perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON pf.id_perfil=u.id_perfil WHERE p.nro_doc=:nro_doc';
         global $cnx;
         $parametros = [
             ':nro_doc' => $nroDoc,
@@ -91,8 +91,26 @@ class clsPersona
         $pre->execute($parametros);
         return $pre;
     }
+    function RegistrarUsuario($datosUser)
+    {
+        $sql = 'INSERT INTO usuario(id_persona, pass, profesion, id_perfil, estado) VALUES (:id_persona, :pass, :profesion, :id_perfil, :estado)';
+        global $cnx;
+        $parametros = [
+            ':id_persona' => $datosUser['id_persona'],
+            ':pass' => $datosUser['pass'],
+            ':profesion' => $datosUser['profesion'],
+            ':id_perfil' => $datosUser['id_perfil'],
+            ':estado' => 'A',
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
 }
 
 /*
+SELECT u.id_persona,u.id_perfil,u.profesion,u.pass,p.nombre,pf.perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON pf.id_perfil=u.id_perfil WHERE p.nro_doc='06948422'
+INSERT INTO persona(id_tipodoc, nro_doc, nombre, grado, nacionalidad) VALUES (7,i:d_tipodoc, :nro_doc, :nombre, :grado, :nacionalidad)
 
+INSERT INTO usuario(id_persona, pass, profesion, id_perfil, estado) VALUES ()
 */
