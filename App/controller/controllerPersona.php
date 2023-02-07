@@ -69,6 +69,7 @@ function controlador($accion)
                     $_SESSION['idperfil'] =  $datosLogin->id_perfil;
                     $_SESSION['perfil'] =  $datosLogin->perfil;
                     $_SESSION['profesion'] =  $datosLogin->profesion;
+                    $_SESSION['nroDoc'] =  $datosLogin->nro_doc;
                     echo 'OK';
                 } else {
                     echo 'FAIL';
@@ -84,6 +85,27 @@ function controlador($accion)
                 $response = ['respuesta' => 'logout'];
                 echo json_encode($response);
             }
+            break;
+        case 'CAMBIAR_PASS':
+            $passActual = $_POST['passActual'];
+            $passNueva = $_POST['passNueva'];
+            $passActual = password_hash($passActual, PASSWORD_DEFAULT, ['cost' => 7]);
+            $datosLogin = $objPersona->ValidarLogin($_SESSION['nroDoc']);
+
+            if ($datosLogin->rowCount() > 0) {
+                $datosLogin = $datosLogin->fetch(PDO::FETCH_OBJ);
+                $userPass = $datosLogin->pass;
+                if (password_verify($passActual, $userPass)) {
+                }
+            }
+
+
+            $usuario = [
+                'dni' => $_POST['IdUsuario'],
+                'pass' => $pass
+            ];
+            $objPersonal->CambiarPass($usuario);
+            echo 'SE ACTUALIZÓ LA INFORMACIÓN';
             break;
         case 'REGISTRAR_PERSONAL':
             $nroDocPersonal = $_POST['nroDocPersonal']; // Usuario Conductor

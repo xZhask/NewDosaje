@@ -240,9 +240,8 @@ $(document).on("click", "#btn_search_conductor", async () => {
   $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
 });
 $(document).on("click", "#btn_search_personal", async () => {
-  /* Limpiar usuario antes de enviar nuevo número */
   $("#nombrePersonal").val("");
-  $("#btn_search_conductor").html(
+  $("#btn_search_personal").html(
     '<img src="resources/img/icon-loading.svg" class="loading">'
   );
   let nroDoc = $("#nroDocPersonal").val();
@@ -252,42 +251,9 @@ $(document).on("click", "#btn_search_personal", async () => {
     $("#nombrePersonal").val(persona.nombre_completo);
   }
   else alert('USUARIO YA EXISTE');
-  $("#btn_search_conductor").html('<img src="resources/img/icon-search.svg">');
+  $("#btn_search_personal").html('<img src="resources/img/icon-search.svg">');
 });
-//buscarUsuario()
-/* $(document).on("submit", "#frmCambioPass", (e) => {
-    e.preventDefault()
-    console.log('remiau')
-});
- */
-/* 
-async function ListarPersonas(tipoPersona) {
-  let datos = new FormData();
-  datos.append("accion", "LISTAR_PERSONAS");
-  datos.append("tipoPersona", tipoPersona);
-  let personas = await (await postData(datos)).json();
-  tipoPersona == 'E' ? renderProfesionales(personas) : renderPacientes(personas);
-}
 
-async function postData(data) {
-    const response = await fetch("App/controller/controller.php", {
-        method: "POST",
-        body: data,
-    }).then((res) => res.json());
-    return await response;
-} 
-
-
-function abrir_seccion(lnk) {
-  $(".list-menu .active").removeClass("active");
-  $(`#${lnk.id}`).addClass("active");
-  fetch(`App/views/${lnk.attributes.href.nodeValue}`)
-    .then((res) => res.text())
-    .then((res) => $("#wrapper-section").html(res));
-}
-
- <a id="lnk-horarios" href="/horarios.html">
-*/
 /* ----------- VALIDACIONES -------------------------- */
 
 /* */
@@ -393,4 +359,12 @@ $(document).on("submit", "#frmPersonal", async (e) => {
   datos.append("accion", "REGISTRAR_PERSONAL");
   let respuesta = await postData(datos, "controllerPersona.php");
   console.log(respuesta);
+});
+$(document).on("submit", "#frmCambioPass", async (e) => {
+  e.preventDefault();
+  let form = document.querySelector("#frmCambioPass");
+  let datos = new FormData(form);
+  datos.append("accion", "CAMBIAR_PASS");
+  //let respuesta = await postData(datos, "controllerPersona.php");
+  console.log(datos);
 });
