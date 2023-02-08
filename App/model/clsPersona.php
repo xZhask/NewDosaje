@@ -106,9 +106,9 @@ class clsPersona
         $pre->execute($parametros);
         return $pre;
     }
-    function RegistrarUsuario($datosUser)
+    function UpdatePass($datosUser)
     {
-        $sql = 'UPDATE usuario SET pass=:passWHERE id_persona=:id_persona';
+        $sql = 'UPDATE usuario SET pass=:pass WHERE id_persona=:id_persona';
         global $cnx;
         $parametros = [
             ':id_persona' => $datosUser['id_persona'],

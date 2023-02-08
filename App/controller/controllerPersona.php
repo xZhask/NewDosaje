@@ -89,23 +89,24 @@ function controlador($accion)
         case 'CAMBIAR_PASS':
             $passActual = $_POST['passActual'];
             $passNueva = $_POST['passNueva'];
-            $passActual = password_hash($passActual, PASSWORD_DEFAULT, ['cost' => 7]);
+
             $datosLogin = $objPersona->ValidarLogin($_SESSION['nroDoc']);
 
             if ($datosLogin->rowCount() > 0) {
                 $datosLogin = $datosLogin->fetch(PDO::FETCH_OBJ);
                 $userPass = $datosLogin->pass;
                 if (password_verify($passActual, $userPass)) {
-                }
+                    $passNueva = password_hash($passNueva, PASSWORD_DEFAULT, ['cost' => 7]);
+                    $datos = [
+                        ':id_persona' => $_SESSION['iduser'],
+                        ':pass' => $passNueva,
+                    ];
+                    $respuesta = $objPersona->UpdatePass($datos);
+                } else
+                    $respuesta = 'Contraseña Incorrecta';
+                $response = ['response' => $respuesta];
+                echo json_encode($response);
             }
-
-
-            $usuario = [
-                'dni' => $_POST['IdUsuario'],
-                'pass' => $pass
-            ];
-            $objPersonal->CambiarPass($usuario);
-            echo 'SE ACTUALIZÓ LA INFORMACIÓN';
             break;
         case 'REGISTRAR_PERSONAL':
             $nroDocPersonal = $_POST['nroDocPersonal']; // Usuario Conductor
@@ -136,12 +137,11 @@ function controlador($accion)
                     ];
                     $objPersona->RegistrarUsuario($datosUser);
                     $respuesta = 'Ok';
-                } else {
+                } else
                     $respuesta = 'fail';
-                }
-                $response = ['response' => $respuesta];
             }
-            echo json_encode($data);
+            $response = ['response' => $respuesta];
+            echo json_encode($response);
             break;
     }
 }
