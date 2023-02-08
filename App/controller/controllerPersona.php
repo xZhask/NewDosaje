@@ -44,6 +44,11 @@ function controlador($accion)
             $infoPersona = $infoPersona->fetchAll(PDO::FETCH_OBJ);
             echo json_encode($infoPersona);
             break;
+        case 'BUSCAR_EMPLEADO':
+            $infoPersonal = $objPersona->BuscarPersonal($_POST['idPersona']);
+            $infoPersonal = $infoPersonal->fetchAll(PDO::FETCH_OBJ);
+            echo json_encode($infoPersonal);
+            break;
         case 'CARGAR_PROFESIONALES':
             $listaProfesionales = $objPersona->listarProfesionales($_POST['tipoProfesional']);
             $listaProfesionales = $listaProfesionales->fetchAll(PDO::FETCH_OBJ);
@@ -87,19 +92,18 @@ function controlador($accion)
             }
             break;
         case 'CAMBIAR_PASS':
+            session_start();
             $passActual = $_POST['passActual'];
             $passNueva = $_POST['passNueva'];
-
             $datosLogin = $objPersona->ValidarLogin($_SESSION['nroDoc']);
-
             if ($datosLogin->rowCount() > 0) {
                 $datosLogin = $datosLogin->fetch(PDO::FETCH_OBJ);
                 $userPass = $datosLogin->pass;
                 if (password_verify($passActual, $userPass)) {
                     $passNueva = password_hash($passNueva, PASSWORD_DEFAULT, ['cost' => 7]);
                     $datos = [
-                        ':id_persona' => $_SESSION['iduser'],
-                        ':pass' => $passNueva,
+                        'id_persona' => $_SESSION['iduser'],
+                        'pass' => $passNueva,
                     ];
                     $respuesta = $objPersona->UpdatePass($datos);
                 } else

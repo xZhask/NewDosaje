@@ -1,3 +1,5 @@
+let actionForm = '';
+let CodigoSearch = '';
 //window.addEventListener("load", async () => {...});
 const cargarComisarias = async () => {
   const datos = new FormData();
@@ -50,15 +52,50 @@ const abrirModal = (form) => {
     dataType: "html",
     success: function (data) {
       $("#modal_form").html(data);
+      if (form === 'frmPersonal.html') {
+        if (actionForm == 'U') llenarDatosPersonal()
+        else $('#btn_search_personal').css('display', 'block');
+      }
     },
   });
 };
+async function llenarDatosPersonal() {
+  $('#btn_search_personal').css('display', 'none');
+  let datos = new FormData();
+  datos.append("accion", "BUSCAR_EMPLEADO");
+
+  datos.append("idPersona", CodigoSearch);
+  let respuesta = await postData(datos, "controllerPersona.php");
+  let empleado = respuesta[0];
+  $('#nroDocPersonal').val(empleado.nro_doc)
+  $('#nombrePersonal').val(empleado.nombre);
+  $('#gradoPersonal').val(empleado.grado);
+  $('#profesionPersonal').val(empleado.profesion);
+  $('#perfilPersonal').val(empleado.id_perfil);
+  console.log(respuesta);
+}
 //Cerrar Modal
-$("a.closeModal").on("click", (e) => {
-  e.preventDefault();
+const cerrarModal = () => {
   modal.style.display = "none";
   modalContent.classList.remove("frm-lg");
+  actionForm = ''
+}
+$("a.closeModal").on("click", (e) => {
+  e.preventDefault();
+  cerrarModal();
 });
+/* MODAL MENSAJE ALERT */
+const msgAlert = (icono, titulo, texto) => {
+  Swal.fire({
+    position: 'bottom-end',
+    icon: icono,
+    title: titulo,
+    text: texto,
+    showConfirmButton: false,
+    timer: 2000
+  })
+}
+
 /* BOTÓN CERRAR SESIÓN*/
 btnOff.addEventListener("click", async () => {
   let datos = new FormData();
@@ -105,10 +142,6 @@ $(document).on("click", "#btn-nuevo", async () => {
   fechaRecepcion.max = fechaActual["fecha"];
   fechaInfraccion.max = fechaActual["fecha"];
   fechaExtraccion.max = fechaActual["fecha"];
-});
-//Form Personal
-$(document).on("click", "#btn-nuevo-personal", async () => {
-  abrirModal("frmPersonal.html")
 });
 //Cargar autocompletados
 function autocompletadoComisarias(nombres, listadoOriginal) {
@@ -250,7 +283,7 @@ $(document).on("click", "#btn_search_personal", async () => {
     persona = await buscarPersonaReniec(nroDoc);
     $("#nombrePersonal").val(persona.nombre_completo);
   }
-  else alert('USUARIO YA EXISTE');
+  else msgAlert('error', 'Usuario ya registrado', `Ya existe un registro con el número de DNI ${nroDoc}`)
   $("#btn_search_personal").html('<img src="resources/img/icon-search.svg">');
 });
 
@@ -346,7 +379,7 @@ async function ListarPersonal() {
 
   let listPersonal = personal.map((persona) => {
     let profesion = persona.profesion == "E" ? "EXTRACTOR" : "PERITO";
-    return `<tr><td>${persona.id_persona}</td><td>${persona.nombre}</td><td>${persona.nro_doc}</td><td>${persona.grado}</td><td>${profesion}</td><td>${persona.perfil}</td><td><i class='fa-solid fa-user-pen'></i></td><td><i class='fa-solid fa-toggle-on'></i></i></td></tr>`;
+    return `<tr><td>${persona.id_persona}</td><td class='t_left'>${persona.nombre}</td><td>${persona.nro_doc}</td><td>${persona.grado}</td><td>${profesion}</td><td>${persona.perfil}</td><td><i class='fa-solid fa-user-pen edit-user i-blue'></i></td><td><i class='fa-solid fa-toggle-on i-green'></i></i></td></tr>`;
   });
   let cadenaPersonal = JSON.stringify(listPersonal);
   $("#tb_personal").html(cadenaPersonal);
@@ -360,11 +393,34 @@ $(document).on("submit", "#frmPersonal", async (e) => {
   let respuesta = await postData(datos, "controllerPersona.php");
   console.log(respuesta);
 });
+/* FRM CAMBIO CONTRASEÑA */
 $(document).on("submit", "#frmCambioPass", async (e) => {
   e.preventDefault();
   let form = document.querySelector("#frmCambioPass");
   let datos = new FormData(form);
   datos.append("accion", "CAMBIAR_PASS");
-  //let respuesta = await postData(datos, "controllerPersona.php");
-  console.log(datos);
+  let respuesta = await postData(datos, "controllerPersona.php");
+  //respuesta=respuesta.response
+  if (respuesta.response === 1) {
+    msgAlert('success', 'Cambio Existoso', 'Se realizó el cambio de contraseña')
+    cerrarModal()
+  }
+  else
+    msgAlert('error', 'algo salió mal', respuesta.response)
 });
+
+//Form Personal
+$(document).on("click", "#btn-nuevo-personal", () => {
+  abrirModal("frmPersonal.html");
+  actionForm = 'R';
+});
+$(document).on("click", "#tb_personal .edit-user", function (e) {
+  e.preventDefault()
+  let parent = $(this).closest("table");
+  let tr = $(this).closest("tr");
+  let codigo = $(tr).find("td").eq(0).html();
+  abrirModal("frmPersonal.html");
+  actionForm = 'U';
+  CodigoSearch = codigo
+});
+

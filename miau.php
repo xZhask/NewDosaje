@@ -18,41 +18,22 @@ require_once 'App/model/clsPersona.php';
 
 $objPersona = new ClsPersona();
 
-$nroDocPersonal = '06948422'; // Usuario Conductor
-$tipoDocPersonal = 7; // COD DNI EN LA BD
-/* CONDUCTOR */
-$Persona = $objPersona->BuscarUsuario($tipoDocPersonal, $nroDocPersonal);
-if ($Persona->rowCount() > 0) {
-    $respuesta = 'fail';
-} else {
-    if (!empty($nroDocPersonal)) {
-        $data = [
-            'id_tipodoc' => $tipoDocPersonal,
-            'nro_doc' => $nroDocPersonal,
-            'nombre' => 'MIAU',
-            'grado' => 'SS PNP',
-            'nacionalidad' => 'Peruana',
+session_start();
+$passActual = '123';
+$passNueva = '0410';
+$datosLogin = $objPersona->ValidarLogin($_SESSION['nroDoc']);
+if ($datosLogin->rowCount() > 0) {
+    $datosLogin = $datosLogin->fetch(PDO::FETCH_OBJ);
+    $userPass = $datosLogin->pass;
+    if (password_verify($passActual, $userPass)) {
+        $passNueva = password_hash($passNueva, PASSWORD_DEFAULT, ['cost' => 7]);
+        $datos = [
+            'id_persona' => $_SESSION['iduser'],
+            'pass' => $passNueva,
         ];
-        $idPersona = $objPersona->RegistrarConductor($data);
-        $pass = '123';
-        $pass = password_hash($pass, PASSWORD_DEFAULT, ['cost' => 7]);
-
-        $datosUser = [
-            'id_persona' => $idPersona,
-            'pass' => $pass,
-            'profesion' => 'E',
-            'id_perfil' => '2',
-        ];
-        $idPersonal = $objPersona->RegistrarUsuario($datosUser);
-        $respuesta = $datosUser;
+        $respuesta = $objPersona->UpdatePass($datos);
     } else
-        $respuesta = 'fail';
+        $respuesta = 'Contraseña Incorrecta';
+    $response = ['response' => $respuesta];
+    echo json_encode($response);
 }
-$response = ['response' => $respuesta];
-echo json_encode($response);
-//$dataUsuario = ['id_infractor' => $idinfractor];
-//echo json_encode($dataUsuario);
-/*
-Si existe -> actualizar
-si no existe -> registrar
-*/

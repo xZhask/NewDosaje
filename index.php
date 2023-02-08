@@ -16,6 +16,7 @@ $perfil = $_SESSION['idperfil'];
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
     <link rel="stylesheet" href="resources/js/jquery-ui-1.13.2/jquery-ui.min.css">
+    <link rel="stylesheet" href="resources/js/sweetalert2.min.css">
     <link rel="stylesheet" href="resources/css/style.css">
     <script src="https://kit.fontawesome.com/47b4aaa3bf.js" crossorigin="anonymous"></script>
     <!--<link rel="icon" type="image/png" href="favicon.png" />-->
@@ -91,6 +92,7 @@ $perfil = $_SESSION['idperfil'];
     </div>
     <script src="resources/js/jquery-3.6.0.min.js"></script>
     <script src="resources/js/jquery-ui-1.13.2/jquery-ui.min.js"></script>
+    <script src="resources/js/sweetalert2.all.min.js"></script>
     <script src="resources/js/main.js"></script>
 </body>
 

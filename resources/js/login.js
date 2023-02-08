@@ -15,5 +15,11 @@ $(document).on("submit", "#frmlogin", async (e) => {
   datos.append("accion", "LOGIN");
   let respuesta = await postData(datos, "controllerPersona.php");
   if (respuesta === "OK") window.location.assign("index.php");
-  else alert("DATOS INCORRECTOS");
+  else
+    Swal.fire({
+      icon: 'error',
+      title: 'Error de Acceso',
+      text: 'Datos Incorrectos',
+      confirmButtonColor: '#3085d6',
+    })
 });
