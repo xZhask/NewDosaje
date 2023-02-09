@@ -1,5 +1,5 @@
-let actionForm = '';
-let CodigoSearch = '';
+let actionForm = "";
+let CodigoSearch = "";
 //window.addEventListener("load", async () => {...});
 const cargarComisarias = async () => {
   const datos = new FormData();
@@ -52,34 +52,20 @@ const abrirModal = (form) => {
     dataType: "html",
     success: function (data) {
       $("#modal_form").html(data);
-      if (form === 'frmPersonal.html') {
-        if (actionForm == 'U') llenarDatosPersonal()
-        else $('#btn_search_personal').css('display', 'block');
+      if (form === "frmPersonal.html") {
+        if (actionForm == "U") llenarDatosPersonal();
+        else $("#btn_search_personal").css("display", "block");
       }
     },
   });
 };
-async function llenarDatosPersonal() {
-  $('#btn_search_personal').css('display', 'none');
-  let datos = new FormData();
-  datos.append("accion", "BUSCAR_EMPLEADO");
 
-  datos.append("idPersona", CodigoSearch);
-  let respuesta = await postData(datos, "controllerPersona.php");
-  let empleado = respuesta[0];
-  $('#nroDocPersonal').val(empleado.nro_doc)
-  $('#nombrePersonal').val(empleado.nombre);
-  $('#gradoPersonal').val(empleado.grado);
-  $('#profesionPersonal').val(empleado.profesion);
-  $('#perfilPersonal').val(empleado.id_perfil);
-  console.log(respuesta);
-}
 //Cerrar Modal
 const cerrarModal = () => {
   modal.style.display = "none";
   modalContent.classList.remove("frm-lg");
-  actionForm = ''
-}
+  actionForm = "";
+};
 $("a.closeModal").on("click", (e) => {
   e.preventDefault();
   cerrarModal();
@@ -87,21 +73,21 @@ $("a.closeModal").on("click", (e) => {
 /* MODAL MENSAJE ALERT */
 const msgAlert = (icono, titulo, texto) => {
   Swal.fire({
-    position: 'bottom-end',
+    position: "bottom-end",
     icon: icono,
     title: titulo,
     text: texto,
     showConfirmButton: false,
-    timer: 2000
-  })
-}
+    timer: 2000,
+  });
+};
 
 /* BOTÓN CERRAR SESIÓN*/
 btnOff.addEventListener("click", async () => {
   let datos = new FormData();
   datos.append("accion", "LOGOUT");
   let respuesta = await postData(datos, "controllerPersona.php");
-  if (respuesta.respuesta == 'logout') window.location.assign("login.php");
+  if (respuesta.respuesta == "logout") window.location.assign("login.php");
 });
 //Botones para abrir modal
 btnCambioPass.addEventListener("click", () => abrirModal("frmCambioPass.html"));
@@ -282,8 +268,12 @@ $(document).on("click", "#btn_search_personal", async () => {
   if (persona === undefined) {
     persona = await buscarPersonaReniec(nroDoc);
     $("#nombrePersonal").val(persona.nombre_completo);
-  }
-  else msgAlert('error', 'Usuario ya registrado', `Ya existe un registro con el número de DNI ${nroDoc}`)
+  } else
+    msgAlert(
+      "error",
+      "Usuario ya registrado",
+      `Ya existe un registro con el número de DNI ${nroDoc}`
+    );
   $("#btn_search_personal").html('<img src="resources/img/icon-search.svg">');
 });
 
@@ -331,10 +321,10 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-        ? "N"
-        : tipoProc == "S"
-          ? "N"
-          : "";
+      ? "N"
+      : tipoProc == "S"
+      ? "N"
+      : "";
   let resCualitativo = tipoProc !== "E" ? tipoProc : "";
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
@@ -379,7 +369,11 @@ async function ListarPersonal() {
 
   let listPersonal = personal.map((persona) => {
     let profesion = persona.profesion == "E" ? "EXTRACTOR" : "PERITO";
-    return `<tr><td>${persona.id_persona}</td><td class='t_left'>${persona.nombre}</td><td>${persona.nro_doc}</td><td>${persona.grado}</td><td>${profesion}</td><td>${persona.perfil}</td><td><i class='fa-solid fa-user-pen edit-user i-blue'></i></td><td><i class='fa-solid fa-toggle-on i-green'></i></i></td></tr>`;
+    let estado =
+      persona.estado === "A"
+        ? "<i class='fa-solid fa-toggle-on i-green user-status'></i>"
+        : "<i class='fa-solid fa-toggle-off i-gray user-status'></i>";
+    return `<tr><td>${persona.id_persona}</td><td class='t_left'>${persona.nombre}</td><td>${persona.nro_doc}</td><td>${persona.grado}</td><td>${profesion}</td><td>${persona.perfil}</td><td><i class='fa-solid fa-user-pen edit-user i-blue'></i></td><td>${estado}</td></tr>`;
   });
   let cadenaPersonal = JSON.stringify(listPersonal);
   $("#tb_personal").html(cadenaPersonal);
@@ -389,7 +383,10 @@ $(document).on("submit", "#frmPersonal", async (e) => {
   e.preventDefault();
   let form = document.querySelector("#frmPersonal");
   let datos = new FormData(form);
-  datos.append("accion", "REGISTRAR_PERSONAL");
+  if (actionForm == "U") {
+    datos.append("accion", "UPDATE_PERSONAL");
+    datos.append("idPersona", CodigoSearch);
+  } else datos.append("accion", "REGISTRAR_PERSONAL");
   let respuesta = await postData(datos, "controllerPersona.php");
   console.log(respuesta);
 });
@@ -402,25 +399,82 @@ $(document).on("submit", "#frmCambioPass", async (e) => {
   let respuesta = await postData(datos, "controllerPersona.php");
   //respuesta=respuesta.response
   if (respuesta.response === 1) {
-    msgAlert('success', 'Cambio Existoso', 'Se realizó el cambio de contraseña')
-    cerrarModal()
-  }
-  else
-    msgAlert('error', 'algo salió mal', respuesta.response)
+    msgAlert(
+      "success",
+      "Cambio Existoso",
+      "Se realizó el cambio de contraseña"
+    );
+    cerrarModal();
+  } else msgAlert("error", "algo salió mal", respuesta.response);
 });
 
 //Form Personal
 $(document).on("click", "#btn-nuevo-personal", () => {
   abrirModal("frmPersonal.html");
-  actionForm = 'R';
+  actionForm = "R";
 });
 $(document).on("click", "#tb_personal .edit-user", function (e) {
-  e.preventDefault()
+  e.preventDefault();
   let parent = $(this).closest("table");
   let tr = $(this).closest("tr");
   let codigo = $(tr).find("td").eq(0).html();
   abrirModal("frmPersonal.html");
-  actionForm = 'U';
-  CodigoSearch = codigo
+  actionForm = "U";
+  CodigoSearch = codigo;
 });
 
+$(document).on("change", "#ChangePass", () => {
+  if (document.getElementById("ChangePass").checked) {
+    $("#passPersonal").removeClass("input-disabled");
+    $("#passPersonal").prop("readonly", false);
+  } else {
+    $("#passPersonal").addClass("input-disabled");
+    $("#passPersonal").prop("readonly", true);
+    $("#passPersonal").val("");
+  }
+});
+async function llenarDatosPersonal() {
+  $("#btn_search_personal").css("display", "none");
+  let datos = new FormData();
+  datos.append("accion", "BUSCAR_EMPLEADO");
+  datos.append("idPersona", CodigoSearch);
+  let respuesta = await postData(datos, "controllerPersona.php");
+  let empleado = respuesta[0];
+  $("#nroDocPersonal").val(empleado.nro_doc);
+  $("#nombrePersonal").val(empleado.nombre);
+  $("#gradoPersonal").val(empleado.grado);
+  $("#profesionPersonal").val(empleado.profesion);
+  $("#perfilPersonal").val(empleado.id_perfil);
+
+  $("#nroDocPersonal").prop("readonly", true);
+  $("#nombrePersonal").prop("readonly", true);
+  $("#passPersonal").prop("readonly", true);
+  $("#passPersonal").addClass("input-disabled");
+  $("#cont-changePass").removeClass("n-visible");
+  console.log(respuesta);
+}
+$(document).on("click", "#tb_personal .user-status", async function (e) {
+  e.preventDefault();
+  Swal.fire({
+    title: "Activar/Inactivar Usuario?",
+    text: "¿Desea cambiar estado actual del usuario?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#3498db",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Continuar",
+    cancelButtonText: "Cancelar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      Swal.fire("Hecho!", "Se realizó el cambio de estado", "success");
+      let parent = $(this).closest("table");
+      let tr = $(this).closest("tr");
+      let codigo = $(tr).find("td").eq(0).html();
+      let datos = new FormData();
+      datos.append("accion", "UPDATE_ESTADO");
+      datos.append("idPersona", codigo);
+      let respuesta = await postData(datos, "controllerPersona.php");
+      if (respuesta !== "fail") ListarPersonal();
+    }
+  });
+});

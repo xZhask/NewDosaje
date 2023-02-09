@@ -1,36 +1,60 @@
 <form action="" id="frmPersonal" autocomplete="off">
-    <h2 class="tittle_form">Personal</h2>
-    <div class="cont_inputs_form">
-        <div class="group_input">
-            <input type="text" name="nroDocPersonal" id="nroDocPersonal" placeholder="N° DNI" />
-            <button type="button" id="btn_search_personal">
-                <img src="resources/img/icon-search.svg" />
-            </button>
-        </div>
+  <h2 class="tittle_form">Personal</h2>
+  <div class="cont_inputs_form">
+    <div class="group_input">
+      <input
+        type="text"
+        name="nroDocPersonal"
+        id="nroDocPersonal"
+        placeholder="N° DNI"
+      />
+      <button type="button" id="btn_search_personal">
+        <img src="resources/img/icon-search.svg" />
+      </button>
     </div>
-    <div class="cont_inputs_form">
-        <input type="text" name="nombrePersonal" id="nombrePersonal" placeholder="Nombre">
-    </div>
-    <div class="cont_inputs_form">
-        <input type="text" name="gradoPersonal" id="gradoPersonal" placeholder="Grado">
-    </div>
-    <div class="cont_inputs_form">
-        <select name="profesionPersonal" id="profesionPersonal">
-            <option value="0">Seleccionar Profesión</option>
-            <option value="E">Extractor</option>
-            <option value="P">Perito</option>
-        </select>
-    </div>
-    <div class="cont_inputs_form">
-        <select name="perfilPersonal" id="perfilPersonal">
-            <option value="0">Seleccionar Tipo Perfil</option>
-            <option value="1">Administrador</option>
-            <option value="2">Digitador</option>
-        </select>
-    </div>
-    <div class="cont_inputs_form">
-        <input type="password" name="passPersonal" id="passPersonal" placeholder="Contraseña"
-            autocomplete="new-password">
-    </div>
-    <button type="submit">Registrar</button>
+  </div>
+  <div class="cont_inputs_form">
+    <input
+      type="text"
+      name="nombrePersonal"
+      id="nombrePersonal"
+      placeholder="Nombre"
+    />
+  </div>
+  <div class="cont_inputs_form">
+    <input
+      type="text"
+      name="gradoPersonal"
+      id="gradoPersonal"
+      placeholder="Grado"
+    />
+  </div>
+  <div class="cont_inputs_form">
+    <select name="profesionPersonal" id="profesionPersonal">
+      <option value="0">Seleccionar Profesión</option>
+      <option value="E">Extractor</option>
+      <option value="P">Perito</option>
+    </select>
+  </div>
+  <div class="cont_inputs_form">
+    <select name="perfilPersonal" id="perfilPersonal">
+      <option value="0">Seleccionar Tipo Perfil</option>
+      <option value="1">Administrador</option>
+      <option value="2">Digitador</option>
+    </select>
+  </div>
+  <div id="cont-changePass" class="cont--control-options n-visible">
+    <input type="checkbox" name="ChangePass" id="ChangePass" />
+    <label id="lblChangePass" for="ChangePass">Reiniciar Contraseña</label>
+  </div>
+  <div class="cont_inputs_form">
+    <input
+      type="password"
+      name="passPersonal"
+      id="passPersonal"
+      placeholder="Contraseña"
+      autocomplete="new-password"
+    />
+  </div>
+  <button type="submit">Registrar</button>
 </form>

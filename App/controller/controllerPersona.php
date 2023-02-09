@@ -147,6 +147,47 @@ function controlador($accion)
             $response = ['response' => $respuesta];
             echo json_encode($response);
             break;
+        case 'UPDATE_PERSONAL':
+            $idPersona = $_POST['idPersona'];
+            $passPersonal = $_POST['passPersonal'];
+            $parametros = [
+                'id_persona' => $idPersona,
+                'profesion' => $_POST['profesionPersonal'],
+                'id_perfil' => $_POST['perfilPersonal'],
+            ];
+            $respuesta = $objPersona->UpdatePerfil($parametros);
+            if ($respuesta > 0) {
+                if (!empty($passPersonal)) {
+                    $pass = password_hash($passPersonal, PASSWORD_DEFAULT, ['cost' => 7]);
+                    $datosPass = [
+                        'id_persona' => $idPersona,
+                        'pass' => $pass,
+                    ];
+                    $objPersona->UpdatePass($datosPass);
+                }
+            } else $respuesta = 'fail';
+
+            $response = ['response' => $respuesta];
+            echo json_encode($response);
+            break;
+        case 'UPDATE_ESTADO':
+            $idPersona = $_POST['idPersona'];
+            $infoPersonal = $objPersona->BuscarPersonal($idPersona);
+            $infoPersonal = $infoPersonal->fetch(PDO::FETCH_OBJ);
+            $estado = $infoPersonal->estado;
+
+            $newEstado = ($estado === 'A') ? 'I' : 'A';
+
+            $parametros = [
+                'id_persona' => $idPersona,
+                'estado' => $newEstado,
+            ];
+            $respuesta = $objPersona->UpdateEstado($parametros);
+            if ($respuesta < 1)
+                $respuesta = 'fail';
+            $response = ['response' => $respuesta];
+            echo json_encode($response);
+            break;
     }
 }
 /*

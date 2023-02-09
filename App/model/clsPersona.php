@@ -28,13 +28,13 @@ class clsPersona
     }
     function listarPrersonal()
     {
-        $sql = 'SELECT p.id_persona, p.nro_doc,p.nombre,p.grado,u.profesion,pf.perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON u.id_perfil=pf.id_perfil';
+        $sql = 'SELECT p.id_persona, p.nro_doc,p.nombre,p.grado,u.profesion,pf.perfil,u.estado FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON u.id_perfil=pf.id_perfil';
         global $cnx;
         return $cnx->query($sql);
     }
     function BuscarPersonal($idPersona)
     {
-        $sql = 'SELECT p.id_persona, p.nro_doc,p.nombre,p.grado,u.profesion,pf.id_perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON u.id_perfil=pf.id_perfil WHERE p.id_persona=:id_persona';
+        $sql = 'SELECT p.id_persona, p.nro_doc,p.nombre,p.grado,u.profesion,pf.id_perfil,u.estado FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON u.id_perfil=pf.id_perfil WHERE p.id_persona=:id_persona';
         global $cnx;
         $parametros = [
             ':id_persona' => $idPersona,
@@ -93,10 +93,11 @@ class clsPersona
     }
     function ValidarLogin($nroDoc)
     {
-        $sql = 'SELECT u.id_persona,p.nro_doc,u.id_perfil,u.profesion,u.pass,p.nombre,pf.perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON pf.id_perfil=u.id_perfil WHERE p.nro_doc=:nro_doc';
+        $sql = 'SELECT u.id_persona,p.nro_doc,u.id_perfil,u.profesion,u.pass,p.nombre,pf.perfil FROM usuario u INNER JOIN persona p ON u.id_persona=p.id_persona INNER JOIN perfil pf ON pf.id_perfil=u.id_perfil WHERE p.nro_doc=:nro_doc AND u.estado=:estado';
         global $cnx;
         $parametros = [
             ':nro_doc' => $nroDoc,
+            ':estado' => 'A',
         ];
         $pre = $cnx->prepare($sql);
         $pre->execute($parametros);
@@ -131,7 +132,7 @@ class clsPersona
     }
     function UpdatePerfil($datosUser)
     {
-        $sql = 'UPDATE usuario SET profesion=:profesion, id_perfil=id_perfil WHERE id_persona =:id_persona';
+        $sql = 'UPDATE usuario SET profesion=:profesion, id_perfil=:id_perfil WHERE id_persona =:id_persona';
         global $cnx;
         $parametros = [
             ':id_persona' => $datosUser['id_persona'],

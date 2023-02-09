@@ -18,22 +18,11 @@ require_once 'App/model/clsPersona.php';
 
 $objPersona = new ClsPersona();
 
-session_start();
-$passActual = '123';
-$passNueva = '0410';
-$datosLogin = $objPersona->ValidarLogin($_SESSION['nroDoc']);
-if ($datosLogin->rowCount() > 0) {
-    $datosLogin = $datosLogin->fetch(PDO::FETCH_OBJ);
-    $userPass = $datosLogin->pass;
-    if (password_verify($passActual, $userPass)) {
-        $passNueva = password_hash($passNueva, PASSWORD_DEFAULT, ['cost' => 7]);
-        $datos = [
-            'id_persona' => $_SESSION['iduser'],
-            'pass' => $passNueva,
-        ];
-        $respuesta = $objPersona->UpdatePass($datos);
-    } else
-        $respuesta = 'Contraseña Incorrecta';
-    $response = ['response' => $respuesta];
-    echo json_encode($response);
-}
+$idPersona = 1;
+$info = $objPersona->BuscarPersonal($idPersona);
+$info = $info->fetch(PDO::FETCH_OBJ);
+
+$estado = $info->estado;
+
+$response = ['response' => $estado];
+echo json_encode($response);

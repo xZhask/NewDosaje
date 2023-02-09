@@ -662,5 +662,14 @@ input[type=time] {
 .i-green {
     color: #2ecc71;
 }
-
+.i-gray{
+    color: #a4b0be;
+}
+.cont--control-options{
+    margin-top: 5px;
+    color: #323232;
+}
+.input-disabled{
+    background-color: var(--sombreado);
+}
 /* FIN LOGIN*/
