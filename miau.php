@@ -17,12 +17,19 @@ fetch('prueba.php',{
 require_once 'App/model/clsPersona.php';
 
 $objPersona = new ClsPersona();
-
-$idPersona = 1;
-$info = $objPersona->BuscarPersonal($idPersona);
-$info = $info->fetch(PDO::FETCH_OBJ);
-
-$estado = $info->estado;
-
-$response = ['response' => $estado];
-echo json_encode($response);
+$id_infraccion = null;
+$dataExtraccion = [
+    'id_infraccion' =>  $id_infraccion,
+    'tipoMuestra' =>  $_POST['tipoMuestra'],
+    'idExtractor' =>  $_POST['idExtractor'],
+    'fechaExtraccion' =>  $_POST['fechaExtraccion'],
+    'horaExtraccion' =>  $_POST['horaExtraccion'],
+];
+$dataPeritaje = [
+    'id_infraccion' =>  $id_infraccion,
+    'tipoMuestra' =>  $_POST['tipoMuestra'],
+    'idPerito' =>  $_POST['idPerito'],
+    'cuantitativo' =>  $_POST['cuantitativo'],
+    'cualitativo' =>  $_POST['cualitativo'],
+];
+echo json_encode($dataIncidencia);

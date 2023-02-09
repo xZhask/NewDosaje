@@ -116,7 +116,7 @@ class clsPersona
         ];
         $pre = $cnx->prepare($sql);
         $pre->execute($parametros);
-        return $pre;
+        return $pre->rowCount();
     }
     function UpdatePass($datosUser)
     {
@@ -156,6 +156,7 @@ class clsPersona
         return $pre->rowCount();
     }
 }
+
 
 /*
 UPDATE usuario SET pass='[value-2]' WHERE id_persona='[value-1]'

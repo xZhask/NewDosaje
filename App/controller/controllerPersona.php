@@ -139,8 +139,8 @@ function controlador($accion)
                         'profesion' => $_POST['profesionPersonal'],
                         'id_perfil' => $_POST['perfilPersonal'],
                     ];
-                    $objPersona->RegistrarUsuario($datosUser);
-                    $respuesta = 'Ok';
+                    $respuesta = $objPersona->RegistrarUsuario($datosUser);
+                    //$respuesta = 1;
                 } else
                     $respuesta = 'fail';
             }

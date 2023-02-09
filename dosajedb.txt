@@ -36,6 +36,7 @@ CREATE TABLE usuario
     pass TEXT,
     profesion CHAR(1),
     id_perfil INT,
+estado CHAR(1),
     FOREIGN KEY (id_persona) REFERENCES persona(id_persona),
     FOREIGN KEY (id_perfil) REFERENCES perfil(id_perfil)
 )ENGINE=INNODB;
@@ -65,7 +66,31 @@ CREATE TABLE infraccion
     FOREIGN KEY (personal_conductor) REFERENCES persona(id_persona),
     FOREIGN KEY (infractor) REFERENCES persona(id_persona)
 )ENGINE=INNODB;
-
+CREATE TABLE extraccion
+(
+    id_extraccion INT AUTO_INCREMENT,
+    tipo_muestra CHAR(1) NOT NULL,
+    hora_extracc TIME NULL,
+    fecha_extracc DATE NULL,
+    hrs_transcurridas VARCHAR(5) NULL,
+observacion TEXT,
+    extractor INT,
+    id_infraccion INT,
+    PRIMARY KEY (id_extraccion),
+    FOREIGN KEY (extractor) REFERENCES persona(id_persona),
+    FOREIGN KEY (id_infraccion) REFERENCES infraccion(id_infraccion)
+)ENGINE=INNODB;
+CREATE TABLE peritaje
+(
+    id_peritaje INT AUTO_INCREMENT,
+    result_cualitativo VARCHAR(5) NULL,
+    result_cuantitativo VARCHAR(5) NULL,
+    perito INT NULL,
+    id_infraccion INT,
+    PRIMARY KEY (id_peritaje),
+    FOREIGN KEY (perito) REFERENCES persona(id_persona),
+    FOREIGN KEY (id_infraccion) REFERENCES infraccion(id_infraccion)
+)ENGINE=INNODB;
 
 /* inserciones */
 INSERT INTO perfil(perfil) VALUES ('ADMINISTRADOR'),('DIGITADOR');

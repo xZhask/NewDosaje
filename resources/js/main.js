@@ -65,6 +65,7 @@ const cerrarModal = () => {
   modal.style.display = "none";
   modalContent.classList.remove("frm-lg");
   actionForm = "";
+  CodigoSearch = "";
 };
 $("a.closeModal").on("click", (e) => {
   e.preventDefault();
@@ -321,10 +322,10 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-      ? "N"
-      : tipoProc == "S"
-      ? "N"
-      : "";
+        ? "N"
+        : tipoProc == "S"
+          ? "N"
+          : "";
   let resCualitativo = tipoProc !== "E" ? tipoProc : "";
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
@@ -353,14 +354,6 @@ $(document).on("change", "#tipoProcedimiento", () => {
   $("#tipoMuestra").html(htmlTipoMuestra);
 });
 
-$(document).on("submit", "#frmHojaRegistro", async (e) => {
-  e.preventDefault();
-  let form = document.querySelector("#frmHojaRegistro");
-  let datos = new FormData(form);
-  datos.append("accion", "REG_INCIDENCIA");
-  let respuesta = await postData(datos, "controllerIncidencia.php");
-  console.log(respuesta);
-});
 /* LOGIN */
 async function ListarPersonal() {
   let datos = new FormData();
@@ -388,7 +381,12 @@ $(document).on("submit", "#frmPersonal", async (e) => {
     datos.append("idPersona", CodigoSearch);
   } else datos.append("accion", "REGISTRAR_PERSONAL");
   let respuesta = await postData(datos, "controllerPersona.php");
-  console.log(respuesta);
+  if (respuesta.response === 1) {
+    msgAlert("success", "Hecho!", "Se actualizó la información");
+    cerrarModal()
+    ListarPersonal()
+  }
+  else msgAlert("error", "algo salió mal", respuesta.response);
 });
 /* FRM CAMBIO CONTRASEÑA */
 $(document).on("submit", "#frmCambioPass", async (e) => {
@@ -399,11 +397,7 @@ $(document).on("submit", "#frmCambioPass", async (e) => {
   let respuesta = await postData(datos, "controllerPersona.php");
   //respuesta=respuesta.response
   if (respuesta.response === 1) {
-    msgAlert(
-      "success",
-      "Cambio Existoso",
-      "Se realizó el cambio de contraseña"
-    );
+    msgAlert("success", "Cambio Existoso", "Se realizó el cambio de contraseña");
     cerrarModal();
   } else msgAlert("error", "algo salió mal", respuesta.response);
 });
@@ -451,7 +445,6 @@ async function llenarDatosPersonal() {
   $("#passPersonal").prop("readonly", true);
   $("#passPersonal").addClass("input-disabled");
   $("#cont-changePass").removeClass("n-visible");
-  console.log(respuesta);
 }
 $(document).on("click", "#tb_personal .user-status", async function (e) {
   e.preventDefault();
@@ -477,4 +470,19 @@ $(document).on("click", "#tb_personal .user-status", async function (e) {
       if (respuesta !== "fail") ListarPersonal();
     }
   });
+});
+/* INCIDENCIA */
+$(document).on("submit", "#frmHojaRegistro", async (e) => {
+  e.preventDefault();
+  let form = document.querySelector("#frmHojaRegistro");
+  let datos = new FormData(form);
+  datos.append("accion", "REGISTRAR_INCIDENCIA");
+  let respuesta = await postData(datos, "controllerIncidencia.php");
+  console.log(respuesta);
+
+  /* fetch(`App/controller/controllerIncidencia.php`, {
+    method: "POST",
+    body: datos,
+  }).then((res) => res.text()).then(res => console.log(res));
+ */
 });
