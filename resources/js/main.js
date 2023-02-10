@@ -478,11 +478,19 @@ $(document).on("submit", "#frmHojaRegistro", async (e) => {
   let datos = new FormData(form);
   datos.append("accion", "REGISTRAR_INCIDENCIA");
   let respuesta = await postData(datos, "controllerIncidencia.php");
-  console.log(respuesta);
-
-  /* fetch(`App/controller/controllerIncidencia.php`, {
-    method: "POST",
-    body: datos,
-  }).then((res) => res.text()).then(res => console.log(res));
- */
+  respuesta = respuesta.response;
+  if (respuesta === 1) {
+    msgAlert('success', 'Hecho', 'Se registró la información')
+    listarIncidencias();
+  }
+  else msgAlert('error', 'Algo salió mal', 'No se pudo registrar la información')
 });
+
+/* INCIDENCIAS */
+
+async function listarIncidencias() {
+  let datos = new FormData();
+  datos.append("accion", "LISTAR_INCIDENCIAS");
+  let incidencias = await postData(datos, "controllerIncidencia.php");
+  $("#tb_incidencias").html(incidencias.listado);
+}

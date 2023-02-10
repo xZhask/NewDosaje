@@ -119,7 +119,7 @@ a {
 
 .section_view {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     background-color: #FFFFFF;
     border: 1px solid rgba(36, 178, 235, 0.4);
     border-radius: 1.5em;
@@ -158,7 +158,7 @@ form button:hover {
 .t_listado td,
 .t_listado th {
     border: 1px solid var(--primary);
-    padding: 7px;
+    padding: 10px 7px;
 }
 
 .t_listado td {
@@ -167,7 +167,7 @@ form button:hover {
 }
 
 .t_listado td p {
-    margin-bottom: 3px;
+    margin-bottom: 6px;
     color: var(--dark-light);
 }
 
@@ -662,14 +662,21 @@ input[type=time] {
 .i-green {
     color: #2ecc71;
 }
-.i-gray{
+
+.i-gray {
     color: #a4b0be;
 }
-.cont--control-options{
+
+.cont--control-options {
     margin-top: 5px;
     color: #323232;
 }
-.input-disabled{
+
+.input-disabled {
     background-color: var(--sombreado);
 }
+
 /* FIN LOGIN*/
+.span-line {
+    margin-left: 10px;
+}

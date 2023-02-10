@@ -62,4 +62,36 @@ class clsInfraccion
         $pre->execute($parametros);
         if ($pre->rowCount() > 0) return $cnx->lastInsertId();
     }
+    function ListarInfracciones()
+    {
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_registro, i.fecha_registro, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona';
+        global $cnx;
+        return $cnx->query($sql);
+    }
+    function buscarExtraccion($idInfraccion)
+    {
+        $sql = 'SELECT e.tipo_muestra, e.hora_extracc, e.fecha_extracc, e.hrs_transcurridas, p.nombre as extractor, e.observacion
+        FROM extraccion e INNER JOIN persona p ON e.extractor=p.id_persona WHERE e.id_infraccion=:id_infraccion';
+        global $cnx;
+        $parametros = [
+            ':id_infraccion' => $idInfraccion,
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
+    function buscarInfraccion($idInfraccion)
+    {
+        $sql = 'SELECT result_cualitativo as cualitativo, result_cuantitativo as cuantitativo, perito FROM peritaje WHERE id_infraccion=:id_infraccion';
+        global $cnx;
+        $parametros = [
+            ':id_infraccion' => $idInfraccion,
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
 }
+
+/*
+ */

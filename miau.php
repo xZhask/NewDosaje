@@ -15,21 +15,33 @@ fetch('prueba.php',{
 .then(res=>console.log(res));
 */
 require_once 'App/model/clsPersona.php';
+require_once 'App/model/clsInfraccion.php';
 
 $objPersona = new ClsPersona();
-$id_infraccion = null;
-$dataExtraccion = [
-    'id_infraccion' =>  $id_infraccion,
-    'tipoMuestra' =>  $_POST['tipoMuestra'],
-    'idExtractor' =>  $_POST['idExtractor'],
-    'fechaExtraccion' =>  $_POST['fechaExtraccion'],
-    'horaExtraccion' =>  $_POST['horaExtraccion'],
-];
-$dataPeritaje = [
-    'id_infraccion' =>  $id_infraccion,
-    'tipoMuestra' =>  $_POST['tipoMuestra'],
-    'idPerito' =>  $_POST['idPerito'],
-    'cuantitativo' =>  $_POST['cuantitativo'],
-    'cualitativo' =>  $_POST['cualitativo'],
-];
-echo json_encode($dataIncidencia);
+$objInfraccion = new ClsInfraccion();
+
+$id_infraccion = 7;
+$peritaje = $objInfraccion->buscarInfraccion($id_infraccion);
+$cualitativo = '';
+$perito = '';
+$cuantitativo = '';
+if ($peritaje->rowCount() > 0) {
+    $peritaje = $peritaje->fetch(PDO::FETCH_NAMED);
+    $perito = $peritaje['perito'];
+    if ($perito != NULL) {
+        $busquedaPerito = $objPersona->BuscarPersonal($perito);
+        $busquedaPerito = $busquedaPerito->fetch(PDO::FETCH_NAMED);
+        $perito = $busquedaPerito['nombre'];
+    }
+
+    $cualitativo = $peritaje['cualitativo'];
+    $cuantitativo = $peritaje['cuantitativo'];
+}
+echo $cualitativo . ' - ' . $cuantitativo . ' - ' . $perito;
+//
+/* $perito = '';
+if ($peritaje->rowCount() > 0) {
+    $peritaje = $peritaje->fetch(PDO::FETCH_NAMED);
+    $perito = $peritaje['perito'];
+} */
+//echo json_encode($peritaje);
