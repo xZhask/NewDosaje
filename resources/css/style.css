@@ -10,7 +10,7 @@
     --sombreado: #e7eef1;
     --dark-light: #535c68;
     --gray: #ced6e0;
-    --red-light:#e74c3c;
+    --red-light: #e74c3c;
     /*
     #16d9e3
     #30c7ec
@@ -131,6 +131,7 @@ a {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2em;
+    align-items: center;
 }
 
 .header_section_view button,
@@ -668,6 +669,16 @@ input[type=time] {
     color: #a4b0be;
 }
 
+.i-red {
+    color: var(--red-light);
+}
+
+.btnReporte {
+    cursor: pointer;
+    font-size: 1.5em;
+    /* margin-bottom: .5em; */
+}
+
 .cont--control-options {
     margin-top: 5px;
     color: #323232;
@@ -681,7 +692,8 @@ input[type=time] {
 .span-line {
     margin-left: 10px;
 }
-.btnRegPeritaje{
+
+.btnRegPeritaje {
     padding: 10px;
     border: 1px solid var(--red-light);
     border-radius: 5px;
@@ -698,22 +710,46 @@ input[type=time] {
     -o-transition: all .4s ease;
     cursor: pointer;
 }
-.btnRegPeritaje:hover{
-    background-color: var(--red-light) ;
+
+.btnRegPeritaje:hover {
+    background-color: var(--red-light);
     color: #FFF;
 }
-.p-red{
+
+.p-red {
     color: var(--red-light) !important;
 }
-.bntNewCertificado,.lnkCertificado{
+
+.bntNewCertificado,
+.lnkCertificado {
     margin-top: 10px;
     padding: 5px;
     cursor: pointer;
 }
-.bntNewCertificado,.lnkCertificado{
+
+.bntNewCertificado,
+.lnkCertificado {
     font-size: .8em;
 }
+
 /*
 DARK: #4b4b4b;#2980b9
 #3d3d3d;
 */
+.group_controls input,
+.group_controls select,
+.section_view button {
+    height: 35px;
+    padding: 7px 35px;
+}
+
+.cont-export {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+    margin-bottom: .5em;
+}
+
+.t_reporte th {
+    color: var(--primary) !important;
+}

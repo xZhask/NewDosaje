@@ -5,12 +5,18 @@
     <select name="repTurno" id="repTurno">
       <option value="0">Turno</option>
       <option value="M">Mañana</option>
-      <option value="T">Tarde</option>
       <option value="N">Noche</option>
     </select>
+    <button id="btn-reporteDiario">Buscar</button>
+
   </div>
 </div>
 <div class="body_section_view">
+  <div class="cont-export">
+    <p>Exportar: </p>
+    <i id="btnImprmirReporte" class="fa-solid fa-file-pdf i-red btnReporte"></i>
+  </div>
+
   <table class="t_listado">
     <thead>
       <tr>
@@ -20,6 +26,6 @@
         <th>Comisiones</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tbReporte"></tbody>
   </table>
 </div>

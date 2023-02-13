@@ -64,7 +64,7 @@ class clsInfraccion
     }
     function ListarInfracciones()
     {
-        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_registro, i.fecha_registro, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona';
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_registro, i.fecha_registro, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona ORDER BY CONCAT(i.fecha_registro," ",i.hora_registro) DESC';
         global $cnx;
         return $cnx->query($sql);
     }
@@ -142,10 +142,37 @@ class clsInfraccion
         return $pre->rowCount();
     }
     /* REPORTES */
-    function reporteResultados()
+    function reporteMuestras($datosReporte)
     {
-        $sql = 'SELECT * FROM peritaje';
+        $sql = 'SELECT * FROM infraccion WHERE (fecha_registro>=:fechaInicio AND hora_registro>=:horaInicio) AND (fecha_registro<=:fechaFin AND hora_registro<=:horaFin)';
         global $cnx;
-        return $cnx->query($sql);
+        $parametros = [
+            ':fechaInicio' => $datosReporte['fechaInicio'],
+            ':horaInicio' => $datosReporte['horaInicio'],
+            ':fechaFin' => $datosReporte['fechaFin'],
+            ':horaFin' => $datosReporte['horaFin'],
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
+    function reporteResultados($datosReporte)
+    {
+        $sql = 'SELECT i.id_infraccion,pj.result_cualitativo,pj.result_cuantitativo FROM infraccion i INNER JOIN peritaje pj ON i.id_infraccion=pj.id_infraccion WHERE (fecha_registro>=:fechaInicio AND hora_registro>=:horaInicio)AND(fecha_registro<=:fechaFin AND hora_registro<=:horaFin)';
+        global $cnx;
+        $parametros = [
+            ':fechaInicio' => $datosReporte['fechaInicio'],
+            ':horaInicio' => $datosReporte['horaInicio'],
+            ':fechaFin' => $datosReporte['fechaFin'],
+            ':horaFin' => $datosReporte['horaFin'],
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
     }
 }
+//SELECT * FROM infraccion WHERE (fecha_registro>='2023-02-09' AND hora_registro>='07:30:59')AND(fecha_registro<='2023-02-10' AND hora_registro<='19:30:59')
+/*SELECT i.id_infraccion,pj.result_cualitativo,pj.result_cuantitativo 
+FROM infraccion i INNER JOIN peritaje pj ON i.id_infraccion=pj.id_infraccion
+WHERE (fecha_registro>='2023-02-09' AND hora_registro>='07:30:59')AND(fecha_registro<='2023-02-10' AND hora_registro<='19:30:59')
+*/

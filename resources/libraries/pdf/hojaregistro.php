@@ -75,6 +75,7 @@ function getPlantilla($IdHojaRegistro)
             break;
     }
     $plantilla = '<body>';
+    $plantilla .= '<div class ="HojaRegistro">';
     $plantilla .=   '<h3 class="lugar_com"></h3>';
     $plantilla .= '<div><p class="unidadHR">UNIDAD DESCONCENTRADA DE DOSAJE ETILICO - SEDE ZARATE SJL</p>
                     <table class="filaHR filahoraHR">
@@ -114,7 +115,7 @@ function getPlantilla($IdHojaRegistro)
                         <td class="fecha_extraccionHR">' . date_format($fechaextraccion, 'd-m-Y') . '</td></tr>
                     </table>
                     <p class="conductorHR">' . $fila['grado'] . ' ' . $fila['conductor'] . '</p>
-                    </div>';
+                    </div></div>';
     $plantilla .= '</body>';
     return $plantilla;
 }

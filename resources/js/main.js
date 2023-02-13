@@ -344,10 +344,10 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-      ? "N"
-      : tipoProc == "S"
-      ? "N"
-      : "";
+        ? "N"
+        : tipoProc == "S"
+          ? "N"
+          : "";
   let resCualitativo = tipoProc !== "E" ? tipoProc : "";
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
@@ -663,3 +663,42 @@ function PDFCertificado(idInfraccion) {
     `left=${x} ,top=${y},height= ${alto}, width= ${ancho},scrollbar=si,location=no,resizable=si,menubar=no`
   );
 }
+$(document).on("click", "#btn-reporteDiario", async function (e) {
+  e.preventDefault();
+  let fecha = $('#repFecha').val();
+  let turno = $('#repTurno').val();
+  if (fecha === '' || turno === '')
+    msgAlert('warning', 'Seleccione fecha y turno porfavor', 'Campos necesarios')
+  else {
+    let datos = new FormData();
+    datos.append("accion", "REPORTE_RESULTADOS");
+    datos.append("fechaInicio", fecha);
+    datos.append("turno", turno);
+    let respuesta = await postData(datos, "controllerIncidencia.php");
+    respuesta = respuesta.response;
+    $('#tbReporte').html(respuesta);
+  }
+});
+function PDFReporteDiario() {
+  let fecha = $('#repFecha').val();
+  let turno = $('#repTurno').val();
+  var ancho = 1000;
+  var alto = 800;
+  var x = parseInt(window.screen.width / 2 - ancho / 2);
+  var y = parseInt(window.screen.height / 2 - alto / 2);
+
+  $url = `resources/libraries/pdf/PDFreporteDiario.php?fechaInicio=${fecha}&turno=${turno}`;
+  window.open(
+    $url,
+    "Comprobante",
+    `left=${x} ,top=${y},height= ${alto}, width= ${ancho},scrollbar=si,location=no,resizable=si,menubar=no`
+  );
+}
+$(document).on("click", "#btnImprmirReporte", async function (e) {
+  let fecha = $('#repFecha').val();
+  let turno = $('#repTurno').val();
+  if (fecha === '' || turno === '')
+    msgAlert('warning', 'Seleccione fecha y turno porfavor', 'Campos necesarios')
+  else
+    PDFReporteDiario();
+});
