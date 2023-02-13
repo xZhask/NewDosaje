@@ -1,17 +1,23 @@
 <div class="header_section_view">
   <h1>Reportes</h1>
-  <button id="btn-nuevo-personal">Nuevo</button>
+  <div class="group_controls">
+    <input type="date" name="repFecha" id="repFecha" />
+    <select name="repTurno" id="repTurno">
+      <option value="0">Turno</option>
+      <option value="M">Mañana</option>
+      <option value="T">Tarde</option>
+      <option value="N">Noche</option>
+    </select>
+  </div>
 </div>
 <div class="body_section_view">
   <table class="t_listado">
     <thead>
       <tr>
+        <th>Muestra</th>
+        <th>Total</th>
         <th>#</th>
-        <th>nombre</th>
-        <th>nro doc</th>
-        <th>grado</th>
-        <th>perfil</th>
-        <th>profesión</th>
+        <th>Comisiones</th>
       </tr>
     </thead>
     <tbody></tbody>

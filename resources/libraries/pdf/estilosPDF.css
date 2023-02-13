@@ -1,0 +1,388 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, Helvetica, sans-serif;
+}
+:root {
+	--primary-color: #576574;
+	--second-color: #222f3e;
+	--verde-color: #55e6c1;
+	--verde-oscuro: #46c9a8;
+	--verde-opacity50: rgba(85, 230, 194, 0.58);
+	--verde-opacity10: rgba(70, 201, 168, 0.1);
+}
+.wrapper {
+	width: 100%;
+	display: flex;
+}
+table {
+	border-collapse: collapse;
+}
+table th,
+table td {
+	border: 1px solid #576574;
+	text-align: center;
+}
+thead th {
+	font-size: 12px;
+	background-color: #55e6c1;
+}
+tbody td {
+	font-size: 11px;
+}
+.titulo {
+	width: 100%;
+	text-align: center;
+}
+.ReciboCaja {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 11mm;
+	left: 15mm;
+}
+
+.aspaRC {
+	margin-left: 34mm;
+	margin-top: 6.5mm;
+}
+.comisariaRC {
+	margin-left: 30mm;
+	margin-top: 5.5mm;
+	font-size: 9px;
+}
+.usuarioRC {
+	margin-top: 11mm;
+	font-size: 11px;
+}
+.documentoRC {
+	margin-left: 20mm;
+	margin-top: 5.5mm;
+}
+.montoRC {
+	margin-left: 11mm;
+	margin-top: 35mm;
+}
+/* COMPROMISO ------------------------------------*/
+.Compromiso {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 15mm;
+	left: 10mm;
+	font-size: 9px;
+}
+.docC {
+	margin-left: 46mm;
+	margin-top: 3mm;
+}
+.direccionC {
+	margin-top: 3mm;
+	font-size: 8px;
+}
+.fila {
+	margin-left: 2mm;
+	margin-top: 5mm;
+}
+.fila td {
+	border: none;
+	text-align: left;
+	font-size: 8px;
+}
+.distritoC {
+	width: 35mm;
+}
+.provinciaC {
+	width: 30mm;
+}
+.nrooficioC {
+	margin-left: 15mm;
+	margin-top: 4mm;
+}
+.comisariaC {
+	margin-top: 4mm;
+	margin-left: 10mm;
+}
+.fechaC {
+	margin-top: 90mm;
+	margin-left: 35mm;
+	font-size: 12px;
+}
+table td {
+	border: none;
+}
+.diaC {
+	width: 5mm;
+	text-align: left;
+}
+
+.gradoC {
+	margin-top: 25mm;
+	margin-left: 5mm;
+}
+.conductorC {
+	margin-top: 9mm;
+}
+/* HOJA DE REGISTRO */
+.HojaRegistro {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 25mm;
+	left: 80mm;
+	font-size: 12px;
+}
+.lugar_com {
+	transform: rotate(60deg);
+}
+.aspaHR {
+	font-size: 1.2em;
+}
+.aspaHR.cont {
+	margin-left: 117mm;
+}
+.aspaHR.comp {
+	margin-left: 157mm;
+}
+.aspaHR.gratis {
+	margin-left: 177mm;
+}
+.unidadHR {
+	margin-left: 40mm;
+	margin-top: 6mm;
+}
+.unidadHR td,
+.filaHR td {
+	text-align: left;
+	font-size: 12px;
+}
+.filahoraHR {
+	margin-left: 2mm;
+	margin-top: 7mm;
+}
+.horaC {
+	width: 45mm;
+}
+.diaC {
+	width: 30mm;
+}
+.mesC {
+	width: 70mm;
+}
+.nombreHR {
+	margin-left: 5mm;
+	margin-top: 0mm;
+}
+.nrooficioHR {
+	width: 85mm;
+}
+.filaoficio {
+	margin-left: 25mm;
+}
+.usuarioHR {
+	margin-left: 60mm;
+	margin-top: 5mm;
+}
+.nacionalidadHR {
+	margin-left: 145mm;
+}
+.filadatosinf {
+	margin-left: 30mm;
+}
+.nrodocHR {
+	width: 53mm;
+}
+.datoslicenciaHR {
+	margin-left: 5mm;
+	margin-top: 10mm;
+}
+.licenciaHR {
+	width: 70mm;
+}
+.claseHR {
+	width: 55mm;
+}
+.vehiculoHR {
+	width: 35mm;
+}
+.motivoHR {
+	margin-left: 15mm;
+}
+.datosinfraccionHR {
+	margin-left: 80mm;
+	margin-top: 37mm;
+}
+.hora_infraccionHR {
+	width: 70mm;
+}
+.conductorHR {
+	margin-left: 45mm;
+}
+.datosextraccionHR {
+	margin-top: 52mm;
+	margin-left: 80mm;
+}
+.hora_extraccionHR {
+	width: 70mm;
+}
+/*  CERTIFICADO ---------------------------------*/
+.Certificado {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 55mm;
+	left: 90mm;
+	font-size: 13px;
+}
+.Certificado p {
+	margin-top: 4mm;
+}
+.filaCertificado td {
+	font-size: 13px !important;
+	text-align: left;
+}
+.txtbold {
+	font-weight: bold;
+}
+.nrotarifa {
+	font-size: 14px;
+}
+.nombreCert {
+	margin-top: 4mm !important;
+}
+.EdadCert {
+	margin-top: 20mm;
+}
+.LicenciaCert {
+	margin-top: 22mm;
+}
+.edadInfCert,
+.licenciaCert {
+	width: 65mm;
+}
+.vehiculoCert {
+	margin-top: 3mm;
+}
+.vehCert {
+	width: 75mm;
+}
+.oficioCert {
+	margin-top: 8mm;
+}
+.fecharecepCert {
+	font-size: 11px;
+	margin-left: 20mm;
+}
+.motivoCert {
+	margin-top: 5mm;
+	font-weight: bold;
+}
+.conductorCert {
+	margin-top: 13.5mm;
+}
+.DatosInfCert,
+.PeritoCert,
+.ObsCert {
+	margin-top: 8mm;
+}
+.DatosExtCert {
+	margin-top: -1mm !important;
+}
+.TipoMuestraCert {
+	margin-top: 7.5mm;
+	width: 120mm;
+}
+.ExtractorCert {
+	margin-top: 8mm;
+}
+.MetodoCert {
+	margin-top: 10.5mm;
+}
+.DatosPeritoCert {
+	margin-top: 22mm;
+}
+.gradoPeritoCert {
+	width: 75mm;
+}
+.ObsCert {
+	margin-left: -50mm;
+	width: 150mm;
+}
+.ResultCuantCert {
+	margin-top: 25mm;
+	margin-left: 15mm;
+	font-weight: bold;
+}
+.letrasCert {
+	margin-left: -25mm;
+	width: 120mm;
+	text-align: center;
+}
+.fechaactualCert {
+	margin-top: 12mm;
+	margin-left: 75mm;
+}
+.conclusionCert {
+	margin-top: 8mm;
+}
+/* VALE -------------------------------------*/
+.Vale {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 24mm;
+	top: 13mm;
+	font-size: 12px;
+}
+.fechaV {
+	margin-left: 23mm;
+}
+.comisariaV {
+	margin-top: 4mm;
+	font-size: 8px;
+}
+.nrooficioV {
+	margin-top: 3mm;
+}
+.codRegistroV {
+	margin-top: 3mm;
+	margin-left: 3mm;
+}
+.nombreV {
+	margin-top: 14mm;
+	margin-left: -13mm;
+	font-size: 10px;
+}
+.docV {
+	margin-top: 3mm;
+	margin-left: 15mm;
+}
+.lugarcomisionV {
+	margin-top: 9mm;
+	margin-left: -13px;
+	font-size: 10px;
+}
+.ReportePDF,
+.ReportePDF table {
+	width: 100%;
+	color: #222f3e;
+}
+.ReportePDF table th {
+	padding: 5px 0;
+}
+.ReportePDF table td,
+.ReportePDF table th {
+	border: 1px solid #46c9a8;
+}
+.td-colspan {
+	text-align: left !important;
+	padding: 7px 10px !important;
+	font-weight: 600;
+	font-size: 1.2em;
+	background-color: #f5f6fa;
+}
+.td-colspan.segundo-nvl {
+	background-color: #34495e !important;
+	color: #fff;
+}

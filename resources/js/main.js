@@ -36,6 +36,26 @@ const crearOptionsTipoDoc = (tiposDocumento) =>
     )
     .join("");
 
+/* CARGA DE AUTOCOMPLETADOS Y SELECT */
+const llenarListadoPeritos = async () => {
+  let peritos = await cargarPeritos();
+  let nombrePeritos = peritos.map((perito) => perito.nombre);
+  autocompletadoPeritos(nombrePeritos, peritos);
+};
+const llenarListadoExtractores = async () => {
+  let extractores = await cargarExtractores();
+  let nombreExtractores = extractores.map((extractor) => extractor.nombre);
+  autocompletadoExtractores(nombreExtractores, extractores);
+};
+const llenarListadoComisarias = async () => {
+  let comisarias = await cargarComisarias();
+  let nombreComisarias = comisarias.map((comisaria) => comisaria.comisaria);
+  autocompletadoComisarias(nombreComisarias, comisarias);
+};
+const llenarTipoDoc = async () => {
+  let tiposDocumento = await cargarTipoDoc();
+  $("#tipoDoc").html(crearOptionsTipoDoc(tiposDocumento));
+};
 /*----------------------- MODALS ------------------------------- */
 const btnCambioPass = document.querySelector("#btnCambioPass");
 const btnOff = document.querySelector("#btnOff");
@@ -44,6 +64,7 @@ const modalContent = document.querySelector("#modal-content");
 const modalForm = document.querySelector("#modal_form");
 
 //Abrir Modal
+
 const abrirModal = (form) => {
   modal.style.display = "table";
   $.ajax({
@@ -55,6 +76,23 @@ const abrirModal = (form) => {
       if (form === "frmPersonal.html") {
         if (actionForm == "U") llenarDatosPersonal();
         else $("#btn_search_personal").css("display", "block");
+      }
+      if (form === "frmNuevoRegistro.html") {
+        if (actionForm == "U") {
+          llenarTipoDoc();
+          llenarDatosIncidencia();
+          llenarListadoPeritos();
+        } else {
+          $("#btn_search_user").css("display", "block");
+          $("#btn_search_conductor").css("display", "block");
+          let fechaActual = cargarFechaActual();
+          console.log(fechaActual);
+          $("#fechaRecepcion").val(fechaActual["fecha"]);
+          $("#horaRecepcion").val(fechaActual["hora"]);
+          fechaRecepcion.max = fechaActual["fecha"];
+          fechaInfraccion.max = fechaActual["fecha"];
+          fechaExtraccion.max = fechaActual["fecha"];
+        }
       }
     },
   });
@@ -82,7 +120,6 @@ const msgAlert = (icono, titulo, texto) => {
     timer: 2000,
   });
 };
-
 /* BOTÓN CERRAR SESIÓN*/
 btnOff.addEventListener("click", async () => {
   let datos = new FormData();
@@ -111,25 +148,13 @@ const cargarFechaActual = () => {
 $(document).on("click", "#btn-nuevo", async () => {
   modalContent.classList.add("frm-lg");
   abrirModal("frmNuevoRegistro.html");
-  let comisarias = await cargarComisarias();
-  let extractores = await cargarExtractores();
-  let peritos = await cargarPeritos();
-  let nombreComisarias = comisarias.map((comisaria) => comisaria.comisaria);
-  let nombreExtractores = extractores.map((extractor) => extractor.nombre);
-  let nombrePeritos = peritos.map((perito) => perito.nombre);
-
-  autocompletadoComisarias(nombreComisarias, comisarias);
-  autocompletadoExtractores(nombreExtractores, extractores);
-  autocompletadoPeritos(nombrePeritos, peritos);
-  let tiposDocumento = await cargarTipoDoc();
-  $("#tipoDoc").html(crearOptionsTipoDoc(tiposDocumento));
-  let fechaActual = cargarFechaActual();
-  $("#fechaRecepcion").val(fechaActual["fecha"]);
-  $("#horaRecepcion").val(fechaActual["hora"]);
-  fechaRecepcion.max = fechaActual["fecha"];
-  fechaInfraccion.max = fechaActual["fecha"];
-  fechaExtraccion.max = fechaActual["fecha"];
+  actionForm = "R";
+  llenarListadoPeritos();
+  llenarListadoExtractores();
+  llenarListadoComisarias();
+  llenarTipoDoc();
 });
+
 //Cargar autocompletados
 function autocompletadoComisarias(nombres, listadoOriginal) {
   $("#comisaria").autocomplete({
@@ -213,7 +238,6 @@ async function buscarPersonaBd(tipoDoc, nroDoc) {
   let persona = await postData(datos, "controllerPersona.php");
   return persona[0];
 }
-
 $(document).on("click", "#btn_search_user", async () => {
   /* Limpiar usuario antes de enviar nuevo número */
   $("#nombre").val("");
@@ -279,8 +303,6 @@ $(document).on("click", "#btn_search_personal", async () => {
 });
 
 /* ----------- VALIDACIONES -------------------------- */
-
-/* */
 const isNumber = (e) => {
   if (e.keyCode < 48 || e.keyCode > 57) return false;
 };
@@ -322,10 +344,10 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-        ? "N"
-        : tipoProc == "S"
-          ? "N"
-          : "";
+      ? "N"
+      : tipoProc == "S"
+      ? "N"
+      : "";
   let resCualitativo = tipoProc !== "E" ? tipoProc : "";
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
@@ -383,10 +405,9 @@ $(document).on("submit", "#frmPersonal", async (e) => {
   let respuesta = await postData(datos, "controllerPersona.php");
   if (respuesta.response === 1) {
     msgAlert("success", "Hecho!", "Se actualizó la información");
-    cerrarModal()
-    ListarPersonal()
-  }
-  else msgAlert("error", "algo salió mal", respuesta.response);
+    cerrarModal();
+    ListarPersonal();
+  } else msgAlert("error", "algo salió mal", respuesta.response);
 });
 /* FRM CAMBIO CONTRASEÑA */
 $(document).on("submit", "#frmCambioPass", async (e) => {
@@ -397,7 +418,11 @@ $(document).on("submit", "#frmCambioPass", async (e) => {
   let respuesta = await postData(datos, "controllerPersona.php");
   //respuesta=respuesta.response
   if (respuesta.response === 1) {
-    msgAlert("success", "Cambio Existoso", "Se realizó el cambio de contraseña");
+    msgAlert(
+      "success",
+      "Cambio Existoso",
+      "Se realizó el cambio de contraseña"
+    );
     cerrarModal();
   } else msgAlert("error", "algo salió mal", respuesta.response);
 });
@@ -476,14 +501,20 @@ $(document).on("submit", "#frmHojaRegistro", async (e) => {
   e.preventDefault();
   let form = document.querySelector("#frmHojaRegistro");
   let datos = new FormData(form);
-  datos.append("accion", "REGISTRAR_INCIDENCIA");
+  if (actionForm === "U") {
+    datos.append("accion", "REGISTRAR_PERITAJE");
+    datos.append("idInfraccion", CodigoSearch);
+  } else datos.append("accion", "REGISTRAR_INCIDENCIA");
   let respuesta = await postData(datos, "controllerIncidencia.php");
   respuesta = respuesta.response;
-  if (respuesta === 1) {
-    msgAlert('success', 'Hecho', 'Se registró la información')
+  console.log(respuesta);
+  if (respuesta !== 0) {
+    msgAlert("success", "Hecho", "Se registró la información");
     listarIncidencias();
-  }
-  else msgAlert('error', 'Algo salió mal', 'No se pudo registrar la información')
+    if (actionForm == "R") PDFHojaRegistro(respuesta);
+    cerrarModal();
+  } else
+    msgAlert("error", "Algo salió mal", "No se pudo registrar la información");
 });
 
 /* INCIDENCIAS */
@@ -493,4 +524,142 @@ async function listarIncidencias() {
   datos.append("accion", "LISTAR_INCIDENCIAS");
   let incidencias = await postData(datos, "controllerIncidencia.php");
   $("#tb_incidencias").html(incidencias.listado);
+}
+/* REG PERITAJE */
+$(document).on("click", "#tb_incidencias .btnRegPeritaje", async function (e) {
+  e.preventDefault();
+  let parent = $(this).closest("table");
+  let tr = $(this).closest("tr");
+  let codigo = $(tr).find("td").eq(0).html();
+  modalContent.classList.add("frm-lg");
+  abrirModal("frmNuevoRegistro.html");
+  actionForm = "U";
+  CodigoSearch = codigo;
+});
+async function llenarDatosIncidencia() {
+  $("#btn_search_user").css("display", "none");
+  $("#btn_search_conductor").css("display", "none");
+  let datos = new FormData();
+  datos.append("accion", "BUSCAR_INFRACCION");
+  datos.append("idInfraccion", CodigoSearch);
+  let respuesta = await postData(datos, "controllerIncidencia.php");
+  let infraccion = respuesta.infraccion[0];
+  let extraccion = respuesta.extraccion;
+  console.log(infraccion);
+  console.log(extraccion);
+
+  $("#nombre").val(infraccion.infractor);
+  $("#comisaria").val(infraccion.comisaria);
+  $("#nroDoc").val(infraccion.nro_doc);
+  $("#nroOficio").val(infraccion.n_oficio);
+  $("#fechaRecepcion").val(infraccion.fecha_registro);
+  $("#horaRecepcion").val(infraccion.hora_registro);
+  $("#edad").val(infraccion.edad);
+  $("#vehiculo").val(infraccion.vehiculo);
+  $("#placa").val(infraccion.placa);
+  $("#clase").val(infraccion.clase);
+  $("#licConducir").val(infraccion.lic_conducir);
+  $("#sexo").val(infraccion.sexo);
+  $("#motivo").val(infraccion.Motivo);
+  $("#fechaInfraccion").val(infraccion.fecha_infr);
+  $("#horaInfraccion").val(infraccion.hora_infr);
+  $("#nombreConductor").val(infraccion.conductor);
+  $("#gradoConductor").val(infraccion.grado);
+  $("#nroDocConductor").val(infraccion.docConductor);
+  $("#nacionalidad").val(infraccion.nacionalidad);
+  $("#tipoDoc").val(infraccion.id_tipodoc);
+  $("#hojaRegistro").val(infraccion.hoja_registro);
+
+  let htmlTipoMuestra =
+    extraccion.tipo_muestra !== "N"
+      ? `<option value=" 0">Tipo Muestra</option><option value="S">Sangre</option><option value="O">Orina</option>`
+      : `<option value="N">Sin Muestra</option>`;
+  $("#tipoMuestra").html(htmlTipoMuestra);
+
+  $("#tipoMuestra").val(extraccion.tipo_muestra);
+  $("#extractor").val(extraccion.extractor);
+  $("#fechaExtraccion").val(extraccion.fecha_extracc);
+  $("#horaExtraccion").val(extraccion.hora_extracc);
+  $("#observacion").val(extraccion.observacion);
+}
+function PDFHojaRegistro(idInfraccion) {
+  var ancho = 1000;
+  var alto = 800;
+  var x = parseInt(window.screen.width / 2 - ancho / 2);
+  var y = parseInt(window.screen.height / 2 - alto / 2);
+
+  $url = `resources/libraries/pdf/PDFhojaregistro.php?IdHojaRegistro=${idInfraccion}`;
+  window.open(
+    $url,
+    "Comprobante",
+    `left=${x} ,top=${y},height= ${alto}, width= ${ancho},scrollbar=si,location=no,resizable=si,menubar=no`
+  );
+}
+$(document).on("click", "#tb_incidencias .btnUpdateCertificado", function (e) {
+  e.preventDefault();
+  Swal.fire({
+    title: "Desea anular los cerfiticados anteriores y registrar uno nuevo?",
+    text: "esta operación no puede ser revertida",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#46aef7",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Continuar",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      let parent = $(this).closest("table");
+      let tr = $(this).closest("tr");
+      let codigo = $(tr).find("td").eq(0).html();
+      abrirModal("frmNewCertificado.html");
+      actionForm = "U";
+      CodigoSearch = codigo;
+    }
+  });
+});
+$(document).on("click", "#tb_incidencias .btnRegCertificado", function (e) {
+  e.preventDefault();
+  let parent = $(this).closest("table");
+  let tr = $(this).closest("tr");
+  let codigo = $(tr).find("td").eq(0).html();
+  abrirModal("frmNewCertificado.html");
+  actionForm = "R";
+  CodigoSearch = codigo;
+});
+$(document).on("submit", "#frmNewCertificado", async (e) => {
+  e.preventDefault();
+  let form = document.querySelector("#frmNewCertificado");
+  let datos = new FormData(form);
+  datos.append("accion", "REGISTRAR_CERTIFICADO");
+  datos.append("idInfraccion", CodigoSearch);
+  let respuesta = await postData(datos, "controllerIncidencia.php");
+  respuesta = respuesta.response;
+  console.log(respuesta);
+  if (respuesta !== 0) {
+    msgAlert("success", "Hecho", "Se registró la información");
+    listarIncidencias();
+    cerrarModal();
+  } else
+    msgAlert("error", "Algo salió mal", "No se pudo registrar la información");
+});
+
+$(document).on("click", "#tb_incidencias .lnkCertificado", function (e) {
+  e.preventDefault();
+  let parent = $(this).closest("table");
+  let tr = $(this).closest("tr");
+  let codigo = $(tr).find("td").eq(0).html();
+  PDFCertificado(codigo);
+});
+function PDFCertificado(idInfraccion) {
+  var ancho = 1000;
+  var alto = 800;
+  var x = parseInt(window.screen.width / 2 - ancho / 2);
+  var y = parseInt(window.screen.height / 2 - alto / 2);
+
+  $url = `resources/libraries/pdf/PDFcertificado.php?idInfraccion=${idInfraccion}`;
+  window.open(
+    $url,
+    "Comprobante",
+    `left=${x} ,top=${y},height= ${alto}, width= ${ancho},scrollbar=si,location=no,resizable=si,menubar=no`
+  );
 }

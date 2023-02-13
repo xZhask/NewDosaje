@@ -61,10 +61,10 @@ $perfil = $_SESSION['idperfil'];
                             <img src="resources/img/reset_pass.svg" alt="">
                             <p>Cambiar Contraseña</p>
                         </li>
-                        <li id="btnUpdateInfo">
+                        <!-- <li id="btnUpdateInfo">
                             <img src="resources/img/edit_profile.svg" alt="">
                             <p>Actualizar información</p>
-                        </li>
+                        </li> -->
                         <li id="btnOff">
                             <img src="resources/img/btn_off.svg" alt="">
                             <p>Cerrar sesión</p>
