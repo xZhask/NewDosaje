@@ -19,7 +19,7 @@ $perfil = $_SESSION['idperfil'];
     <link rel="stylesheet" href="resources/js/sweetalert2.min.css">
     <link rel="stylesheet" href="resources/css/style.css">
     <script src="https://kit.fontawesome.com/47b4aaa3bf.js" crossorigin="anonymous"></script>
-    <!--<link rel="icon" type="image/png" href="favicon.png" />-->
+    <link rel="icon" type="image/png" href="resources/img/test.svg" />
     <title>Dosaje</title>
 </head>
 
@@ -33,10 +33,14 @@ $perfil = $_SESSION['idperfil'];
                             <p>Muestra</p>
                         </a>
                     </li>
-                    <li><a href="/reportes.html" class="lnk-menu" id="lnk-reportes">
+                    <li><a class="lnk-menu">
                             <img src="resources/img/chart.svg" alt="">
                             <p>Reportes</p>
                         </a>
+                        <ul class="list-toggle">
+                            <li><a href="/reportediario.html" id="lnk-reporteDiario">Rep. Diario</a></li>
+                            <li><a href="/reportemensual.html" id="lnk-reporteMensual">Rep. Mensual</a></li>
+                        </ul>
                     </li>
                     <? if ($perfil === '1') { ?>
                         <li><a href="/usuarios.html" class="lnk-menu" id="lnk-usuarios">
@@ -61,10 +65,6 @@ $perfil = $_SESSION['idperfil'];
                             <img src="resources/img/reset_pass.svg" alt="">
                             <p>Cambiar Contraseña</p>
                         </li>
-                        <!-- <li id="btnUpdateInfo">
-                            <img src="resources/img/edit_profile.svg" alt="">
-                            <p>Actualizar información</p>
-                        </li> -->
                         <li id="btnOff">
                             <img src="resources/img/btn_off.svg" alt="">
                             <p>Cerrar sesión</p>

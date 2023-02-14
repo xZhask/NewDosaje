@@ -112,7 +112,7 @@ $("a.closeModal").on("click", (e) => {
 /* MODAL MENSAJE ALERT */
 const msgAlert = (icono, titulo, texto) => {
   Swal.fire({
-    position: "bottom-end",
+    position: "top-end",
     icon: icono,
     title: titulo,
     text: texto,
@@ -193,6 +193,8 @@ function autocompletadoPeritos(nombres, listadoOriginal) {
 /*----------------------- SECTIONS ------------------------------- */
 const lnkMuestra = document.querySelector("#lnk-muestra");
 const lnkReportes = document.querySelector("#lnk-reportes");
+const lnkReporteDiario = document.querySelector("#lnk-reporteDiario");
+const lnkReporteMensual = document.querySelector("#lnk-reporteMensual");
 const lnkUsuarios = document.querySelector("#lnk-usuarios");
 const contenedor = document.querySelector("#section_view");
 
@@ -211,7 +213,8 @@ const loadView = async (e, lnk) => {
 };
 
 lnkMuestra.addEventListener("click", (e) => loadView(e, lnkMuestra));
-lnkReportes.addEventListener("click", (e) => loadView(e, lnkReportes));
+lnkReporteDiario.addEventListener("click", (e) => loadView(e, lnkReporteDiario));
+lnkReporteMensual.addEventListener("click", (e) => loadView(e, lnkReporteMensual));
 lnkUsuarios.addEventListener("click", (e) => loadView(e, lnkUsuarios));
 
 /*----------------------- FORMS ------------------------------- */
@@ -340,22 +343,24 @@ $(document).on("keyup", "#cuantitativo", () => {
 /* TipoProc */
 $(document).on("change", "#tipoProcedimiento", () => {
   let tipoProc = $("#tipoProcedimiento").val();
-  let resCuantitativo =
+  let resCualitativo =
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
         ? "N"
         : tipoProc == "S"
           ? "N"
-          : "";
-  let resCualitativo = tipoProc !== "E" ? tipoProc : "";
+          : tipoProc == "AD"
+            ? "A/D"
+            : "";
+  let resCuantitativo = (tipoProc === "E") ? "" : (tipoProc === "AD") ? "0.00" : tipoProc;
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
   let textoLabelHora =
     tipoProc !== "E" ? "Hora Constatación" : "Hora Extracción";
 
   let htmlTipoMuestra =
-    tipoProc == "E"
+    (tipoProc == "E" || tipoProc == "AD")
       ? `<option value=" 0">Tipo Muestra</option><option value="S">Sangre</option><option value="O">Orina</option>`
       : `<option value="N">Sin Muestra</option>`;
 
@@ -364,10 +369,13 @@ $(document).on("change", "#tipoProcedimiento", () => {
     $(".control_peritaje").addClass("input_block");
     $("#idPerito").val("");
     $("#perito").val("");
+
   } else {
     $(".control_peritaje").prop("readonly", false);
     $(".control_peritaje").removeClass("input_block");
   }
+  if (tipoProc == 'C' || tipoProc == 'AD') $('#lugarComision').css('display', 'block');
+  else $('#lugarComision').css('display', 'none')
 
   $("#cuantitativo").val(resCuantitativo);
   $("#cualitativo").val(resCualitativo);
@@ -412,19 +420,24 @@ $(document).on("submit", "#frmPersonal", async (e) => {
 /* FRM CAMBIO CONTRASEÑA */
 $(document).on("submit", "#frmCambioPass", async (e) => {
   e.preventDefault();
-  let form = document.querySelector("#frmCambioPass");
-  let datos = new FormData(form);
-  datos.append("accion", "CAMBIAR_PASS");
-  let respuesta = await postData(datos, "controllerPersona.php");
-  //respuesta=respuesta.response
-  if (respuesta.response === 1) {
-    msgAlert(
-      "success",
-      "Cambio Existoso",
-      "Se realizó el cambio de contraseña"
-    );
-    cerrarModal();
-  } else msgAlert("error", "algo salió mal", respuesta.response);
+  let passActual = $('#passActual').val();
+  let passNueva = $('#passNueva').val();
+  if (passActual == '' || passNueva == '') {
+    msgAlert("warning", "Ingrese campos necesarios", 'Datos incompletos');
+  } else {
+    let form = document.querySelector("#frmCambioPass");
+    let datos = new FormData(form);
+    datos.append("accion", "CAMBIAR_PASS");
+    let respuesta = await postData(datos, "controllerPersona.php");
+    if (respuesta.response === 1) {
+      msgAlert(
+        "success",
+        "Cambio Existoso",
+        "Se realizó el cambio de contraseña"
+      );
+      cerrarModal();
+    } else msgAlert("error", "algo salió mal", respuesta.response);
+  }
 });
 
 //Form Personal
@@ -701,4 +714,9 @@ $(document).on("click", "#btnImprmirReporte", async function (e) {
     msgAlert('warning', 'Seleccione fecha y turno porfavor', 'Campos necesarios')
   else
     PDFReporteDiario();
+});
+$(document).on("click", "#btn-reporteMensual", async function (e) {
+  e.preventDefault();
+  let fecha = $('#repFechaInicio').val();
+  alert(fecha)
 });

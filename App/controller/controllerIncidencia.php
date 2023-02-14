@@ -11,7 +11,10 @@ function controlador($accion)
 
     switch ($accion) {
         case 'LISTAR_INCIDENCIAS':
+            //if (isset($_POST['nombre']))
             $listaInfracciones = $objInfraccion->listarInfracciones();
+            //else
+            //$listaInfracciones = $objInfraccion->filtrarInfracciones($idInfractor);
             $listado = '';
             while ($fila = $listaInfracciones->fetch(PDO::FETCH_NAMED)) {
                 $idInfraccion = $fila['id_infraccion'];
@@ -56,18 +59,18 @@ function controlador($accion)
                     $colPeritaje .= '</td>';
 
                     if ($certificados->rowCount() > 0) {
-                        $colCertificado .= '<td>';
+                        $colCertificado .= '<td class="td-certificado">';
                         while ($row = $certificados->fetch(PDO::FETCH_OBJ)) {
                             if ($row->estado == 'I')
-                                $colCertificado .= '<p>' . $row->n_serie . '-'  . $row->n_certificado . '<p><br>';
+                                $colCertificado .= '<p>' . $row->n_serie . '-'  . $row->n_certificado . '</p><br>';
                             else
-                                $colCertificado .= '<button class="lnkCertificado">' . $row->n_serie . '-' . $row->n_certificado . '</button><br>';
+                                $colCertificado .= '<button class="lnkCertificado btn-blue">' . $row->n_serie . '-' . $row->n_certificado . '</button><br>';
                         }
                         $colCertificado .= '<button class="bntNewCertificado btnUpdateCertificado">Nuevo Certificado</button></td>';
                     } else $colCertificado .= '<td><button class="bntNewCertificado btnRegCertificado">Reg. Certificado</button></td>';
                 } else {
                     $colPeritaje .= '<td><button class="btnRegPeritaje">Registrar Peritaje</button></td>';
-                    $colCertificado .= '<td>nada</td>';
+                    $colCertificado .= '<td></td>';
                 }
 
                 $listado .= '<tr>';

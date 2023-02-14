@@ -1,0 +1,29 @@
+<div class="header_section_view">
+    <h1>Consolidado Mensual</h1>
+    <div class="group_controls">
+        <label>Desde: </label>
+        <input type="date" name="repFechaInicio" id="repFechaInicio" />
+        <label>Hasta: </label>
+        <input type="date" name="repFechaFin" id="repFechaFin" />
+        <!--input type="month" name="repFechaMes" id="repFechaMes" />-->
+        <button id="btn-reporteMensual">Buscar</button>
+    </div>
+</div>
+<div class="body_section_view">
+    <div class="cont-export">
+        <p>Exportar: </p>
+        <i id="btnImprmirReporte" class="fa-solid fa-file-pdf i-red btnReporte"></i>
+    </div>
+
+    <table class="t_listado">
+        <thead>
+            <tr>
+                <th>Muestra</th>
+                <th>Total</th>
+                <th>#</th>
+                <th>Comisiones</th>
+            </tr>
+        </thead>
+        <tbody id="tbReporte"></tbody>
+    </table>
+</div>
