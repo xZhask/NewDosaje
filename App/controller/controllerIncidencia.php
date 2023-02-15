@@ -28,7 +28,7 @@ function controlador($accion)
                 if ($extraccion->rowCount() > 0) {
                     $extraccion = $extraccion->fetch(PDO::FETCH_NAMED);
                     $muestra = $extraccion['tipo_muestra'];
-                    $fechaExtraccion = $extraccion['fecha_extracc'] . ' ' . $extraccion['hora_extracc'];
+                    $fechaExtraccion = date("d-m-Y", strtotime($extraccion['fecha_extracc'])) . ' ' . $extraccion['hora_extracc'];
                     $hrsTranscurridas = $extraccion['hrs_transcurridas'];
                     $Extractor = $extraccion['extractor'];
                     $observacion = $extraccion['observacion'];
@@ -91,7 +91,7 @@ function controlador($accion)
                 $listado .= '<p><span>Comandancia: </span>  ' . $fila['comisaria'] . '</p>';
                 $listado .= '<p><span>Motivo: </span>  ' . $fila['Motivo'] . '</p>';
                 $listado .= '<p><span>Conducido por: </span>  ' . $fila['conductor'] . '</p>';
-                $listado .= '<p><span>Fecha infracción: </span>  ' . $fila['fecha_infr'] . ' ' . $fila['hora_infr'] . '</p>';
+                $listado .= '<p><span>Fecha infracción: </span>  ' . date("d-m-Y", strtotime($fila['fecha_infr'])) . ' ' . $fila['hora_infr'] . '</p>';
                 $listado .= '</td>';
                 $listado .= '<td class="t_left">';
                 $listado .= '<p><span>Muestra: </span>  ' . $muestra . '</p>';
@@ -104,7 +104,7 @@ function controlador($accion)
                 $listado .= '<td class="t_left">';
                 $listado .= '<p><span>Hoja de Registro:</span>  ' . $fila['hoja_registro'] . '</p>';
                 $listado .= '<p><span>Digitador:</span>  ' . $fila['digitador'] . '</p>';
-                $listado .= '<p><span>Recepción:</span>  ' . $fila['fecha_registro'] . ' ' . $fila['hora_registro'] . '</p>';
+                $listado .= '<p><span>Recepción:</span>  ' . date("d-m-Y", strtotime($fila['fecha_registro'])) . ' ' . $fila['hora_registro'] . '</p>';
                 $listado .= '</td>';
                 $listado .= $colCertificado;
                 $listado .= '</tr>';
@@ -174,7 +174,7 @@ function controlador($accion)
                 'infractor' => $idInfractor,
                 'digitador' => $_SESSION['iduser'],
                 'personal_conductor' => $idConductor,
-                'lugar_incidencia' => '',
+                'lugar_incidencia' => $_POST['lugarComision'],
             ];
             $idInfraccion = $objInfraccion->RegistrarInfraccion($dataIncidencia);
 

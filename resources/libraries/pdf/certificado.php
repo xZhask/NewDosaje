@@ -89,10 +89,10 @@ function getPlantilla($idInfraccion)
         <p class="fecharecepCert"> DEL ' . $dia . '-' . $mes . '-' . $year . '</p>
         <p class="motivoCert">' . $infraccion['Motivo'] . '</p>
         <p class="conductorCert">' . $infraccion['grado'] . ' ' . $infraccion['conductor'] . '</p>
-        <p class="DatosInfCert">' . $infraccion['hora_infr'] . ' Horas del ' . $infraccion['fecha_infr'] . '</p>';
+        <p class="DatosInfCert">' . $infraccion['hora_infr'] . ' Horas del ' . date("d-m-Y", strtotime($infraccion['fecha_infr'])) . '</p>';
     $plantilla .= '<p class="textoConstata">' . $textoConstata . '</p>';
 
-    $plantilla .= '<p class="DatosExtCert">' . $extraccion['hora_extracc'] . ' Horas del ' . $extraccion['fecha_extracc'] . '</p>
+    $plantilla .= '<p class="DatosExtCert">' . $extraccion['hora_extracc'] . ' Horas del ' . date("d-m-Y", strtotime($extraccion['fecha_extracc'])) . '</p>
         <p class="ExtractorCert">' . $extraccion['grado'] . ' ' . $extraccion['extractor'] . '</p>
         <p class="TipoMuestraCert">' . $textoMuestra . '</p>
         <p class="MetodoCert"> ' . $textoMetodo . ' </p>';
@@ -113,7 +113,7 @@ function getPlantilla($idInfraccion)
         $plantilla .= '<p class="letrasCert">' . $letras . '</p>';
     }
     $plantilla .= '<p class="conclusionCert">' . $conclusion . '</p>
-        <p class="fechaactualCert">' . $fecha_actual . '</p>';
+        <p class="fechaactualCert">' . date("d-m-Y", strtotime($fecha_actual)) . '</p>';
 
     $plantilla .= '</div></body>';
     return $plantilla;

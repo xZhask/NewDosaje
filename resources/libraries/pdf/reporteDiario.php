@@ -49,7 +49,7 @@ function getPlantilla($fechaInicio, $turno)
     }
     //$respuesta = ['fecha' => $fechaInicio, 'fecha' => $fechaInicio, 'turno' => $turno];
     $plantilla = '<body>';
-    $plantilla .= '<h1>Muestras tomadas el ' . $fechaInicio . '</h1>';
+    $plantilla .= '<h1>Muestras tomadas el ' . date("d-m-Y", strtotime($fechaInicio)) . '</h1>';
     $plantilla .= '<div class="reporte">';
     $plantilla .= '<table class="t_listado t_reporte">';
     $plantilla .= '<thead>';
