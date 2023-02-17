@@ -776,13 +776,13 @@ DARK: #4b4b4b;#2980b9
     -ms-transition: all .4s ease;
     -o-transition: all .4s ease;
     font-size: .8em;
-    background-color: var(--sombreado);
 }
 
 .list-toggle li {
     height: 40px;
     width: 130px;
     text-align: left !important;
+    background-color: var(--sombreado);
 }
 
 .list_menu li:hover .list-toggle {
@@ -847,7 +847,47 @@ td button {
     outline: none;
 }
 
-#searchPerson {
-    padding: 10px;
+.group-search {
     width: 30%;
+    display: flex;
+    position: relative;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    overflow: hidden;
+}
+
+.group-search input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -ms-border-radius: 5px 0 0 5px;
+    -o-border-radius: 5px 0 0 5px;
+}
+
+.group-search i {
+    background-color: var(--primary);
+    position: absolute;
+    justify-content: center;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    right: 0;
+    width: 2.5em;
+    cursor: pointer;
+    color: #FFF;
+    transition: all .4s ease;
+    -webkit-transition: all .4s ease;
+    -moz-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    -o-transition: all .4s ease;
+}
+
+.group-search i:hover {
+    background-color: var(--primary-hover);
 }

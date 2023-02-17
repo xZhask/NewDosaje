@@ -565,8 +565,8 @@ async function llenarDatosIncidencia() {
   $("#comisaria").val(infraccion.comisaria);
   $("#nroDoc").val(infraccion.nro_doc);
   $("#nroOficio").val(infraccion.n_oficio);
-  $("#fechaRecepcion").val(infraccion.fecha_registro);
-  $("#horaRecepcion").val(infraccion.hora_registro);
+  $("#fechaRecepcion").val(infraccion.fecha_recepcion);
+  $("#horaRecepcion").val(infraccion.hora_recepcion);
   $("#edad").val(infraccion.edad);
   $("#vehiculo").val(infraccion.vehiculo);
   $("#placa").val(infraccion.placa);
@@ -719,4 +719,14 @@ $(document).on("click", "#btn-reporteMensual", async function (e) {
   e.preventDefault();
   let fecha = $('#repFechaInicio').val();
   alert(fecha)
+});
+$(document).on("keyup", "#searchInfraccion", async function (e) {
+  e.preventDefault();
+  let datoSearch = $('#searchInfraccion').val();
+  let datos = new FormData();
+  datos.append("accion", "LISTAR_INCIDENCIAS");
+  datos.append("datoSearch", datoSearch);
+  let incidencias = await postData(datos, "controllerIncidencia.php");
+  $("#tb_incidencias").html(incidencias.listado);
+  //console.log(datoSearch)
 });

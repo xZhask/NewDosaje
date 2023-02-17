@@ -11,9 +11,11 @@ function controlador($accion)
 
     switch ($accion) {
         case 'LISTAR_INCIDENCIAS':
-            //if (isset($_POST['nombre']))
-            $listaInfracciones = $objInfraccion->listarInfracciones();
-            //else
+            if (empty($_POST['datoSearch']))
+                $listaInfracciones = $objInfraccion->listarInfracciones();
+            else
+                $listaInfracciones = $objInfraccion->filtrarInfraccionUsuario($_POST['datoSearch']);
+
             //$listaInfracciones = $objInfraccion->filtrarInfracciones($idInfractor);
             $listado = '';
             while ($fila = $listaInfracciones->fetch(PDO::FETCH_NAMED)) {
@@ -104,7 +106,7 @@ function controlador($accion)
                 $listado .= '<td class="t_left">';
                 $listado .= '<p><span>Hoja de Registro:</span>  ' . $fila['hoja_registro'] . '</p>';
                 $listado .= '<p><span>Digitador:</span>  ' . $fila['digitador'] . '</p>';
-                $listado .= '<p><span>Recepción:</span>  ' . date("d-m-Y", strtotime($fila['fecha_registro'])) . ' ' . $fila['hora_registro'] . '</p>';
+                $listado .= '<p><span>Recepción:</span>  ' . date("d-m-Y", strtotime($fila['fecha_recepcion'])) . ' ' . $fila['hora_recepcion'] . '</p>';
                 $listado .= '</td>';
                 $listado .= $colCertificado;
                 $listado .= '</tr>';
@@ -169,8 +171,8 @@ function controlador($accion)
                 'placa' => $_POST['placa'],
                 'n_oficio' => $_POST['nroOficio'],
                 'id_comandancia' => $_POST['idComisaria'],
-                'hora_registro' => $_POST['horaRecepcion'],
-                'fecha_registro' => $_POST['fechaRecepcion'],
+                'hora_recepcion' => $_POST['horaRecepcion'],
+                'fecha_recepcion' => $_POST['fechaRecepcion'],
                 'infractor' => $idInfractor,
                 'digitador' => $_SESSION['iduser'],
                 'personal_conductor' => $idConductor,
@@ -255,86 +257,132 @@ function controlador($accion)
             echo json_encode($respuesta);
             break;
         case 'REPORTE_RESULTADOS':
-            $positivos = 0;
-            $negativos = 0;
-            $tsm = 0;
-            $incurso = 0;
-
             $fechaInicio = $_POST['fechaInicio'];
             $fechaFin = $_POST['fechaInicio'];
             $turno = $_POST['turno'];
-
 
             if ($turno === 'M') {
                 $horaInicio = '07:30:00';
                 $horaFin = '19:29:59';
             } else {
                 $horaInicio = '19:30:00';
-                $horaFin = '06:29:59';
+                $horaFin = '00:00:00';
                 $fechaFin = strtotime($fechaInicio . "+ 1 days");
                 $fechaFin = date("Y-m-d", $fechaFin);
             }
-            $parametrosReporte = [
-                'fechaInicio' => $fechaInicio,
-                'horaInicio' => $horaInicio,
-                'fechaFin' => $fechaFin,
-                'horaFin' => $horaFin,
-            ];
 
-            $muestras = $objInfraccion->reporteMuestras($parametrosReporte);
+            $muestras = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
             $total = $muestras->rowCount();
 
-            $resultados = $objInfraccion->reporteResultados($parametrosReporte);
-            if ($resultados->rowCount() > 0) {
-                while ($fila = $resultados->fetch(PDO::FETCH_OBJ)) {
-                    $tipoResultado = $fila->result_cuantitativo;
-                    if ($tipoResultado > 0) $positivos++;
-                    if ($tipoResultado === 0) $negativos++;
-                    if ($tipoResultado === 'T/S/M') $tsm++;
-                    if ($tipoResultado === 'N') {
-                        if ($fila->result_cualitativo === 'I')
-                            $incurso++;
-                    }
-                }
-            }
-            //$respuesta = ['fecha' => $fechaInicio, 'fecha' => $fechaInicio, 'turno' => $turno];
+            $resultados = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+
             $tabla = '<table>';
+            $tabla .= $resultados;
             $tabla .= '<tr>';
             $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
             $tabla .= '<td>' . $total . '</td>';
-            $tabla .= '<td></td>';
-            $tabla .= '<td></td>';
-            $tabla .= '</tr>';
-            $tabla .= '<tr>';
-            $tabla .= '<td>POSITIVOS</td>';
-            $tabla .= '<td>' . $positivos . '</td>';
-            $tabla .= '<td></td>';
-            $tabla .= '<td></td>';
-            $tabla .= '</tr>';
+            //$tabla .= '<td></td>';
+            //$tabla .= '<td></td>';
+            $tabla .= '</tr></tbody></table>';
 
-            $tabla .= '<tr>';
-            $tabla .= '<td>NEGATIVOS</td>';
-            $tabla .= '<td>' . $negativos . '</td>';
-            $tabla .= '<td></td>';
-            $tabla .= '<td></td>';
-            $tabla .= '</tr>';
+            if ($turno === 'N') {
+                $horaInicio = '00:00:01';
+                $horaFin = '07:29:59';
+                $muestrasMadrugada = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+                $totalMadrugada = $muestrasMadrugada->rowCount();
 
-            $tabla .= '<tr>';
-            $tabla .= '<td>T/S/M</td>';
-            $tabla .= '<td>' . $tsm . '</td>';
-            $tabla .= '<td></td>';
-            $tabla .= '<td></td>';
-            $tabla .= '</tr>';
-
-            $tabla .= '<tr>';
-            $tabla .= '<td>INCURSO</td>';
-            $tabla .= '<td>' . $incurso . '</td>';
-            $tabla .= '<td></td>';
-            $tabla .= '<td></td>';
-            $tabla .= '</tr>';
-            $tabla .= '</table>';
+                $resultadosMadrugada = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+                if ($totalMadrugada > 0) {
+                    $tabla .= '<table class="t_listado"><thead>';
+                    $tabla .= '<tr>
+                            <th>MADRUGADA</th>
+                            <th>Total</th>
+                            <th>#</th>
+                            <th>Comisiones</th>
+                                </tr>
+                        </thead>';
+                    $tabla .= $resultadosMadrugada;
+                    $tabla .= '<tr>';
+                    $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
+                    $tabla .= '<td>' . $totalMadrugada . '</td>';
+                    // $tabla .= '<td></td>';
+                    //$tabla .= '<td></td>';
+                    $tabla .= '</tr></tbody></table>';
+                }
+            }
             $respuesta = ['response' => $tabla];
             echo json_encode($respuesta);
             break;
     }
+}
+function reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin)
+{
+    $objInfraccion = new ClsInfraccion();
+    $parametrosReporte = [
+        'fechaInicio' => $fechaInicio,
+        'horaInicio' => $horaInicio,
+        'fechaFin' => $fechaFin,
+        'horaFin' => $horaFin,
+    ];
+
+    $muestras = $objInfraccion->reporteMuestras($parametrosReporte);
+    return $muestras;
+}
+function reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin)
+{
+    $positivos = 0;
+    $negativos = 0;
+    $tsm = 0;
+    $incurso = 0;
+    $objInfraccion = new ClsInfraccion();
+    $parametrosReporte = [
+        'fechaInicio' => $fechaInicio,
+        'horaInicio' => $horaInicio,
+        'fechaFin' => $fechaFin,
+        'horaFin' => $horaFin,
+    ];
+
+    $resultados = $objInfraccion->reporteResultados($parametrosReporte);
+    if ($resultados->rowCount() > 0) {
+        while ($fila = $resultados->fetch(PDO::FETCH_OBJ)) {
+            $tipoResultado = $fila->result_cuantitativo;
+            if ($tipoResultado > 0) $positivos++;
+            else if ($tipoResultado === 0) $negativos++;
+            else if ($tipoResultado === 'T/S/M') $tsm++;
+            else if ($tipoResultado === 'N') {
+                if ($fila->result_cualitativo === 'I')
+                    $incurso++;
+            }
+        }
+    }
+
+    $tabla = '';
+    $tabla .= '<tr><td>POSITIVOS</td>';
+    $tabla .= '<td>' . $positivos . '</td>';
+    $tabla .= '<td rowspan="5"></td>';
+    $tabla .= '<td rowspan="5"></td>';
+    $tabla .= '</tr>';
+
+    $tabla .= '<tr>';
+    $tabla .= '<td>NEGATIVOS</td>';
+    $tabla .= '<td>' . $negativos . '</td>';
+    //$tabla .= '<td></td>';
+    //$tabla .= '<td></td>';
+    $tabla .= '</tr>';
+
+    $tabla .= '<tr>';
+    $tabla .= '<td>T/S/M</td>';
+    $tabla .= '<td>' . $tsm . '</td>';
+    //$tabla .= '<td></td>';
+    //$tabla .= '<td></td>';
+    $tabla .= '</tr>';
+
+    $tabla .= '<tr>';
+    $tabla .= '<td>INCURSO</td>';
+    $tabla .= '<td>' . $incurso . '</td>';
+    //$tabla .= '<td></td>';
+    //$tabla .= '<td></td>';
+    $tabla .= '</tr>';
+
+    return $tabla;
 }

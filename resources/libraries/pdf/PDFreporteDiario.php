@@ -5,8 +5,8 @@ require_once 'reporteDiario.php';
 $fechaInicio = $_GET['fechaInicio'];
 $turno = $_GET['turno'];
 
-$css = file_get_contents('estilosPDF.css');
-$css = file_get_contents('../../../resources/css/style.css');
+//$css = file_get_contents('estilosPDF.css');
+$css = file_get_contents('styleReportes.css');
 
 $mpdf = new \Mpdf\Mpdf([
     'format' => 'A4',

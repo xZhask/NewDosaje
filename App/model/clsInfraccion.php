@@ -4,7 +4,7 @@ class clsInfraccion
 {
     function RegistrarInfraccion($DatosInfraccion)
     {
-        $sql = 'INSERT INTO infraccion(hoja_registro, Motivo, fecha_infr, hora_infr, vehiculo, clase, placa, n_oficio, id_comandancia, hora_registro, fecha_registro, infractor, digitador, personal_conductor, lugar_incidencia) VALUES (:hoja_registro, :Motivo, :fecha_infr, :hora_infr, :vehiculo, :clase, :placa, :n_oficio, :id_comandancia, :hora_registro, :fecha_registro, :infractor, :digitador, :personal_conductor, :lugar_incidencia)';
+        $sql = 'INSERT INTO infraccion(hoja_registro, Motivo, fecha_infr, hora_infr, vehiculo, clase, placa, n_oficio, id_comandancia, hora_recepcion, fecha_recepcion, infractor, digitador, personal_conductor, lugar_incidencia) VALUES (:hoja_registro, :Motivo, :fecha_infr, :hora_infr, :vehiculo, :clase, :placa, :n_oficio, :id_comandancia, :hora_recepcion, :fecha_recepcion, :infractor, :digitador, :personal_conductor, :lugar_incidencia)';
 
         $parametros = [
             ':hoja_registro' => $DatosInfraccion['hoja_registro'],
@@ -16,8 +16,8 @@ class clsInfraccion
             ':placa' => $DatosInfraccion['placa'],
             ':n_oficio' => $DatosInfraccion['n_oficio'],
             ':id_comandancia' => $DatosInfraccion['id_comandancia'],
-            ':hora_registro' => $DatosInfraccion['hora_registro'],
-            ':fecha_registro' => $DatosInfraccion['fecha_registro'],
+            ':hora_recepcion' => $DatosInfraccion['hora_recepcion'],
+            ':fecha_recepcion' => $DatosInfraccion['fecha_recepcion'],
             ':infractor' => $DatosInfraccion['infractor'],
             ':digitador' => $DatosInfraccion['digitador'],
             ':personal_conductor' => $DatosInfraccion['personal_conductor'],
@@ -64,7 +64,7 @@ class clsInfraccion
     }
     function ListarInfracciones()
     {
-        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_registro, i.fecha_registro, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona ORDER BY CONCAT(i.fecha_registro," ",i.hora_registro) DESC';
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona ORDER BY CONCAT(i.fecha_recepcion," ",i.hora_recepcion) DESC LIMIT 10';
         global $cnx;
         return $cnx->query($sql);
     }
@@ -93,7 +93,7 @@ class clsInfraccion
     }
     function buscarInfraccion($idInfraccion)
     {
-        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_registro, i.fecha_registro, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, pc.grado, pc.nro_doc as docConductor, i.lugar_incidencia, i.n_certificado, u.id_tipodoc,td.tipo_doc, u.nacionalidad, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona INNER JOIN tipo_documento td ON td.id_tipodoc=u.id_tipodoc WHERE i.id_infraccion=:id_infraccion';
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, pc.grado, pc.nro_doc as docConductor, i.lugar_incidencia, i.n_certificado, u.id_tipodoc,td.tipo_doc, u.nacionalidad, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona INNER JOIN tipo_documento td ON td.id_tipodoc=u.id_tipodoc WHERE i.id_infraccion=:id_infraccion';
         global $cnx;
         $parametros = [
             ':id_infraccion' => $idInfraccion,
@@ -144,7 +144,7 @@ class clsInfraccion
     /* REPORTES */
     function reporteMuestras($datosReporte)
     {
-        $sql = 'SELECT * FROM infraccion WHERE (fecha_registro>=:fechaInicio AND hora_registro>=:horaInicio) AND (fecha_registro<=:fechaFin AND hora_registro<=:horaFin)';
+        $sql = 'SELECT * FROM infraccion WHERE (fecha_recepcion>=:fechaInicio AND hora_recepcion>=:horaInicio) AND (fecha_recepcion<=:fechaFin AND hora_recepcion<=:horaFin)';
         global $cnx;
         $parametros = [
             ':fechaInicio' => $datosReporte['fechaInicio'],
@@ -158,7 +158,7 @@ class clsInfraccion
     }
     function reporteResultados($datosReporte)
     {
-        $sql = 'SELECT i.id_infraccion,pj.result_cualitativo,pj.result_cuantitativo FROM infraccion i INNER JOIN peritaje pj ON i.id_infraccion=pj.id_infraccion WHERE (fecha_registro>=:fechaInicio AND hora_registro>=:horaInicio)AND(fecha_registro<=:fechaFin AND hora_registro<=:horaFin)';
+        $sql = 'SELECT i.id_infraccion,pj.result_cualitativo,pj.result_cuantitativo FROM infraccion i INNER JOIN peritaje pj ON i.id_infraccion=pj.id_infraccion WHERE (fecha_recepcion>=:fechaInicio AND hora_recepcion>=:horaInicio)AND(fecha_recepcion<=:fechaFin AND hora_recepcion<=:horaFin)';
         global $cnx;
         $parametros = [
             ':fechaInicio' => $datosReporte['fechaInicio'],
@@ -170,9 +170,20 @@ class clsInfraccion
         $pre->execute($parametros);
         return $pre;
     }
+    function filtrarInfraccionUsuario($datoUsuario)
+    {
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona WHERE u.nombre LIKE :nombre ORDER BY CONCAT(i.fecha_recepcion," ",i.hora_recepcion) DESC';
+        global $cnx;
+        $parametros = [
+            ':nombre' => '%' . $datoUsuario . '%',
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
 }
-//SELECT * FROM infraccion WHERE (fecha_registro>='2023-02-09' AND hora_registro>='07:30:59')AND(fecha_registro<='2023-02-10' AND hora_registro<='19:30:59')
+//SELECT * FROM infraccion WHERE (fecha_recepcion>='2023-02-09' AND hora_recepcion>='07:30:59')AND(fecha_recepcion<='2023-02-10' AND hora_recepcion<='19:30:59')
 /*SELECT i.id_infraccion,pj.result_cualitativo,pj.result_cuantitativo 
 FROM infraccion i INNER JOIN peritaje pj ON i.id_infraccion=pj.id_infraccion
-WHERE (fecha_registro>='2023-02-09' AND hora_registro>='07:30:59')AND(fecha_registro<='2023-02-10' AND hora_registro<='19:30:59')
+WHERE (fecha_recepcion>='2023-02-09' AND hora_recepcion>='07:30:59')AND(fecha_recepcion<='2023-02-10' AND hora_recepcion<='19:30:59')
 */
