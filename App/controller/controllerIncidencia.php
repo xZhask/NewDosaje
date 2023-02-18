@@ -305,8 +305,6 @@ function controlador($accion)
                     $tabla .= '<tr>';
                     $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
                     $tabla .= '<td>' . $totalMadrugada . '</td>';
-                    // $tabla .= '<td></td>';
-                    //$tabla .= '<td></td>';
                     $tabla .= '</tr></tbody></table>';
                 }
             }
@@ -366,22 +364,16 @@ function reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin)
     $tabla .= '<tr>';
     $tabla .= '<td>NEGATIVOS</td>';
     $tabla .= '<td>' . $negativos . '</td>';
-    //$tabla .= '<td></td>';
-    //$tabla .= '<td></td>';
     $tabla .= '</tr>';
 
     $tabla .= '<tr>';
     $tabla .= '<td>T/S/M</td>';
     $tabla .= '<td>' . $tsm . '</td>';
-    //$tabla .= '<td></td>';
-    //$tabla .= '<td></td>';
     $tabla .= '</tr>';
 
     $tabla .= '<tr>';
     $tabla .= '<td>INCURSO</td>';
     $tabla .= '<td>' . $incurso . '</td>';
-    //$tabla .= '<td></td>';
-    //$tabla .= '<td></td>';
     $tabla .= '</tr>';
 
     return $tabla;

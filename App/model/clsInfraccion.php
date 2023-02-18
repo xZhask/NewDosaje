@@ -181,7 +181,17 @@ class clsInfraccion
         $pre->execute($parametros);
         return $pre;
     }
+
+
+    /*     SELECT p.nombre
+FROM extraccion e
+INNER JOIN infraccion i ON e.id_infraccion=i.id_infraccion
+INNER JOIN persona p ON p.id_persona=e.extractor
+WHERE (i.fecha_recepcion >='2023-02-09' AND i.hora_recepcion>='00:00:00') AND (i.fecha_recepcion <='2023-02-09' AND i.hora_recepcion<='19:29:59')
+GROUP BY p.nombre */
 }
+
+
 //SELECT * FROM infraccion WHERE (fecha_recepcion>='2023-02-09' AND hora_recepcion>='07:30:59')AND(fecha_recepcion<='2023-02-10' AND hora_recepcion<='19:30:59')
 /*SELECT i.id_infraccion,pj.result_cualitativo,pj.result_cuantitativo 
 FROM infraccion i INNER JOIN peritaje pj ON i.id_infraccion=pj.id_infraccion
