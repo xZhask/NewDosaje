@@ -24,47 +24,89 @@ function getPlantilla($fechaInicio, $turno)
     $muestras = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
     $total = $muestras->rowCount();
 
-    $resultados = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
-    $plantilla = '<body>';
-    $plantilla .= '<h1>Muestras tomadas el ' . date("d-m-Y", strtotime($fechaInicio)) . '</h1>';
-    $plantilla .= '<table>';
-    $plantilla .= '<thead>';
-    $plantilla .= '<tr>';
-    $textoMuestra = ($turno === 'N') ? 'Noche' : 'Muestra';
-    $plantilla .= '<th>' . $textoMuestra . '</th>';
-    $plantilla .= '<th>Total</th>';
-    $plantilla .= '<th>#</th>';
-    $plantilla .= '<th>Comisiones</th>';
-    $plantilla .= '</tr>';
-    $plantilla .= '</thead>';
-    $plantilla .= '<tbody>';
-    $plantilla .= $resultados;
-    $plantilla .= '<tr>';
-    $plantilla .= '<td class="td-fill">Total de muestras tomadas</td>';
-    $plantilla .= '<td class="td-fill t-center">' . $total . '</td>';
-    $plantilla .= '</tr></tbody></table>';
-
+    $totalMadrugada = 0;
     if ($turno === 'N') {
         $horaInicio = '00:00:01';
         $horaFin = '07:29:59';
         $muestrasMadrugada = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
         $totalMadrugada = $muestrasMadrugada->rowCount();
+    }
 
-        $resultadosMadrugada = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
-        if ($totalMadrugada > 0) {
-            $plantilla .= '<table class="t_listado"><thead>';
-            $plantilla .= '<tr>
-                            <th>Madrugada</th>
-                            <th>Total</th>
-                            <th>#</th>
-                            <th>Comisiones</th>
-                                </tr>
-                        </thead>';
-            $plantilla .= $resultadosMadrugada;
+    $plantilla = '<body>';
+    if ($total > 0 || $totalMadrugada > 0) {
+        $resultados = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+
+        $plantilla .= '<h1>Muestras tomadas el ' . date("d-m-Y", strtotime($fechaInicio)) . '</h1>';
+        $plantilla .= '<table>';
+        $plantilla .= '<thead>';
+        $plantilla .= '<tr>';
+        $textoMuestra = ($turno === 'N') ? 'Noche' : 'Muestra';
+        $plantilla .= '<th>' . $textoMuestra . '</th>';
+        $plantilla .= '<th>Total</th>';
+        $plantilla .= '<th>#</th>';
+        $plantilla .= '<th>Comisiones</th>';
+        $plantilla .= '</tr>';
+        $plantilla .= '</thead>';
+        $plantilla .= '<tbody>';
+        $plantilla .= $resultados;
+        $plantilla .= '<tr>';
+        $plantilla .= '<td class="td-fill">Total de muestras tomadas</td>';
+        $plantilla .= '<td class="td-fill t-center">' . $total . '</td>';
+        $plantilla .= '</tr></tbody></table>';
+
+        if ($turno === 'N') {
+            $resultadosMadrugada = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+            if ($totalMadrugada > 0) {
+                $plantilla .= '<table class="t_listado"><thead>';
+                $plantilla .= '<tr>
+                                <th>Madrugada</th>
+                                <th>Total</th>
+                                <th>#</th>
+                                <th>Comisiones</th>
+                                    </tr>
+                            </thead>';
+                $plantilla .= $resultadosMadrugada;
+                $plantilla .= '<tr>';
+                $plantilla .= '<td class="td-fill">Total de muestras tomadas</td>';
+                $plantilla .= '<td class="td-fill t-center">' . $totalMadrugada . '</td>';
+                $plantilla .= '</tr></tbody></table>';
+            }
+        }
+        $parametrosFecha = [
+            'fechaInicio' => $fechaInicio,
+            'horaInicio' => $horaInicio,
+            'fechaFin' => $fechaFin,
+            'horaFin' => $horaFin,
+        ];
+        $extractores = $objInfraccion->extractoresPorTurno($parametrosFecha);
+        $peritos = $objInfraccion->peritosPorTurno($parametrosFecha);
+        if ($extractores > 0 || $peritos > 0) {
+            $plantilla .= '<table class="table-2">';
+            $plantilla .= '<thead>';
             $plantilla .= '<tr>';
-            $plantilla .= '<td class="td-fill">Total de muestras tomadas</td>';
-            $plantilla .= '<td class="td-fill t-center">' . $totalMadrugada . '</td>';
-            $plantilla .= '</tr></tbody></table>';
+            $plantilla .= '<th>Extractores</th>';
+            $plantilla .= '<th>Peritos</th>';
+            $plantilla .= '</tr>';
+            $plantilla .= '</thead>';
+            $plantilla .= '<tbody id="tbPersonalTurno">';
+            $plantilla .= '<tr>';
+            $plantilla .= '<td>';
+            if ($extractores->rowCount() > 0) {
+                while ($fila = $extractores->fetch(PDO::FETCH_OBJ)) {
+                    $plantilla .= '<p>' . $fila->nombre . '</p>';
+                }
+            }
+            $plantilla .= '</td>';
+            $plantilla .= '<td>';
+            if ($peritos->rowCount() > 0) {
+                while ($fila = $peritos->fetch(PDO::FETCH_OBJ)) {
+                    $plantilla .= '<p>' . $fila->nombre . '</p>';
+                }
+            }
+            $plantilla .= '</td>';
+            $plantilla .= '</tr>';
+            $plantilla .= '</tbody>';
+            $plantilla .= '</table>';
         }
     }
     $plantilla .= '</body>';

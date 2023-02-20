@@ -274,39 +274,49 @@ function controlador($accion)
             $muestras = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
             $total = $muestras->rowCount();
 
-            $resultados = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
-
-            $tabla = '<table>';
-            $tabla .= $resultados;
-            $tabla .= '<tr>';
-            $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
-            $tabla .= '<td>' . $total . '</td>';
-            $tabla .= '</tr></tbody></table>';
-
+            $totalMadrugada = 0;
             if ($turno === 'N') {
                 $horaInicio = '00:00:01';
                 $horaFin = '07:29:59';
                 $muestrasMadrugada = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
                 $totalMadrugada = $muestrasMadrugada->rowCount();
-
-                $resultadosMadrugada = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
-                if ($totalMadrugada > 0) {
-                    $tabla .= '<table class="t_listado"><thead>';
-                    $tabla .= '<tr>
-                            <th>MADRUGADA</th>
-                            <th>Total</th>
-                            <th>#</th>
-                            <th>Comisiones</th>
-                                </tr>
-                        </thead>';
-                    $tabla .= $resultadosMadrugada;
-                    $tabla .= '<tr>';
-                    $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
-                    $tabla .= '<td>' . $totalMadrugada . '</td>';
-                    $tabla .= '</tr></tbody></table>';
-                }
             }
-            $respuesta = ['response' => $tabla];
+
+            $tabla = '<table>';
+            if ($total > 0 || $totalMadrugada > 0) {
+                $resultados = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+                $tabla .= $resultados;
+                $tabla .= '<tr>';
+                $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
+                $tabla .= '<td>' . $total . '</td>';
+                $tabla .= '</tr></tbody></table>';
+
+                if ($turno === 'N') {
+                    $resultadosMadrugada = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+
+                    if ($totalMadrugada > 0) {
+                        $tabla .= '<table class="t_listado">';
+                        $tabla .= '<thead><tr>
+                                <th>MADRUGADA</th>
+                                <th>Total</th>
+                                <th>#</th>
+                                <th>Comisiones</th>
+                                    </tr>
+                            </thead>';
+                        $tabla .= $resultadosMadrugada;
+                        $tabla .= '<tr>';
+                        $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
+                        $tabla .= '<td>' . $totalMadrugada . '</td>';
+                        $tabla .= '</tr></tbody></table>';
+                    }
+                }
+                $response = 1;
+                $data = $tabla;
+            } else {
+                $response = 0;
+                $data = '<tr><td colspan="4">No se encontraron resultados</td></tr>';
+            }
+            $respuesta = ['response' => $response, 'data' => $data];
             echo json_encode($respuesta);
             break;
         case 'PERSONAL_TURNO':
@@ -323,20 +333,43 @@ function controlador($accion)
                 $fechaFin = strtotime($fechaInicio . "+ 1 days");
                 $fechaFin = date("Y-m-d", $fechaFin);
             }
-            $datosPeritaje = [
-                'fechaInicio' => $_POST['cualitativo'],
-                'horaInicio' => $_POST['cuantitativo'],
-                'perito' => $_POST['idPerito'],
-                'id_infraccion' => $_POST['idInfraccion'],
+            $parametrosFecha = [
+                'fechaInicio' => $fechaInicio,
+                'horaInicio' => $horaInicio,
+                'fechaFin' => $fechaFin,
+                'horaFin' => $horaFin,
             ];
-            $extractores = $objInfraccion->extractoresPorTurno($datosPeritaje);
+            $extractores = $objInfraccion->extractoresPorTurno($parametrosFecha);
+            $peritos = $objInfraccion->peritosPorTurno($parametrosFecha);
+            $tabla = '';
+
+
+            $tabla .= '<thead>';
+            $tabla .= '<tr>';
+            $tabla .= '<th>Extractores</th>';
+            $tabla .= '<th>Peritos</th>';
+            $tabla .= '</tr>';
+            $tabla .= '</thead>';
+            $tabla .= '<tbody id="tbPersonalTurno">';
+            $tabla .= '<tr>';
+            $tabla .= '<td>';
             if ($extractores->rowCount() > 0) {
-                $listExtractores = '';
                 while ($fila = $extractores->fetch(PDO::FETCH_OBJ)) {
-                    $listExtractores .= '<p>' . $fila->nombre . '</p>';
+                    $tabla .= '<p>' . $fila->nombre . '</p>';
                 }
             }
-            $respuesta = ['respuesta' => $listExtractores];
+            $tabla .= '</td>';
+            $tabla .= '<td>';
+            if ($peritos->rowCount() > 0) {
+                while ($fila = $peritos->fetch(PDO::FETCH_OBJ)) {
+                    $tabla .= '<p>' . $fila->nombre . '</p>';
+                }
+            }
+            $tabla .= '</td>';
+            $tabla .= '</tr>';
+            $tabla .= '</tbody>';
+
+            $respuesta = ['data' => $tabla];
             echo json_encode($respuesta);
             break;
     }

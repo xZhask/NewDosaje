@@ -41,3 +41,16 @@ table td {
 .t-center {
     text-align: center;
 }
+
+table {
+    margin-top: 1em;
+}
+
+.table-2 th {
+    background-color: #70a1ff;
+}
+
+.table-2 th,
+.table-2 td {
+    border-color: #70a1ff;
+}

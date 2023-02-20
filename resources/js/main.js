@@ -680,7 +680,7 @@ $(document).on("click", "#btn-reporteDiario", async function (e) {
   e.preventDefault();
   let fecha = $('#repFecha').val();
   let turno = $('#repTurno').val();
-  if (fecha === '' || turno === '')
+  if (fecha === '' || turno === '0')
     msgAlert('warning', 'Seleccione fecha y turno porfavor', 'Campos necesarios')
   else {
     let datos = new FormData();
@@ -688,8 +688,18 @@ $(document).on("click", "#btn-reporteDiario", async function (e) {
     datos.append("fechaInicio", fecha);
     datos.append("turno", turno);
     let respuesta = await postData(datos, "controllerIncidencia.php");
-    respuesta = respuesta.response;
-    $('#tbReporte').html(respuesta);
+    //console.log(respuesta);
+    let html = respuesta.data;
+    $('#tbReporte').html(html);
+    if (respuesta.response == 1) {
+      let datos = new FormData();
+      datos.append("accion", "PERSONAL_TURNO");
+      datos.append("fechaInicio", fecha);
+      datos.append("turno", turno);
+      let respuesta = await postData(datos, "controllerIncidencia.php");
+      html = respuesta.data;
+      $('#t_PersonalTurno').html(html)
+    } else $('#t_PersonalTurno').html('')
   }
 });
 function PDFReporteDiario() {
@@ -728,5 +738,4 @@ $(document).on("keyup", "#searchInfraccion", async function (e) {
   datos.append("datoSearch", datoSearch);
   let incidencias = await postData(datos, "controllerIncidencia.php");
   $("#tb_incidencias").html(incidencias.listado);
-  //console.log(datoSearch)
 });
