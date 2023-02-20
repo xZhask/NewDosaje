@@ -342,8 +342,6 @@ function controlador($accion)
             $extractores = $objInfraccion->extractoresPorTurno($parametrosFecha);
             $peritos = $objInfraccion->peritosPorTurno($parametrosFecha);
             $tabla = '';
-
-
             $tabla .= '<thead>';
             $tabla .= '<tr>';
             $tabla .= '<th>Extractores</th>';
