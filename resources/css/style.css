@@ -64,7 +64,7 @@ nav a {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
     padding: 0 20px;
     gap: 7px;
     color: #3F3F3F
@@ -166,6 +166,7 @@ form button:hover {
     border-collapse: collapse;
     font-size: .9em;
     width: 100%;
+    margin-top: 1em;
 }
 
 .t_listado td,
@@ -781,10 +782,8 @@ DARK: #4b4b4b;#2980b9
 .list-toggle li {
     height: 40px;
     width: 130px;
-    text-align: left !important;
     background-color: var(--sombreado);
 }
-
 .list_menu li:hover .list-toggle {
     margin-top: 0px;
     visibility: visible;

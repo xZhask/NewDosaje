@@ -8,12 +8,11 @@
       <option value="N">Noche</option>
     </select>
     <button id="btn-reporteDiario">Buscar</button>
-
   </div>
 </div>
 <div class="body_section_view">
   <div class="cont-export">
-    <p>Exportar: </p>
+    <p>Exportar:</p>
     <i id="btnImprmirReporte" class="fa-solid fa-file-pdf i-red btnReporte"></i>
   </div>
 
@@ -26,6 +25,45 @@
         <th>Comisiones</th>
       </tr>
     </thead>
-    <tbody id="tbReporte"></tbody>
+    <tbody id="tbReporte">
+      <tr>
+        <td>POSITIVOS</td>
+        <td>-</td>
+        <td rowspan="5"></td>
+        <td rowspan="5"></td>
+      </tr>
+      <tr>
+        <td>NEGATIVOS</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>T/S/M</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>INCURSO</td>
+        <td>-</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="t_listado">
+    <thead>
+      <tr>
+        <th>Extractores</th>
+        <th>Peritos</th>
+      </tr>
+    </thead>
+    <tbody id="tbPersonalTurno">
+      <tr>
+        <td>
+          <p>Personal 1</p>
+          <p>Personal 2</p>
+        </td>
+        <td>
+          <p>Personal 1</p>
+          <p>Personal 2</p>
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>

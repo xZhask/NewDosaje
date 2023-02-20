@@ -281,8 +281,6 @@ function controlador($accion)
             $tabla .= '<tr>';
             $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
             $tabla .= '<td>' . $total . '</td>';
-            //$tabla .= '<td></td>';
-            //$tabla .= '<td></td>';
             $tabla .= '</tr></tbody></table>';
 
             if ($turno === 'N') {
@@ -309,6 +307,36 @@ function controlador($accion)
                 }
             }
             $respuesta = ['response' => $tabla];
+            echo json_encode($respuesta);
+            break;
+        case 'PERSONAL_TURNO':
+            $fechaInicio = $_POST['fechaInicio'];
+            $fechaFin = $_POST['fechaInicio'];
+            $turno = $_POST['turno'];
+
+            if ($turno === 'M') {
+                $horaInicio = '07:30:00';
+                $horaFin = '19:29:59';
+            } else {
+                $horaInicio = '19:30:00';
+                $horaFin = '07:29:59';
+                $fechaFin = strtotime($fechaInicio . "+ 1 days");
+                $fechaFin = date("Y-m-d", $fechaFin);
+            }
+            $datosPeritaje = [
+                'fechaInicio' => $_POST['cualitativo'],
+                'horaInicio' => $_POST['cuantitativo'],
+                'perito' => $_POST['idPerito'],
+                'id_infraccion' => $_POST['idInfraccion'],
+            ];
+            $extractores = $objInfraccion->extractoresPorTurno($datosPeritaje);
+            if ($extractores->rowCount() > 0) {
+                $listExtractores = '';
+                while ($fila = $extractores->fetch(PDO::FETCH_OBJ)) {
+                    $listExtractores .= '<p>' . $fila->nombre . '</p>';
+                }
+            }
+            $respuesta = ['respuesta' => $listExtractores];
             echo json_encode($respuesta);
             break;
     }

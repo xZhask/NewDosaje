@@ -118,4 +118,3 @@ function getPlantilla($idInfraccion)
     $plantilla .= '</div></body>';
     return $plantilla;
 }
-//<span class="txtbold nrotarifa">' . $infraccion['idtarifa'] . ' - ' . $infraccion['nro_comprobante'] . '</span><br>

@@ -181,7 +181,20 @@ class clsInfraccion
         $pre->execute($parametros);
         return $pre;
     }
-
+    function extractoresPorTurno($fechas)
+    {
+        $sql = 'SELECT p.nombre FROM extraccion e INNER JOIN infraccion i ON e.id_infraccion=i.id_infraccion INNER JOIN persona p ON p.id_persona=e.extractor WHERE (i.fecha_recepcion >=:fechaInicio AND i.hora_recepcion>=:horaInicio) AND (i.fecha_recepcion <=:fechaFinal AND i.hora_recepcion<=:horaFinal';
+        global $cnx;
+        $parametros = [
+            ':fechaInicio' => $fechas['fechaInicio'],
+            ':horaInicio' => $fechas['horaInicio'],
+            ':fechaFin' => $fechas['fechaFin'],
+            ':horaFin' => $fechas['horaFin'],
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
 
     /*     SELECT p.nombre
 FROM extraccion e

@@ -38,9 +38,9 @@ $perfil = $_SESSION['idperfil'];
                             <p>Reportes</p>
                         </a>
                         <ul class="list-toggle">
-                            <li><a href="/reportediario.html" id="lnk-reporteDiario">Rep. Diario</a></li>
-                            <li><a href="/reportemensual.html" id="lnk-reporteMensual">Rep. Mensual</a></li>
-                            <li><a href="/reportefechas.html" id="lnk-reporteFechas">Rep. Periodo</a></li>
+                            <li><a href="/reportediario.html" id="lnk-reporteDiario">Rep. por día</a></li>
+                            <li><a href="/reportemensual.html" id="lnk-reporteMensual">Rep. por Periodo</a></li>
+                            <li><a href="/reportefechas.html" id="lnk-reporteFechas">Rep. General</a></li>
                         </ul>
                     </li>
                     <? if ($perfil === '1') { ?>
