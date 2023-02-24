@@ -890,3 +890,20 @@ td button {
 .group-search i:hover {
     background-color: var(--primary-hover);
 }
+.menu-tab{
+    display: flex;
+    width: 100%;
+    background-color: var(--sombreado);
+    justify-content: center;
+    margin-bottom: 25px;
+}
+.menu-tab a{
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    color: #000;
+}
+.menu-tab a.active{
+    background-color: var(--primary-hover);
+    color: #FFF;
+}

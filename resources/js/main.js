@@ -193,8 +193,7 @@ function autocompletadoPeritos(nombres, listadoOriginal) {
 /*----------------------- SECTIONS ------------------------------- */
 const lnkMuestra = document.querySelector("#lnk-muestra");
 const lnkReportes = document.querySelector("#lnk-reportes");
-const lnkReporteDiario = document.querySelector("#lnk-reporteDiario");
-const lnkReporteMensual = document.querySelector("#lnk-reporteMensual");
+const lnkReporteTurno = document.querySelector("#lnk-reporteTurno");
 const lnkUsuarios = document.querySelector("#lnk-usuarios");
 const contenedor = document.querySelector("#section_view");
 
@@ -213,8 +212,7 @@ const loadView = async (e, lnk) => {
 };
 
 lnkMuestra.addEventListener("click", (e) => loadView(e, lnkMuestra));
-lnkReporteDiario.addEventListener("click", (e) => loadView(e, lnkReporteDiario));
-lnkReporteMensual.addEventListener("click", (e) => loadView(e, lnkReporteMensual));
+lnkReporteTurno.addEventListener("click", (e) => loadView(e, lnkReporteTurno));
 lnkUsuarios.addEventListener("click", (e) => loadView(e, lnkUsuarios));
 
 /*----------------------- FORMS ------------------------------- */
@@ -347,20 +345,21 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-        ? "N"
-        : tipoProc == "S"
-          ? "N"
-          : tipoProc == "AD"
-            ? "A/D"
-            : "";
-  let resCuantitativo = (tipoProc === "E") ? "" : (tipoProc === "AD") ? "0.00" : tipoProc;
+      ? "N"
+      : tipoProc == "S"
+      ? "N"
+      : tipoProc == "AD"
+      ? "A/D"
+      : "";
+  let resCuantitativo =
+    tipoProc === "E" ? "" : tipoProc === "AD" ? "0.00" : tipoProc;
   let textoLabelFecha =
     tipoProc !== "E" ? "Fecha Constatación" : "Fecha Extracción";
   let textoLabelHora =
     tipoProc !== "E" ? "Hora Constatación" : "Hora Extracción";
 
   let htmlTipoMuestra =
-    (tipoProc == "E" || tipoProc == "AD")
+    tipoProc == "E" || tipoProc == "AD"
       ? `<option value=" 0">Tipo Muestra</option><option value="S">Sangre</option><option value="O">Orina</option>`
       : `<option value="N">Sin Muestra</option>`;
 
@@ -369,13 +368,13 @@ $(document).on("change", "#tipoProcedimiento", () => {
     $(".control_peritaje").addClass("input_block");
     $("#idPerito").val("");
     $("#perito").val("");
-
   } else {
     $(".control_peritaje").prop("readonly", false);
     $(".control_peritaje").removeClass("input_block");
   }
-  if (tipoProc == 'C' || tipoProc == 'AD') $('#lugarComision').css('display', 'block');
-  else $('#lugarComision').css('display', 'none')
+  if (tipoProc == "C" || tipoProc == "AD")
+    $("#lugarComision").css("display", "block");
+  else $("#lugarComision").css("display", "none");
 
   $("#cuantitativo").val(resCuantitativo);
   $("#cualitativo").val(resCualitativo);
@@ -420,10 +419,10 @@ $(document).on("submit", "#frmPersonal", async (e) => {
 /* FRM CAMBIO CONTRASEÑA */
 $(document).on("submit", "#frmCambioPass", async (e) => {
   e.preventDefault();
-  let passActual = $('#passActual').val();
-  let passNueva = $('#passNueva').val();
-  if (passActual == '' || passNueva == '') {
-    msgAlert("warning", "Ingrese campos necesarios", 'Datos incompletos');
+  let passActual = $("#passActual").val();
+  let passNueva = $("#passNueva").val();
+  if (passActual == "" || passNueva == "") {
+    msgAlert("warning", "Ingrese campos necesarios", "Datos incompletos");
   } else {
     let form = document.querySelector("#frmCambioPass");
     let datos = new FormData(form);
@@ -678,19 +677,23 @@ function PDFCertificado(idInfraccion) {
 }
 $(document).on("click", "#btn-reporteDiario", async function (e) {
   e.preventDefault();
-  let fecha = $('#repFecha').val();
-  let turno = $('#repTurno').val();
-  if (fecha === '' || turno === '0')
-    msgAlert('warning', 'Seleccione fecha y turno porfavor', 'Campos necesarios')
+  let fecha = $("#repFecha").val();
+  let turno = $("#repTurno").val();
+  if (fecha === "" || turno === "0")
+    msgAlert(
+      "warning",
+      "Seleccione fecha y turno porfavor",
+      "Campos necesarios"
+    );
   else {
     let datos = new FormData();
-    datos.append("accion", "REPORTE_RESULTADOS");
+    datos.append("accion", "REPORTE_TURNO");
     datos.append("fechaInicio", fecha);
     datos.append("turno", turno);
     let respuesta = await postData(datos, "controllerIncidencia.php");
     //console.log(respuesta);
     let html = respuesta.data;
-    $('#tbReporte').html(html);
+    $("#tbReporte").html(html);
     if (respuesta.response == 1) {
       let datos = new FormData();
       datos.append("accion", "PERSONAL_TURNO");
@@ -698,13 +701,13 @@ $(document).on("click", "#btn-reporteDiario", async function (e) {
       datos.append("turno", turno);
       let respuesta = await postData(datos, "controllerIncidencia.php");
       html = respuesta.data;
-      $('#t_PersonalTurno').html(html)
-    } else $('#t_PersonalTurno').html('')
+      $("#t_PersonalTurno").html(html);
+    } else $("#t_PersonalTurno").html("");
   }
 });
 function PDFReporteDiario() {
-  let fecha = $('#repFecha').val();
-  let turno = $('#repTurno').val();
+  let fecha = $("#repFecha").val();
+  let turno = $("#repTurno").val();
   var ancho = 1000;
   var alto = 800;
   var x = parseInt(window.screen.width / 2 - ancho / 2);
@@ -718,24 +721,87 @@ function PDFReporteDiario() {
   );
 }
 $(document).on("click", "#btnImprmirReporte", async function (e) {
-  let fecha = $('#repFecha').val();
-  let turno = $('#repTurno').val();
-  if (fecha === '' || turno === '')
-    msgAlert('warning', 'Seleccione fecha y turno porfavor', 'Campos necesarios')
-  else
-    PDFReporteDiario();
-});
-$(document).on("click", "#btn-reporteMensual", async function (e) {
-  e.preventDefault();
-  let fecha = $('#repFechaInicio').val();
-  alert(fecha)
+  let fecha = $("#repFecha").val();
+  let turno = $("#repTurno").val();
+  if (fecha === "" || turno === "")
+    msgAlert(
+      "warning",
+      "Seleccione fecha y turno porfavor",
+      "Campos necesarios"
+    );
+  else PDFReporteDiario();
 });
 $(document).on("keyup", "#searchInfraccion", async function (e) {
   e.preventDefault();
-  let datoSearch = $('#searchInfraccion').val();
+  let datoSearch = $("#searchInfraccion").val();
   let datos = new FormData();
   datos.append("accion", "LISTAR_INCIDENCIAS");
   datos.append("datoSearch", datoSearch);
   let incidencias = await postData(datos, "controllerIncidencia.php");
   $("#tb_incidencias").html(incidencias.listado);
+});
+$(document).on("click", "#tabReportePeriodo", async function (e) {
+  e.preventDefault();
+  let html = returnHeaderReporte("P");
+  $("#header_consolidado").html(html);
+  $("#tabReportePeriodo").addClass("active");
+});
+$(document).on("click", "#tabReporteTurno", async function (e) {
+  e.preventDefault();
+  let html = returnHeaderReporte("T");
+  $("#header_consolidado").html(html);
+  $("#tabReporteTurno").addClass("active");
+});
+
+/* PROVISIONAL */
+function returnHeaderReporte(tipo) {
+  let html;
+  $(".menu-tab .active").removeClass("active");
+  $("#t_PersonalTurno").html("");
+  $("#tbReporte").html("");
+  html =
+    tipo === "P"
+      ? `<div class="group_controls">
+        <label>Desde: </label>
+        <input type="date" name="repFechaInicio" id="repFechaInicio" />
+        <label>Hasta: </label>
+        <input type="date" name="repFechaFin" id="repFechaFin" />
+        <button id="btn-reportePeriodo">Buscar</button>
+    </div>`
+      : `<div class="group_controls">
+    <input type="date" name="repFecha" id="repFecha" />
+    <select name="repTurno" id="repTurno">
+      <option value="0">Turno</option>
+      <option value="M">Mañana</option>
+      <option value="N">Noche</option>
+    </select>
+    <button id="btn-reporteDiario">Buscar</button>
+  </div>
+  <div class="cont-export">
+    <p>Exportar:</p>
+    <i id="btnImprmirReporte" class="fa-solid fa-file-pdf i-red btnReporte"></i>
+  </div>`;
+  return html;
+}
+/*
+
+
+*/
+$(document).on("click", "#btn-reportePeriodo", async function (e) {
+  e.preventDefault();
+  let fechaInicio = $("#repFechaInicio").val();
+  let fechaFin = $("#repFechaFin").val();
+
+  if (fechaInicio === "" || fechaFin === "")
+    msgAlert("warning", "Seleccione intervalo de fechas", "Campos necesarios");
+  else {
+    let datos = new FormData();
+    datos.append("accion", "REPORTE_PERIODO");
+    datos.append("fechaInicio", fechaInicio);
+    datos.append("fechaFin", fechaFin);
+    let respuesta = await postData(datos, "controllerIncidencia.php");
+    console.log(respuesta);
+    let html = respuesta.data;
+    $("#tbReporte").html(html);
+  }
 });

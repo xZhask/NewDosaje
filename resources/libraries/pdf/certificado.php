@@ -44,7 +44,7 @@ function getPlantilla($idInfraccion)
 
 
     $sexo = $infraccion['sexo'];
-    $fecha = $infraccion['fecha_registro'] . ' ' . $infraccion['hora_registro'];
+    $fecha = $infraccion['fecha_recepcion'] . ' ' . $infraccion['hora_recepcion'];
     $dia = date("d", strtotime($fecha));
     $mes = date("m", strtotime($fecha));
     $year = date("Y", strtotime($fecha));

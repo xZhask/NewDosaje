@@ -256,7 +256,7 @@ function controlador($accion)
             $respuesta = ['response' => $response];
             echo json_encode($respuesta);
             break;
-        case 'REPORTE_RESULTADOS':
+        case 'REPORTE_TURNO':
             $fechaInicio = $_POST['fechaInicio'];
             $fechaFin = $_POST['fechaInicio'];
             $turno = $_POST['turno'];
@@ -310,6 +310,34 @@ function controlador($accion)
                         $tabla .= '</tr></tbody></table>';
                     }
                 }
+                $response = 1;
+                $data = $tabla;
+            } else {
+                $response = 0;
+                $data = '<tr><td colspan="4">No se encontraron resultados</td></tr>';
+            }
+            $respuesta = ['response' => $response, 'data' => $data];
+            echo json_encode($respuesta);
+            break;
+        case 'REPORTE_PERIODO':
+            $fechaInicio = $_POST['fechaInicio'];
+            $fechaFin = $_POST['fechaFin'];
+
+            $horaInicio = '00:00:00';
+            $horaFin = '23:59:59';
+
+            $muestras = reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+            $total = $muestras->rowCount();
+
+            $tabla = '<table>';
+            if ($total > 0) {
+                $resultados = reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin);
+                $tabla .= $resultados;
+                $tabla .= '<tr>';
+                $tabla .= '<td>TOTAL DE MUESTRAS TOMADAS</td>';
+                $tabla .= '<td>' . $total . '</td>';
+                $tabla .= '</tr></tbody></table>';
+
                 $response = 1;
                 $data = $tabla;
             } else {

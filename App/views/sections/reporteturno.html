@@ -1,5 +1,8 @@
-<div class="header_section_view">
-  <h1>Consolidado por día</h1>
+<div class="menu-tab">
+  <a href="" id="tabReporteTurno" class="active">Por Turno</a>
+  <a href="" id="tabReportePeriodo">Por Periodo</a>
+</div>
+<div id="header_consolidado" class="header_section_view">
   <div class="group_controls">
     <input type="date" name="repFecha" id="repFecha" />
     <select name="repTurno" id="repTurno">
@@ -9,13 +12,12 @@
     </select>
     <button id="btn-reporteDiario">Buscar</button>
   </div>
-</div>
-<div class="body_section_view">
   <div class="cont-export">
     <p>Exportar:</p>
     <i id="btnImprmirReporte" class="fa-solid fa-file-pdf i-red btnReporte"></i>
   </div>
-
+</div>
+<div class="body_section_view">
   <table class="t_listado">
     <thead>
       <tr>
@@ -46,7 +48,7 @@
       </tr>
     </tbody>
   </table>
-  <table class="t_listado" id='t_PersonalTurno'>
+  <table class="t_listado" id="t_PersonalTurno">
     <!-- <thead>
       <tr>
         <th>Extractores</th>
