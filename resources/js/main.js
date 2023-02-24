@@ -194,6 +194,7 @@ function autocompletadoPeritos(nombres, listadoOriginal) {
 const lnkMuestra = document.querySelector("#lnk-muestra");
 const lnkReportes = document.querySelector("#lnk-reportes");
 const lnkReporteTurno = document.querySelector("#lnk-reporteTurno");
+const lnkReporteGeneral = document.querySelector("#lnk-reporteGeneral");
 const lnkUsuarios = document.querySelector("#lnk-usuarios");
 const contenedor = document.querySelector("#section_view");
 
@@ -214,6 +215,7 @@ const loadView = async (e, lnk) => {
 lnkMuestra.addEventListener("click", (e) => loadView(e, lnkMuestra));
 lnkReporteTurno.addEventListener("click", (e) => loadView(e, lnkReporteTurno));
 lnkUsuarios.addEventListener("click", (e) => loadView(e, lnkUsuarios));
+lnkReporteGeneral.addEventListener("click", (e) => loadView(e, lnkReporteGeneral));
 
 /*----------------------- FORMS ------------------------------- */
 async function postData(data, url) {
@@ -345,12 +347,12 @@ $(document).on("change", "#tipoProcedimiento", () => {
     tipoProc == "C"
       ? "T/S/M"
       : tipoProc == "I"
-      ? "N"
-      : tipoProc == "S"
-      ? "N"
-      : tipoProc == "AD"
-      ? "A/D"
-      : "";
+        ? "N"
+        : tipoProc == "S"
+          ? "N"
+          : tipoProc == "AD"
+            ? "A/D"
+            : "";
   let resCuantitativo =
     tipoProc === "E" ? "" : tipoProc === "AD" ? "0.00" : tipoProc;
   let textoLabelFecha =

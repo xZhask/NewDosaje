@@ -40,7 +40,7 @@ $perfil = $_SESSION['idperfil'];
                         <ul class="list-toggle">
                             <li><a href="/reporteturno.html" id="lnk-reporteTurno">Consolidado</a></li>
                             <!--<li><a href="/reporteperiodo.html" id="lnk-reportePeriodo">Rep. por Periodo</a></li>-->
-                            <li><a href="/reportefechas.html" id="lnk-reporteFechas">Rep. General</a></li>
+                            <li><a href="/reportegeneral.html" id="lnk-reporteGeneral">Rep. General</a></li>
                         </ul>
                     </li>
                     <? if ($perfil === '1') { ?>

@@ -1,5 +1,5 @@
 <div class="header_section_view">
-  <h1>Consolidado por Periodo</h1>
+  <h1>Consolidado General</h1>
   <div class="group_controls">
     <label>Desde: </label>
     <input type="date" name="repGenFechaInicio" id="repGenFechaInicio" />
@@ -11,47 +11,79 @@
 <div class="body_section_view">
   <div class="cont-export">
     <p>Exportar:</p>
-    <i
-      id="btnImprmirReporteGeneral"
-      class="fa-solid fa-file-pdf i-red btnReporte"
-    ></i>
+    <i id="btnImprmirReporteGeneral" class="fa-solid fa-file-pdf i-red btnReporte"></i>
+  </div>
+  <div class="cont-table">
+    <table class="t_listado">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Hoja_registro</th>
+          <th>Nombre_usuario</th>
+          <th>Edad</th>
+          <th>Sexo</th>
+          <th>N°_Doc</th>
+          <th>Licencia</th>
+          <th>Clase</th>
+          <th>Vehículo</th>
+          <th>Placa</th>
+          <th>CIA</th>
+          <th>N°_oficio</th>
+          <th>fecha Oficio</th>
+          <th>Motivo</th>
+          <th>Conductor</th>
+          <th>Hora infracción</th>
+          <th>Fecha infracción</th>
+          <th>Hora extracción</th>
+          <th>Fecha extracción</th>
+          <th>Hrs.transcurridas</th>
+          <!-- <th>Atención en</th> -->
+          <th>Muestra</th>
+          <th>Extractor</th>
+          <th>Observación</th>
+          <th>Perito</th>
+          <th>Cualitativo</th>
+          <th>Cuantitativo</th>
+          <th>fecha registro</th>
+          <th>Digitador</th>
+          <th>N° Certificados</th>
+        </tr>
+      </thead>
+      <tbody id="tbReporteGeneral">
+        <tr>
+          <td>N°</td>
+          <td>Hoja_registro</td>
+          <td>Nombre_usuario</td>
+          <td>Edad</td>
+          <td>Sexo</td>
+          <td>N°_Doc</td>
+          <td>Licencia</td>
+          <td>Clase</td>
+          <td>Vehículo</td>
+          <td>Placa</td>
+          <td>CIA</td>
+          <td>N°_oficio</td>
+          <td>fecha Oficio</td>
+          <td>Motivo</td>
+          <td>Conductor</td>
+          <td>Hora infracción</td>
+          <td>Fecha infracción</td>
+          <td>Hora extracción</td>
+          <td>Fecha extracción</td>
+          <td>Hrs.transcurridas</td>
+          <!-- <td>Atención en</td> -->
+          <td>Muestra</td>
+          <td>Extractor</td>
+          <td>Observación</td>
+          <td>Perito</td>
+          <td>Cualitativo</td>
+          <td>Cuantitativo</td>
+          <td>fecha registro</td>
+          <td>Digitador</td>
+          <td>N° Certificados</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <table class="t_listado">
-    <thead>
-      <tr>
-        <th>N°</th>
-        <th>N° hoja registro</th>
-        <th>Nombre de usuario</th>
-        <th>Edad</th>
-        <th>Sexo</th>
-        <th>N° Doc</th>
-        <th>Licencia</th>
-        <th>Clase</th>
-        <th>Vehículo</th>
-        <th>Placa</th>
-        <th>CIA</th>
-        <th>N° oficio</th>
-        <th>fecha Oficio</th>
-        <th>Motivo</th>
-        <th>Conductor</th>
-        <th>Hora infracción</th>
-        <th>Fecha infracción</th>
-        <th>Hora extracción</th>
-        <th>Fecha extracción</th>
-        <th>Hrs. transcurridas</th>
-        <!-- <th>Atención en</th> -->
-        <th>Mmuestra</th>
-        <th>Extractor</th>
-        <th>Observación</th>
-        <th>Perito</th>
-        <th>Cualitativo</th>
-        <th>Cuantitativo</th>
-        <th>fecha registro</th>
-        <th>Digitador</th>
-        <th>N° Certificados</th>
-      </tr>
-    </thead>
-    <tbody id="tbReporte"></tbody>
-  </table>
 </div>

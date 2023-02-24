@@ -32,9 +32,9 @@
 
 }
 
-/* .wrapper {
-    overflow: hidden;
-} */
+.wrapper {
+    overflow: overlay;
+}
 
 header,
 nav,
@@ -784,6 +784,7 @@ DARK: #4b4b4b;#2980b9
     width: 130px;
     background-color: var(--sombreado);
 }
+
 .list_menu li:hover .list-toggle {
     margin-top: 0px;
     visibility: visible;
@@ -890,20 +891,41 @@ td button {
 .group-search i:hover {
     background-color: var(--primary-hover);
 }
-.menu-tab{
+
+.menu-tab {
     display: flex;
     width: 100%;
     background-color: var(--sombreado);
     justify-content: center;
     margin-bottom: 25px;
 }
-.menu-tab a{
+
+.menu-tab a {
     padding: 10px;
     text-align: center;
     width: 100%;
     color: #000;
 }
-.menu-tab a.active{
+
+.menu-tab a.active {
     background-color: var(--primary-hover);
     color: #FFF;
 }
+
+.cont-table {
+    overflow: auto;
+}
+
+/* .content::-webkit-scrollbar {
+    width: 7px;
+    background-color: #323232;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background-color: var(--primary-hover);
+    border-radius: 3px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary);
+} */
