@@ -244,7 +244,6 @@ function controlador($accion)
             break;
         case 'REGISTRAR_CERTIFICADO':
             $idIfraccion = $_POST['idInfraccion'];
-            //if (!empty($idInfraccion))
             $objInfraccion->AnularCertificados($idIfraccion);
             $datosCertificado = [
                 'n_certificado' => $_POST['nroCertificado'],
@@ -398,6 +397,160 @@ function controlador($accion)
             $respuesta = ['data' => $tabla];
             echo json_encode($respuesta);
             break;
+        case 'REPORTE_GENERAL':
+            $parametrosReporte = [
+                'fechaInicio' => $_POST['fechaInicio'],
+                'horaInicio' => '00:00:00',
+                'fechaFin' => $_POST['fechaFin'],
+                'horaFin' => '23:59:59',
+            ];
+
+            $listadoInfracciones = $objInfraccion->reporteInfracciones($parametrosReporte);
+            $listado = '';
+            if ($listadoInfracciones->rowCount() > 0) {
+                while ($fila = $listadoInfracciones->fetch(PDO::FETCH_OBJ)) {
+                    $idInfraccion = $fila->id_infraccion;
+
+                    $extraccion = $objInfraccion->buscarExtraccion($idInfraccion);
+                    $peritaje = $objInfraccion->buscarPeritaje($idInfraccion);
+                    $certificados = $objInfraccion->buscarCertificados($idInfraccion);
+                    if ($extraccion->rowCount() > 0) {
+                        $extraccion = $extraccion->fetch(PDO::FETCH_OBJ);
+                        $hrs_transcurridas = $extraccion->hrs_transcurridas;
+                        $tipo_muestra = $extraccion->tipo_muestra;
+                        $extractor = $extraccion->extractor;
+                        $hora_extracc = $extraccion->hora_extracc;
+                        $fecha_extracc = $extraccion->fecha_extracc;
+                        $observacion = $extraccion->observacion;
+                    } else {
+                        $hrs_transcurridas = '';
+                        $tipo_muestra = '';
+                        $extractor = '';
+                        $hora_extracc = '';
+                        $fecha_extracc = '';
+                        $observacion = '';
+                    }
+                    if ($peritaje->rowCount() > 0) {
+                        $peritaje = $peritaje->fetch(PDO::FETCH_OBJ);
+                        $perito = $peritaje->perito;
+                        if ($perito !== NULL) {
+                            $datosPerito = $objPersona->BuscarPersonal($perito);
+                            $datosPerito = $datosPerito->fetch(PDO::FETCH_OBJ);
+                            $perito = $datosPerito->nombre;
+                        }
+                        $cualitativo = $peritaje->cualitativo;
+                        $cuantitativo = $peritaje->cuantitativo;
+                    } else {
+                        $perito = '';
+                        $cualitativo = '';
+                        $cuantitativo = '';
+                    }
+                    $lista_certificados = '';
+                    if ($certificados->rowCount() > 0) {
+                        while ($row = $certificados->fetch(PDO::FETCH_OBJ)) {
+                            $classTexto = ($row->estado == 'I') ? 'i-red' : '';
+                            $lista_certificados .= '<p class=' . $classTexto . '>' . $row->n_serie . '-'  . $row->n_certificado . '</p><br>';
+                        }
+                    }
+                    $listado .= '<tr>';
+                    $listado .= '<td>' . $idInfraccion . '</td>';
+                    $listado .= '<td>' . $fila->hoja_registro . '</td>';
+                    $listado .= '<td>' . $fila->infractor . '</td>';
+                    $listado .= '<td>' . $fila->edad . '</td>';
+                    $listado .= '<td>' . $fila->sexo . '</td>';
+                    $listado .= '<td>' . $fila->nro_doc . '</td>';
+                    $listado .= '<td>' . $fila->lic_conducir . '</td>';
+                    $listado .= '<td>' . $fila->clase . '</td>';
+                    $listado .= '<td>' . $fila->vehiculo . '</td>';
+                    $listado .= '<td>' . $fila->placa . '</td>';
+                    $listado .= '<td>' . $fila->comisaria . '</td>';
+                    $listado .= '<td>' . $fila->n_oficio . '</td>';
+                    $listado .= '<td>' . $fila->fecha_recepcion . '</td>';
+                    $listado .= '<td>' . $fila->Motivo . '</td>';
+                    $listado .= '<td>' . $fila->gradoConductor . '. ' . $fila->nombreConductor . '</td>';
+                    $listado .= '<td>' . $fila->hora_infr . '</td>';
+                    $listado .= '<td>' . $fila->fecha_infr . '</td>';
+                    $listado .= '<td>' . $hora_extracc . '</td>';
+                    $listado .= '<td>' . $fecha_extracc . '</td>';
+                    $listado .= '<td>' . $hrs_transcurridas . '</td>';
+                    $listado .= '<td>' . $tipo_muestra . '</td>';
+                    $listado .= '<td>' . $extractor . '</td>';
+                    $listado .= '<td>' . $observacion . '</td>';
+                    $listado .= '<td>' . $perito . '</td>';
+                    $listado .= '<td>' . $cualitativo . '</td>';
+                    $listado .= '<td>' . $cuantitativo . '</td>';
+                    $listado .= '<td>' . $fila->fecha_registro . '</td>';
+                    $listado .= '<td>' . $fila->digitador . '</td>';
+                    $listado .= '<td>' . $lista_certificados . '</td>';
+                    $listado .= '</tr>';
+                }
+            } else $listado .= '<tr><td>Sin resultados</td></tr>';
+
+
+            /**/
+
+
+            /* $listado = '';
+            while ($fila = $listadoInfracciones->fetch(PDO::FETCH_NAMED)) {
+                $idInfraccion = $fila['id_infraccion'];
+                //EXTRACCIÓN
+                $muestra = '';
+                $fechaExtraccion = '';
+                $hrsTranscurridas = '';
+                $Extractor = '';
+                $observacion = '';
+                $extraccion = $objInfraccion->buscarExtraccion($idInfraccion);
+                if ($extraccion->rowCount() > 0) {
+                    $extraccion = $extraccion->fetch(PDO::FETCH_NAMED);
+                    $muestra = $extraccion['tipo_muestra'];
+                    $fechaExtraccion = date("d-m-Y", strtotime($extraccion['fecha_extracc'])) . ' ' . $extraccion['hora_extracc'];
+                    $hrsTranscurridas = $extraccion['hrs_transcurridas'];
+                    $Extractor = $extraccion['extractor'];
+                    $observacion = $extraccion['observacion'];
+                }
+                //PERITAJE
+                $colPeritaje = '';
+                $colCertificado = '';
+                $peritaje = $objInfraccion->buscarPeritaje($idInfraccion);
+                $certificados = $objInfraccion->buscarCertificados($idInfraccion);
+                if ($peritaje->rowCount() > 0) {
+                    $perito = '';
+                    $cualitativo = '';
+                    $cuantitativo = '';
+                    $peritaje = $peritaje->fetch(PDO::FETCH_NAMED);
+                    $perito = $peritaje['perito'];
+                    if ($perito != NULL) {
+                        $busquedaPerito = $objPersona->BuscarPersonal($perito);
+                        $busquedaPerito = $busquedaPerito->fetch(PDO::FETCH_NAMED);
+                        $perito = $busquedaPerito['nombre'];
+                    } else $perito = '-';
+                    $cualitativo = $peritaje['cualitativo'];
+                    $cuantitativo = $peritaje['cuantitativo'];
+                    $classResultado = ($cualitativo == 'POSITIVO') ? 'p-red' : '';
+                    $colPeritaje .= '<td class="t_left">';
+                    $colPeritaje .= '<p class="' . $classResultado . '"><span>Cualitativo: </span> ' . $cualitativo . '</p>';
+                    $colPeritaje .= '<p><span>Cuantitativo: </span> ' . $cuantitativo . '</p>';
+                    $colPeritaje .= '<p><span>Perito: </span> ' . $perito . '</p>';
+                    $colPeritaje .= '</td>';
+
+                    if ($certificados->rowCount() > 0) {
+                        $colCertificado .= '<td class="td-certificado">';
+                        while ($row = $certificados->fetch(PDO::FETCH_OBJ)) {
+                            if ($row->estado == 'I')
+                                $colCertificado .= '<p>' . $row->n_serie . '-'  . $row->n_certificado . '</p><br>';
+                            else
+                                $colCertificado .= '<button class="lnkCertificado btn-blue">' . $row->n_serie . '-' . $row->n_certificado . '</button><br>';
+                        }
+                        $colCertificado .= '<button class="bntNewCertificado btnUpdateCertificado">Nuevo Certificado</button></td>';
+                    } else $colCertificado .= '<td><button class="bntNewCertificado btnRegCertificado">Reg. Certificado</button></td>';
+                } else {
+                    $colPeritaje .= '<td><button class="btnRegPeritaje">Registrar Peritaje</button></td>';
+                    $colCertificado .= '<td></td>';
+                }
+            } */
+            $response = ['listado' => $listado];
+            echo json_encode($response);
+            break;
     }
 }
 function reporteMuestrasFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin)
@@ -465,3 +618,7 @@ function reporteResultadoFechas($fechaInicio, $horaInicio, $fechaFin, $horaFin)
 
     return $tabla;
 }
+
+/*
+
+*/

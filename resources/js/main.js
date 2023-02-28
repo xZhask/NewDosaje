@@ -807,3 +807,16 @@ $(document).on("click", "#btn-reportePeriodo", async function (e) {
     $("#tbReporte").html(html);
   }
 });
+/* REPORTE_GENERAL */
+$(document).on("click", "#btn-reporteGeneral", async function (e) {
+  let fechaInicio = $('#repGenFechaInicio').val();
+  let fechaFin = $('#repGenFechaFin').val();
+  let datos = new FormData();
+  datos.append("accion", "REPORTE_GENERAL");
+  datos.append("fechaInicio", fechaInicio);
+  datos.append("fechaFin", fechaFin);
+  let reporte = await postData(datos, "controllerIncidencia.php");
+  console.log(reporte)
+  $("#tbReporteGeneral").html(reporte.listado);
+
+});

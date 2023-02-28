@@ -758,7 +758,7 @@ DARK: #4b4b4b;#2980b9
 .cont-export {
     display: flex;
     align-items: center;
-    gap: 2em;
+    gap: 1em;
     margin-bottom: .5em;
 }
 
@@ -929,3 +929,8 @@ td button {
 .content::-webkit-scrollbar-thumb:hover {
     background-color: var(--primary);
 } */
+.cont-export img {
+    max-height: 30px;
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+}

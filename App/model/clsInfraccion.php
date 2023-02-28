@@ -64,7 +64,7 @@ class clsInfraccion
     }
     function ListarInfracciones()
     {
-        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona ORDER BY CONCAT(i.fecha_recepcion," ",i.hora_recepcion) DESC LIMIT 10';
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona ORDER BY CONCAT(i.fecha_recepcion," ",i.hora_recepcion) DESC LIMIT 10';
         global $cnx;
         return $cnx->query($sql);
     }
@@ -93,7 +93,7 @@ class clsInfraccion
     }
     function buscarInfraccion($idInfraccion)
     {
-        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, pc.grado, pc.nro_doc as docConductor, i.lugar_incidencia, i.n_certificado, u.id_tipodoc,td.tipo_doc, u.nacionalidad, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona INNER JOIN tipo_documento td ON td.id_tipodoc=u.id_tipodoc WHERE i.id_infraccion=:id_infraccion';
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, pc.grado, pc.nro_doc as docConductor, i.lugar_incidencia, u.id_tipodoc,td.tipo_doc, u.nacionalidad, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona INNER JOIN tipo_documento td ON td.id_tipodoc=u.id_tipodoc WHERE i.id_infraccion=:id_infraccion';
         global $cnx;
         $parametros = [
             ':id_infraccion' => $idInfraccion,
@@ -144,7 +144,21 @@ class clsInfraccion
     /* REPORTES */
     function reporteMuestras($datosReporte)
     {
-        $sql = 'SELECT * FROM infraccion WHERE (fecha_recepcion>=:fechaInicio AND hora_recepcion>=:horaInicio) AND (fecha_recepcion<=:fechaFin AND hora_recepcion<=:horaFin)';
+        $sql = 'SELECT id_infraccion FROM infraccion WHERE (fecha_recepcion>=:fechaInicio AND hora_recepcion>=:horaInicio) AND (fecha_recepcion<=:fechaFin AND hora_recepcion<=:horaFin)';
+        global $cnx;
+        $parametros = [
+            ':fechaInicio' => $datosReporte['fechaInicio'],
+            ':horaInicio' => $datosReporte['horaInicio'],
+            ':fechaFin' => $datosReporte['fechaFin'],
+            ':horaFin' => $datosReporte['horaFin'],
+        ];
+        $pre = $cnx->prepare($sql);
+        $pre->execute($parametros);
+        return $pre;
+    }
+    function reporteInfracciones($datosReporte)
+    {
+        $sql = 'SELECT i.id_infraccion,i.hoja_registro,i.Motivo,i.fecha_infr,i.hora_infr,i.vehiculo,i.clase,i.placa,i.n_oficio,i.hora_recepcion,i.fecha_recepcion,i.fecha_registro, inf.nombre as infractor,inf.nro_doc,inf.edad,inf.sexo,inf.lic_conducir,inf.id_tipodoc,cond.nombre as nombreConductor,cond.grado as gradoConductor, d.nombre as digitador,com.comisaria FROM infraccion i INNER JOIN persona inf ON inf.id_persona=i.infractor INNER JOIN persona cond ON cond.id_persona=i.personal_conductor INNER JOIN persona d ON d.id_persona=i.digitador INNER JOIN comandancia com ON com.id_comandancia=i.id_comandancia WHERE (fecha_recepcion>=:fechaInicio AND hora_recepcion>=:horaInicio) AND (fecha_recepcion<=:fechaFin AND hora_recepcion<=:horaFin)';
         global $cnx;
         $parametros = [
             ':fechaInicio' => $datosReporte['fechaInicio'],
@@ -172,7 +186,7 @@ class clsInfraccion
     }
     function filtrarInfraccionUsuario($datoUsuario)
     {
-        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, i.n_certificado, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona WHERE u.nombre LIKE :nombre ORDER BY CONCAT(i.fecha_recepcion," ",i.hora_recepcion) DESC';
+        $sql = 'SELECT i.id_infraccion, i.hoja_registro, i.Motivo, i.fecha_infr, i.hora_infr, i.vehiculo, i.clase, i.placa, i.n_oficio, c.comisaria, i.hora_recepcion, i.fecha_recepcion, u.nombre as infractor, d.nombre as digitador, pc.nombre as conductor, i.lugar_incidencia, u.nro_doc,u.edad, u.sexo, u.lic_conducir FROM infraccion i INNER JOIN comandancia c ON i.id_comandancia=c.id_comandancia INNER JOIN persona u ON i.infractor=u.id_persona INNER JOIN persona d ON i.digitador=d.id_persona INNER JOIN persona pc ON i.personal_conductor=pc.id_persona WHERE u.nombre LIKE :nombre ORDER BY CONCAT(i.fecha_recepcion," ",i.hora_recepcion) DESC';
         global $cnx;
         $parametros = [
             ':nombre' => '%' . $datoUsuario . '%',
