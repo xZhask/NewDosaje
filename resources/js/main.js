@@ -793,7 +793,6 @@ $(document).on("click", "#btn-reportePeriodo", async function (e) {
   e.preventDefault();
   let fechaInicio = $("#repFechaInicio").val();
   let fechaFin = $("#repFechaFin").val();
-
   if (fechaInicio === "" || fechaFin === "")
     msgAlert("warning", "Seleccione intervalo de fechas", "Campos necesarios");
   else {
@@ -811,12 +810,24 @@ $(document).on("click", "#btn-reportePeriodo", async function (e) {
 $(document).on("click", "#btn-reporteGeneral", async function (e) {
   let fechaInicio = $('#repGenFechaInicio').val();
   let fechaFin = $('#repGenFechaFin').val();
-  let datos = new FormData();
-  datos.append("accion", "REPORTE_GENERAL");
-  datos.append("fechaInicio", fechaInicio);
-  datos.append("fechaFin", fechaFin);
-  let reporte = await postData(datos, "controllerIncidencia.php");
-  console.log(reporte)
-  $("#tbReporteGeneral").html(reporte.listado);
+  if (fechaInicio == '' || fechaFin == '')
+    msgAlert("warning", "Seleccione intervalo de fechas", "Campos necesarios");
+  else {
+    let datos = new FormData();
+    datos.append("accion", "REPORTE_GENERAL");
+    datos.append("fechaInicio", fechaInicio);
+    datos.append("fechaFin", fechaFin);
+    let reporte = await postData(datos, "controllerIncidencia.php");
+    $("#tbReporteGeneral").html(reporte.listado);
+    //$('#btnImprmirReporteGeneral').css('-webkit-filter', 'none')
+    $('#btnImprmirReporteGeneral').css('filter', 'none')
+  }
 
+
+});
+$(document).on("click", "#btnImprmirReporteGeneral", () => {
+  let fechaInicio = $('#repGenFechaInicio').val();
+  let fechaFin = $('#repGenFechaFin').val();
+  if (fechaInicio == '' || fechaFin == '') msgAlert("warning", "Seleccione intervalo de fechas", "Campos necesarios");
+  else location.href = `resources/libraries/xlsx/tarifario.php?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
 });

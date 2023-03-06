@@ -485,69 +485,6 @@ function controlador($accion)
                     $listado .= '</tr>';
                 }
             } else $listado .= '<tr><td>Sin resultados</td></tr>';
-
-
-            /**/
-
-
-            /* $listado = '';
-            while ($fila = $listadoInfracciones->fetch(PDO::FETCH_NAMED)) {
-                $idInfraccion = $fila['id_infraccion'];
-                //EXTRACCIÓN
-                $muestra = '';
-                $fechaExtraccion = '';
-                $hrsTranscurridas = '';
-                $Extractor = '';
-                $observacion = '';
-                $extraccion = $objInfraccion->buscarExtraccion($idInfraccion);
-                if ($extraccion->rowCount() > 0) {
-                    $extraccion = $extraccion->fetch(PDO::FETCH_NAMED);
-                    $muestra = $extraccion['tipo_muestra'];
-                    $fechaExtraccion = date("d-m-Y", strtotime($extraccion['fecha_extracc'])) . ' ' . $extraccion['hora_extracc'];
-                    $hrsTranscurridas = $extraccion['hrs_transcurridas'];
-                    $Extractor = $extraccion['extractor'];
-                    $observacion = $extraccion['observacion'];
-                }
-                //PERITAJE
-                $colPeritaje = '';
-                $colCertificado = '';
-                $peritaje = $objInfraccion->buscarPeritaje($idInfraccion);
-                $certificados = $objInfraccion->buscarCertificados($idInfraccion);
-                if ($peritaje->rowCount() > 0) {
-                    $perito = '';
-                    $cualitativo = '';
-                    $cuantitativo = '';
-                    $peritaje = $peritaje->fetch(PDO::FETCH_NAMED);
-                    $perito = $peritaje['perito'];
-                    if ($perito != NULL) {
-                        $busquedaPerito = $objPersona->BuscarPersonal($perito);
-                        $busquedaPerito = $busquedaPerito->fetch(PDO::FETCH_NAMED);
-                        $perito = $busquedaPerito['nombre'];
-                    } else $perito = '-';
-                    $cualitativo = $peritaje['cualitativo'];
-                    $cuantitativo = $peritaje['cuantitativo'];
-                    $classResultado = ($cualitativo == 'POSITIVO') ? 'p-red' : '';
-                    $colPeritaje .= '<td class="t_left">';
-                    $colPeritaje .= '<p class="' . $classResultado . '"><span>Cualitativo: </span> ' . $cualitativo . '</p>';
-                    $colPeritaje .= '<p><span>Cuantitativo: </span> ' . $cuantitativo . '</p>';
-                    $colPeritaje .= '<p><span>Perito: </span> ' . $perito . '</p>';
-                    $colPeritaje .= '</td>';
-
-                    if ($certificados->rowCount() > 0) {
-                        $colCertificado .= '<td class="td-certificado">';
-                        while ($row = $certificados->fetch(PDO::FETCH_OBJ)) {
-                            if ($row->estado == 'I')
-                                $colCertificado .= '<p>' . $row->n_serie . '-'  . $row->n_certificado . '</p><br>';
-                            else
-                                $colCertificado .= '<button class="lnkCertificado btn-blue">' . $row->n_serie . '-' . $row->n_certificado . '</button><br>';
-                        }
-                        $colCertificado .= '<button class="bntNewCertificado btnUpdateCertificado">Nuevo Certificado</button></td>';
-                    } else $colCertificado .= '<td><button class="bntNewCertificado btnRegCertificado">Reg. Certificado</button></td>';
-                } else {
-                    $colPeritaje .= '<td><button class="btnRegPeritaje">Registrar Peritaje</button></td>';
-                    $colCertificado .= '<td></td>';
-                }
-            } */
             $response = ['listado' => $listado];
             echo json_encode($response);
             break;
